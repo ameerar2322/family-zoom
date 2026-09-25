@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Family Zoom Get Together · Sunday, October 11</title>
+<meta name="description" content="Radcliffe Family, 3 Sisters and Shelton Family get together on Zoom. Sunday, October 11, 2026 at 7 PM Eastern. Theme: Getting to Know You, Cousin.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Family Get Together on Zoom · Sunday, October 11 at 7 PM ET">
+<meta property="og:description" content="Radcliffe Family, 3 Sisters and Shelton Family. Theme: Getting to Know You, Cousin. Tap to join or add it to your calendar.">
+<meta property="og:image" content="https://ameerar2322.github.io/family-zoom/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://ameerar2322.github.io/family-zoom/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#3a1422">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,700;1,500&family=Poppins:wght@400;500;700&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    --plum: #3a1422;
+    --plum-2: #5a1f36;
+    --cream: #faf2e6;
+    --card: #f6ecde;
+    --ink: #3a1422;
+    --ink-soft: #7a4a5c;
+    --gold: #deb260;
+    --gold-deep: #c99a44;
+    --rose: #e87084;
+    --muted: #d6bec4;
+    --line: rgba(222, 178, 96, 0.55);
+    --display: "Lora", Georgia, "Times New Roman", serif;
+    --body: "Poppins", "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { background: #3a1422; }
+  body {
+    margin: 0;
+    background: var(--plum);
+    background-image: radial-gradient(120% 60% at 50% 0%, #6a2540 0%, var(--plum) 70%);
+    color: var(--cream);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.5;
+    padding-block: 28px 40px;
+    padding-inline: 16px;
+    min-height: 100%;
+  }
+  .invite {
+    max-width: 520px;
+    margin: 0 auto;
+    border: 1.5px solid var(--gold);
+    border-radius: 22px;
+    padding: 30px 22px 26px;
+    position: relative;
+    display: grid;
+    gap: 22px;
+    box-shadow: inset 0 0 0 6px var(--plum), inset 0 0 0 7px rgba(222,178,96,0.35);
+  }
+  .eyebrow {
+    margin: 0;
+    text-align: center;
+    color: var(--gold);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+  }
+  .heading { text-align: center; display: grid; gap: 6px; }
+  h1 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(34px, 9vw, 44px);
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+  h1 small {
+    display: block;
+    font-size: 0.72em;
+    font-weight: 700;
+    margin-top: 6px;
+  }
+  .sub {
+    margin: 4px 0 0;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 24px;
+    color: var(--gold);
+  }
+  .rule {
+    height: 1px;
+    width: 180px;
+    margin: 0 auto;
+    background: var(--line);
+  }
+  .theme { text-align: center; display: grid; gap: 8px; justify-items: center; }
+  .label {
+    margin: 0;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+  }
+  .heart {
+    width: 26px; height: 26px;
+    display: block;
+  }
+  .theme-name {
+    margin: 0;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(24px, 6.6vw, 30px);
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+  .when { text-align: center; display: grid; gap: 2px; }
+  .date { margin: 0; font-weight: 700; font-size: clamp(21px, 6vw, 26px); line-height: 1.2; white-space: nowrap; }
+  .time { margin: 0; color: var(--gold); font-size: 22px; }
+  .tz { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+  .count { margin: 4px 0 0; color: var(--gold); font-size: 13px; font-weight: 500; letter-spacing: 0.04em; }
+
+  .join {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    background: var(--gold);
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 20px;
+    padding: 18px 20px;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    transition: transform 120ms ease, background 120ms ease;
+  }
+  .join:hover { background: #ebc272; }
+  .join:active { transform: translateY(1px); }
+  .join:focus-visible { outline: 3px solid var(--cream); outline-offset: 3px; }
+  .join-hint { margin: -12px 0 0; text-align: center; color: var(--muted); font-size: 13px; }
+
+  .card {
+    background: var(--card);
+    color: var(--ink);
+    border-radius: 18px;
+    padding: 18px 18px 6px;
+    display: grid;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(58,20,34,0.12);
+  }
+  .row:last-child { border-bottom: 0; }
+  .row .k {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+  .row .v {
+    margin: 2px 0 0;
+    font-weight: 700;
+    font-size: clamp(20px, 5.6vw, 24px);
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+  }
+  .row .v.small { font-size: 15px; font-weight: 500; }
+  .row .note { margin: 2px 0 0; font-size: 13px; color: var(--ink-soft); }
+  .row a { color: inherit; }
+  .copy {
+    font: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    background: transparent;
+    border: 1.5px solid rgba(58,20,34,0.35);
+    border-radius: 999px;
+    padding: 7px 14px;
+    cursor: pointer;
+    min-width: 84px;
+    transition: background 120ms ease, border-color 120ms ease;
+  }
+  .copy:hover { background: rgba(58,20,34,0.06); }
+  .copy:focus-visible { outline: 3px solid var(--gold-deep); outline-offset: 2px; }
+  .copy.done { background: var(--ink); color: var(--card); border-color: var(--ink); }
+
+  .cal { display: grid; gap: 10px; text-align: center; }
+  .cal-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .cal-row a {
+    color: var(--cream);
+    text-decoration: none;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    padding: 9px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 120ms ease;
+  }
+  .cal-row a:hover { background: rgba(222,178,96,0.12); }
+  .cal-row a:focus-visible { outline: 3px solid var(--cream); outline-offset: 2px; }
+
+  .foot { text-align: center; display: grid; gap: 6px; }
+  .host {
+    margin: 0;
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 21px;
+    color: var(--gold);
+  }
+  .foot p { margin: 0; color: var(--muted); font-size: 15px; text-wrap: balance; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .heart { animation: beat 2.4s ease-in-out infinite; transform-origin: 50% 55%; }
+    @keyframes beat { 0%, 100% { transform: scale(1); } 12% { transform: scale(1.12); } 24% { transform: scale(1); } }
+  }
+</style>
+</head>
+<body>
+
+<main>
+  <article class="invite">
+    <p class="eyebrow">You're invited</p>
+
+    <header class="heading">
+      <h1>Radcliffe Family<small>3 Sisters &amp; Shelton Family</small></h1>
+      <p class="sub">Get Together on Zoom</p>
+    </header>
+
+    <div class="rule"></div>
+
+    <section class="theme" aria-label="Theme">
+      <p class="label">Theme</p>
+      <svg class="heart" viewBox="0 0 32 32" aria-hidden="true"><path fill="#e87084" d="M16 29s-1.7-1.3-4.3-3.6C6.4 20.9 2 17 2 11.6 2 7.4 5.2 4 9.3 4c2.6 0 4.9 1.3 6.7 3.5C17.8 5.3 20.1 4 22.7 4 26.8 4 30 7.4 30 11.6c0 5.4-4.4 9.3-9.7 13.8C17.7 27.7 16 29 16 29z"/></svg>
+      <p class="theme-name">&ldquo;Getting to Know You, Cousin&rdquo;</p>
+    </section>
+
+    <div class="rule"></div>
+
+    <section class="when" aria-label="Date and time">
+      <p class="date">Sunday, October 11, 2026</p>
+      <p class="time">7:00 PM Eastern</p>
+      <p class="tz">6 PM Central &middot; 5 PM Mountain &middot; 4 PM Pacific</p>
+      <p class="count" id="count"></p>
+    </section>
+
+    <a class="join" id="join" href="https://us05web.zoom.us/j/83326772769?pwd=gyb8tPkRsv896rt2ed7EJ3ofiTHAfH.1">Join the Zoom Meeting</a>
+    <p class="join-hint">Opens the Zoom app if you have it, or Zoom in your browser.</p>
+
+    <section class="card" aria-label="Meeting details">
+      <div class="row">
+        <div>
+          <p class="k">Meeting ID</p>
+          <p class="v" id="mid" style="white-space:nowrap">833 2677 2769</p>
+        </div>
+        <button class="copy" type="button" data-copy="83326772769" data-target="mid">Copy</button>
+      </div>
+      <div class="row">
+        <div>
+          <p class="k">Passcode</p>
+          <p class="v" id="pw">X2e2qN</p>
+        </div>
+        <button class="copy" type="button" data-copy="X2e2qN" data-target="pw">Copy</button>
+      </div>
+      <div class="row">
+        <div>
+          <p class="k">Join link</p>
+          <p class="v small" id="lnk">https://us05web.zoom.us/j/83326772769?pwd=gyb8tPkRsv896rt2ed7EJ3ofiTHAfH.1</p>
+        </div>
+        <button class="copy" type="button" data-copy="https://us05web.zoom.us/j/83326772769?pwd=gyb8tPkRsv896rt2ed7EJ3ofiTHAfH.1" data-target="lnk">Copy</button>
+      </div>
+      <div class="row">
+        <div>
+          <p class="k">No video? Call in</p>
+          <p class="v small" id="dial"><a href="tel:+19292056099,,83326772769#,,,,*767433#">+1 929 205 6099</a></p>
+          <p class="note">Enter meeting ID 833 2677 2769, then phone passcode 767433</p>
+        </div>
+        <button class="copy" type="button" data-copy="+1 929 205 6099" data-target="dial">Copy</button>
+      </div>
+    </section>
+
+    <section class="cal" aria-label="Add to calendar">
+      <p class="label">Add to your calendar</p>
+      <div class="cal-row">
+        <a id="gcal" href="https://calendar.google.com/calendar/render?action=TEMPLATE">Google Calendar</a>
+        <a id="ocal" href="https://outlook.live.com/calendar/0/deeplink/compose">Outlook</a>
+        <a href="invite.ics" download="Family-Zoom-Oct-11.ics">Apple Calendar (.ics)</a>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <p class="host">Organized by Kenneth Radcliffe</p>
+      <p>Bring your stories, your photos, and your questions. Come meet the cousins you haven&rsquo;t met yet.</p>
+    </footer>
+  </article>
+</main>
+
+<script>
+(function () {
+  var title = "Radcliffe Family, 3 Sisters & Shelton Family Get Together (Zoom)";
+  var link = "https://us05web.zoom.us/j/83326772769?pwd=gyb8tPkRsv896rt2ed7EJ3ofiTHAfH.1";
+  var details = "Theme: \"Getting to Know You, Cousin\"\nOrganized by Kenneth Radcliffe\n\nJoin Zoom: " + link +
+    "\nMeeting ID: 833 2677 2769\nPasscode: X2e2qN\nDial-in: +1 929 205 6099 (phone passcode 767433)";
+
+  // Google Calendar
+  var g = "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+    "&text=" + encodeURIComponent(title) +
+    "&dates=20261011T230000Z/20261012T003000Z" +
+    "&details=" + encodeURIComponent(details) +
+    "&location=" + encodeURIComponent(link);
+  document.getElementById("gcal").href = g;
+
+  // Outlook (personal or Microsoft 365 both accept this compose deeplink)
+  var o = "https://outlook.live.com/calendar/0/deeplink/compose?path=%2Fcalendar%2Faction%2Fcompose&rru=addevent" +
+    "&subject=" + encodeURIComponent(title) +
+    "&startdt=2026-10-11T23:00:00Z&enddt=2026-10-12T00:30:00Z" +
+    "&body=" + encodeURIComponent(details) +
+    "&location=" + encodeURIComponent(link);
+  document.getElementById("ocal").href = o;
+
+  // Countdown line
+  var count = document.getElementById("count");
+  var start = new Date("2026-10-11T23:00:00Z");
+  var end = new Date("2026-10-12T00:30:00Z");
+  var now = new Date();
+  if (now >= start && now <= end) {
+    count.textContent = "Happening now. Come on in.";
+  } else if (now < start) {
+    var days = Math.ceil((start - now) / 86400000);
+    count.textContent = days === 1 ? "Tomorrow" : days === 0 ? "Tonight" : "In " + days + " days";
+  } else {
+    count.textContent = "This gathering has passed. Thanks for coming.";
+  }
+
+  // Copy buttons with a selection fallback
+  function selectText(el) {
+    try {
+      var range = document.createRange();
+      range.selectNodeContents(el);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } catch (e) {}
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".copy"), function (btn) {
+    btn.addEventListener("click", function () {
+      var text = btn.getAttribute("data-copy");
+      var target = document.getElementById(btn.getAttribute("data-target"));
+      var done = function () {
+        btn.textContent = "Copied";
+        btn.classList.add("done");
+        setTimeout(function () { btn.textContent = "Copy"; btn.classList.remove("done"); }, 1600);
+      };
+      var fail = function () {
+        selectText(target);
+        btn.textContent = "Selected";
+        setTimeout(function () { btn.textContent = "Copy"; }, 1600);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, fail);
+      } else {
+        fail();
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
