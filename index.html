@@ -38,6 +38,7 @@
     --body: "Poppins", "Segoe UI", Helvetica, Arial, sans-serif;
   }
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
   html { background: #3a1422; }
   body {
     margin: 0;
@@ -228,6 +229,26 @@
     .heart { animation: beat 2.4s ease-in-out infinite; transform-origin: 50% 55%; }
     @keyframes beat { 0%, 100% { transform: scale(1); } 12% { transform: scale(1.12); } 24% { transform: scale(1); } }
   }
+
+  .rsvp { background: var(--card); color: var(--ink); border-radius: 18px; padding: 22px 18px; display: grid; gap: 14px; }
+  .rsvp h2 { margin: 0; font-family: var(--display); font-size: 26px; text-align: center; }
+  .rsvp .lede { margin: 0; text-align: center; color: var(--ink-soft); font-size: 14px; }
+  .field { display: grid; gap: 5px; }
+  .field label { font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+  .field input, .field select { font: inherit; font-size: 17px; color: var(--ink); background: #fff; border: 1.5px solid rgba(58,20,34,0.25); border-radius: 10px; padding: 12px 12px; width: 100%; }
+  .field input:focus, .field select:focus { outline: 3px solid var(--gold-deep); outline-offset: 1px; border-color: var(--ink); }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 380px) { .row2 { grid-template-columns: 1fr; } }
+  .submit { font: inherit; font-weight: 700; font-size: 19px; color: var(--cream); background: var(--ink); border: 0; border-radius: 12px; padding: 16px; cursor: pointer; }
+  .submit:disabled { opacity: 0.6; cursor: default; }
+  .submit:focus-visible { outline: 3px solid var(--gold-deep); outline-offset: 2px; }
+  .err { margin: 0; color: #a3243b; font-size: 14px; text-align: center; }
+  .already { margin: 0; text-align: center; font-size: 14px; }
+  .already button { font: inherit; background: none; border: 0; color: var(--ink); text-decoration: underline; cursor: pointer; padding: 4px; }
+  .thanks { text-align: center; display: grid; gap: 4px; }
+  .thanks h2 { margin: 0; font-family: var(--display); font-size: 28px; color: var(--gold); }
+  .thanks p { margin: 0; color: var(--muted); font-size: 15px; }
+  .details { display: grid; gap: 22px; }
 </style>
 </head>
 <body>
@@ -258,6 +279,27 @@
       <p class="count" id="count"></p>
     </section>
 
+    <form class="rsvp" id="rsvp" novalidate>
+      <h2>RSVP</h2>
+      <p class="lede">Let us know you&rsquo;re coming and we&rsquo;ll email you the Zoom link and calendar invite.</p>
+      <div class="field"><label for="name">Your name</label><input id="name" name="name" autocomplete="name" required></div>
+      <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email" required></div>
+      <div class="row2">
+        <div class="field"><label for="family">Family</label>
+          <select id="family" name="family"><option>Radcliffe</option><option>3 Sisters</option><option>Shelton</option><option>Other / not sure</option></select></div>
+        <div class="field"><label for="count">How many</label>
+          <select id="count" name="count"><option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option></select></div>
+      </div>
+      <button class="submit" id="submit" type="submit">I&rsquo;ll be there</button>
+      <p class="err" id="err" hidden></p>
+      <p class="already"><button type="button" id="skip">Already RSVP&rsquo;d? Show the join details</button></p>
+    </form>
+
+    <div class="details" id="details" hidden>
+      <div class="thanks" id="thanks" hidden>
+        <h2 id="thanks-h">You&rsquo;re on the list!</h2>
+        <p>We also emailed you the link. Save the date below.</p>
+      </div>
     <a class="join" id="join" href="https://us05web.zoom.us/j/83326772769?pwd=gyb8tPkRsv896rt2ed7EJ3ofiTHAfH.1">Join the Zoom Meeting</a>
     <p class="join-hint">Opens the Zoom app if you have it, or Zoom in your browser.</p>
 
@@ -301,6 +343,8 @@
         <a href="invite.ics" download="Family-Zoom-Oct-11.ics">Apple Calendar (.ics)</a>
       </div>
     </section>
+
+    </div>
 
     <footer class="foot">
       <p class="host">Organized by Kenneth Radcliffe</p>
@@ -376,6 +420,37 @@
         fail();
       }
     });
+  });
+  // RSVP
+  var ENDPOINT = "https://formsubmit.co/ajax/ameer@simplicityitinc.com";
+  var form = document.getElementById("rsvp"), details = document.getElementById("details");
+  var err = document.getElementById("err"), btn = document.getElementById("submit");
+  function reveal(thanks, name) {
+    form.hidden = true; details.hidden = false;
+    if (thanks) { document.getElementById("thanks").hidden = false;
+      if (name) document.getElementById("thanks-h").textContent = "You\u2019re on the list, " + name.split(" ")[0] + "!"; }
+    try { localStorage.setItem("fz-rsvp", "1"); } catch (e) {}
+    details.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+  try { if (localStorage.getItem("fz-rsvp") === "1") { form.hidden = true; details.hidden = false; } } catch (e) {}
+  document.getElementById("skip").addEventListener("click", function () { reveal(false); });
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault(); err.hidden = true;
+    var name = form.name.value.trim(), email = form.email.value.trim();
+    if (!name) { err.textContent = "Please add your name."; err.hidden = false; return; }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.textContent = "Please check your email address."; err.hidden = false; return; }
+    btn.disabled = true; btn.textContent = "Sending\u2026";
+    fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify({
+        name: name, email: email, family: form.family.value, joining: form.count.value,
+        _subject: "RSVP: " + name + " (" + form.family.value + ", " + form.count.value + ")",
+        _template: "table", _captcha: "false",
+        _autoresponse: "Hi " + name.split(" ")[0] + ", thanks for your RSVP!\n\nRadcliffe Family, 3 Sisters & Shelton Family Get Together on Zoom\nTheme: Getting to Know You, Cousin\nSunday, October 11, 2026 at 7:00 PM Eastern (6 PM Central, 5 PM Mountain, 4 PM Pacific)\n\nJoin Zoom: https://us05web.zoom.us/j/83326772769?pwd=gyb8tPkRsv896rt2ed7EJ3ofiTHAfH.1\nMeeting ID: 833 2677 2769\nPasscode: X2e2qN\nNo video? Call +1 929 205 6099, meeting ID 833 2677 2769, phone passcode 767433\n\nAdd it to your calendar and find all the details here: https://ameerar2322.github.io/family-zoom/\n\nSee you there!\nKenneth Radcliffe"
+      })
+    }).then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function () { reveal(true, name); })
+      .catch(function () { btn.disabled = false; btn.textContent = "I\u2019ll be there";
+        err.textContent = "That didn\u2019t go through. Check your connection and try again."; err.hidden = false; });
   });
 })();
 </script>
