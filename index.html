@@ -218,6 +218,8 @@
     font-size: 21px;
     color: var(--gold);
   }
+  .foot .help { font-size: 13px; }
+  .foot .help a { color: var(--gold); }
   .foot p { margin: 0; color: var(--muted); font-size: 15px; text-wrap: balance; }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -276,7 +278,7 @@
 
     <form class="rsvp" id="rsvp" novalidate>
       <h2>RSVP</h2>
-      <p class="lede">Let us know you&rsquo;re coming and we&rsquo;ll email you the Zoom link and calendar invite.</p>
+      <p class="lede">Let us know you&rsquo;re coming and Cousin Ameer will email you the Zoom link and calendar details.</p>
       <div class="field"><label for="name">Your name</label><input id="name" name="name" autocomplete="name" required></div>
       <div class="field"><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email" required></div>
       <div class="row2">
@@ -343,6 +345,7 @@
 
     <footer class="foot">
       <p class="host">Organized by Kenneth Radcliffe</p>
+      <p class="help">Questions or trouble joining? Reach Cousin Ameer at <a href="mailto:ameer@simplicityitinc.com">ameer@simplicityitinc.com</a></p>
       <p>Bring your stories, your photos, and your questions. Come meet the cousins you haven&rsquo;t met yet.</p>
     </footer>
   </article>
@@ -438,9 +441,9 @@
     fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" },
       body: JSON.stringify({
         name: name, email: email, family: form.family.value, joining: form.count.value,
-        _subject: "RSVP: " + name + " (" + form.family.value + ", " + form.count.value + ")",
+        _replyto: email, _subject: "RSVP: " + name + " (" + form.family.value + ", " + form.count.value + ")",
         _template: "table", _captcha: "false",
-        _autoresponse: "Hi " + name.split(" ")[0] + ", thanks for your RSVP!\n\nRadcliffe Family, 3 Sisters & Shelton Family Get Together on Zoom\nTheme: Getting to Know You, Cousin\nSunday, October 11, 2026 at 7:00 PM Eastern (6 PM Central, 5 PM Mountain, 4 PM Pacific)\n\nJoin Zoom: https://us05web.zoom.us/j/83326772769?pwd=gyb8tPkRsv896rt2ed7EJ3ofiTHAfH.1\nMeeting ID: 833 2677 2769\nPasscode: X2e2qN\nNo video? Call +1 929 205 6099, meeting ID 833 2677 2769, phone passcode 767433\n\nAdd it to your calendar and find all the details here: https://ameerar2322.github.io/family-zoom/\n\nSee you there!\nKenneth Radcliffe"
+        _autoresponse: "Hi " + name.split(" ")[0] + ", thanks for your RSVP!\n\nRadcliffe Family, 3 Sisters & Shelton Family Get Together on Zoom\nTheme: Getting to Know You, Cousin\nSunday, October 11, 2026 at 7:00 PM Eastern (6 PM Central, 5 PM Mountain, 4 PM Pacific)\n\nJoin Zoom: https://us05web.zoom.us/j/83326772769?pwd=gyb8tPkRsv896rt2ed7EJ3ofiTHAfH.1\nMeeting ID: 833 2677 2769\nPasscode: X2e2qN\nNo video? Call +1 929 205 6099, meeting ID 833 2677 2769, phone passcode 767433\n\nAdd it to your calendar and find all the details here: https://ameerar2322.github.io/family-zoom/\n\nSee you there!\nKenneth Radcliffe\n\nQuestions or trouble joining? Reach Cousin Ameer at ameer@simplicityitinc.com"
       })
     }).then(function (r) { if (!r.ok) throw 0; return r.json(); })
       .then(function () { reveal(true, name); })
