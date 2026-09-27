@@ -323,15 +323,6 @@
     </div>
   </div>
 
-  <h2>A note to send Kenneth</h2>
-  <p>A short message to paste into a text or email along with the link to this page.</p>
-  <div class="paste" id="note">Ken, I spent some time looking at The Isaiah Project website, the book listings, and the podcast. You have something most authors never get: Cardinal Dolan&rsquo;s endorsement, AA&rsquo;s permission, your years at Rikers, and a book that came out years before the other groups doing this got national press.
-
-The main problem I see is that the book is hard to buy on the site and there&rsquo;s no way for visitors to stay in touch. I put together a plan with simple fixes first and two mockups of how the site could look. Take a look when you have time and let me know what you think. I&rsquo;m happy to help set any of it up.
-
-Ameer</div>
-  <button class="copy" type="button" id="copy">Copy this note</button>
-
   <h2>Sources</h2>
   <ul class="sources">
     <li><a href="https://theisaiahproject.name/" target="_blank" rel="noopener">The Isaiah Project</a>: home, <a href="https://theisaiahproject.name/about/" target="_blank" rel="noopener">About</a>, <a href="https://theisaiahproject.name/programs/" target="_blank" rel="noopener">Programs</a>, <a href="https://theisaiahproject.name/e-book-ordering/" target="_blank" rel="noopener">E-book ordering</a>, <a href="https://theisaiahproject.name/podcast/" target="_blank" rel="noopener">Podcast</a>, <a href="https://theisaiahproject.name/events/month/" target="_blank" rel="noopener">Calendar</a></li>
@@ -344,15 +335,7 @@ Ameer</div>
   </ul>
 </div>
 
-<script>
-  document.getElementById("copy").addEventListener("click", function () {
-    var btn = this, text = document.getElementById("note").innerText;
-    function sel() { try { var r = document.createRange(); r.selectNodeContents(document.getElementById("note")); var s = getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {} btn.textContent = "Selected, press copy"; }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () { btn.textContent = "Copied"; setTimeout(function(){ btn.textContent = "Copy this note"; }, 1800); }, sel);
-    } else { sel(); }
-  });
-</script>
+
 
 </body>
 </html>
