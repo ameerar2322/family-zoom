@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>If Your Brother Sins | The Isaiah Project</title>
+<meta name="description" content="A Catholic visual commentary on race and racism by Deacon Kenneth L. Radcliffe.">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<div class="preview-bar">Preview of a proposed new design for theisaiahproject.name. Buttons and forms are for review only.</div>
+<header class="site-head">
+  <div class="wrap head-row">
+    <a class="brand" href="index.html"><img src="img/p-mark.png" alt="" width="30" height="29"><span>The Isaiah Project</span></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+        <a href="book.html">The Book</a>
+        <a href="programs.html">Programs</a>
+        <a href="if-your-brother-sins.html" aria-current="page">If Your Brother Sins</a>
+        <a href="about.html">About</a>
+        <a href="podcast.html">Podcast</a>
+        <a href="contact.html">Contact</a>
+        <a class="btn btn-gold" href="book.html#buy">Get the book</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<div class="page-head"><div class="wrap"><p class="eyebrow">Presentation</p><h1>&ldquo;If Your Brother Sins&hellip;&rdquo;</h1><p class="lede">A Catholic visual commentary on race and racism.</p></div></div>
+<section><div class="wrap split">
+  <div>
+    <p>&ldquo;If Your Brother Sins&hellip;&rdquo; is a sight-and-sound presentation by Deacon Ken Radcliffe on the Atlantic slave trade and slavery as the major source of free labor and capital building, and a call for Church discernment on restitution, reparations and restorative justice, beginning with the Roman Catholic Church.</p>
+    <p>The printed report was taken to Rome by Timothy Cardinal Dolan, who presented it to Cardinal Michael Czerny, S.J., Prefect of the Dicastery for Promoting Integral Human Development, who referred it to the Regional Coordinator for North America for review and study.</p>
+    <p>It is essential viewing for Catholic parishes, ministries and organizations working for social justice and struggling to understand the disease of racism.</p>
+    <div class="callout"><p><b>Viewings on Zoom</b> are available by appointment when five or more people are interested.</p></div>
+    <div class="btn-row"><a class="btn btn-dark" href="contact.html">Request a viewing</a></div>
+  </div>
+  <img src="img/if-your-brother-sins.jpg" alt="Poster for If Your Brother Sins" width="900" height="1200">
+</div></section>
+</main>
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">The Isaiah Project, Inc.</div>
+        <p>Let our healing begin. The Isaiah Project is a 501(c)(3) nonprofit founded by Deacon Kenneth L. Radcliffe in Harlem, New York.</p>
+        <div class="btn-row"><a class="btn btn-gold" href="contact.html#donate">Donate</a></div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="book.html">The Book</a>
+        <a href="programs.html">The Recovery Room</a>
+        <a href="if-your-brother-sins.html">If Your Brother Sins&hellip;</a>
+        <a href="podcast.html">Podcast</a>
+      </div>
+      <div>
+        <h4>Get in touch</h4>
+        <a href="contact.html">Contact Deacon Ken</a>
+        <a href="contact.html#speaking">Invite him to speak</a>
+        <a href="mailto:kenrad1977@gmail.com">kenrad1977@gmail.com</a>
+      </div>
+    </div>
+    <div class="foot-base">&copy; 2026 The Isaiah Project, Inc. &middot; The Recovery Room uses the Twelve Steps and Twelve Traditions with written permission from AA World Services, Inc.</div>
+  </div>
+</footer>
+<script>
+(function () {
+  var b = document.querySelector(".menu-btn"), n = document.getElementById("nav");
+  if (b) b.addEventListener("click", function () { var o = n.classList.toggle("open"); b.setAttribute("aria-expanded", o); });
+  function toast(msg) {
+    var t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); t.textContent = msg;
+    document.body.appendChild(t); setTimeout(function () { t.remove(); }, 3600);
+  }
+  document.querySelectorAll("[data-preview]").forEach(function (el) {
+    el.addEventListener("click", function (e) { e.preventDefault(); toast(el.getAttribute("data-preview")); });
+  });
+  document.querySelectorAll("form[data-preview-form]").forEach(function (f) {
+    f.addEventListener("submit", function (e) { e.preventDefault(); toast(f.getAttribute("data-preview-form")); });
+  });
+})();
+</script>
+</body>
+</html>

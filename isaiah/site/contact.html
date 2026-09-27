@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Contact | The Isaiah Project</title>
+<meta name="description" content="Contact Deacon Kenneth L. Radcliffe about the Recovery Room, speaking, group orders or donations.">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<div class="preview-bar">Preview of a proposed new design for theisaiahproject.name. Buttons and forms are for review only.</div>
+<header class="site-head">
+  <div class="wrap head-row">
+    <a class="brand" href="index.html"><img src="img/p-mark.png" alt="" width="30" height="29"><span>The Isaiah Project</span></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+        <a href="book.html">The Book</a>
+        <a href="programs.html">Programs</a>
+        <a href="if-your-brother-sins.html">If Your Brother Sins</a>
+        <a href="about.html">About</a>
+        <a href="podcast.html">Podcast</a>
+        <a href="contact.html" aria-current="page">Contact</a>
+        <a class="btn btn-gold" href="book.html#buy">Get the book</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<div class="page-head"><div class="wrap"><p class="eyebrow">Contact</p><h1>Get in touch with Deacon Ken</h1><p class="lede">Questions about the Recovery Room, speaking invitations, group orders, or supporting the work.</p></div></div>
+<section><div class="wrap contact-grid">
+  <form class="form" data-preview-form="Preview: messages will go to Deacon Ken's email once the form service is connected.">
+    <label for="c-name">Your name</label><input id="c-name" name="name" autocomplete="name" required>
+    <label for="c-email">Email</label><input id="c-email" name="email" type="email" autocomplete="email" required>
+    <label for="c-phone">Phone (optional)</label><input id="c-phone" name="phone" type="tel" autocomplete="tel">
+    <label for="c-topic">What is this about?</label>
+    <select id="c-topic" name="topic"><option>Joining the Recovery Room</option><option>Inviting Deacon Ken to speak</option><option>Group or parish book order</option><option>If Your Brother Sins viewing</option><option>Donating</option><option>Something else</option></select>
+    <label for="c-msg">Message</label><textarea id="c-msg" name="message"></textarea>
+    <button class="btn btn-dark" type="submit">Send message</button>
+  </form>
+  <div class="info">
+    <div><h3>Email</h3><p><a href="mailto:kenrad1977@gmail.com">kenrad1977@gmail.com</a></p></div>
+    <div id="speaking"><h3>Speaking &amp; workshops</h3><p>Deacon Ken speaks to parishes, schools, recovery conferences and reentry programs. Popular talks include &ldquo;Let Our Healing Begin&rdquo; and &ldquo;Is Racism a Mental Disorder?&rdquo;</p></div>
+    <div id="groups"><h3>Group &amp; parish orders</h3><p>Ten or more copies of the book at a group price, with a 12-week discussion guide.</p></div>
+    <div id="donate"><h3>Support the work</h3><p>The Isaiah Project, Inc. is a 501(c)(3) nonprofit. Gifts keep the Recovery Room free for everyone who needs it.</p><div class="btn-row" style="margin-top:12px"><a class="btn btn-gold" href="#" data-preview="Preview: this will open a secure donation page once connected.">Donate</a></div></div>
+  </div>
+</div></section>
+</main>
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">The Isaiah Project, Inc.</div>
+        <p>Let our healing begin. The Isaiah Project is a 501(c)(3) nonprofit founded by Deacon Kenneth L. Radcliffe in Harlem, New York.</p>
+        <div class="btn-row"><a class="btn btn-gold" href="contact.html#donate">Donate</a></div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="book.html">The Book</a>
+        <a href="programs.html">The Recovery Room</a>
+        <a href="if-your-brother-sins.html">If Your Brother Sins&hellip;</a>
+        <a href="podcast.html">Podcast</a>
+      </div>
+      <div>
+        <h4>Get in touch</h4>
+        <a href="contact.html">Contact Deacon Ken</a>
+        <a href="contact.html#speaking">Invite him to speak</a>
+        <a href="mailto:kenrad1977@gmail.com">kenrad1977@gmail.com</a>
+      </div>
+    </div>
+    <div class="foot-base">&copy; 2026 The Isaiah Project, Inc. &middot; The Recovery Room uses the Twelve Steps and Twelve Traditions with written permission from AA World Services, Inc.</div>
+  </div>
+</footer>
+<script>
+(function () {
+  var b = document.querySelector(".menu-btn"), n = document.getElementById("nav");
+  if (b) b.addEventListener("click", function () { var o = n.classList.toggle("open"); b.setAttribute("aria-expanded", o); });
+  function toast(msg) {
+    var t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); t.textContent = msg;
+    document.body.appendChild(t); setTimeout(function () { t.remove(); }, 3600);
+  }
+  document.querySelectorAll("[data-preview]").forEach(function (el) {
+    el.addEventListener("click", function (e) { e.preventDefault(); toast(el.getAttribute("data-preview")); });
+  });
+  document.querySelectorAll("form[data-preview-form]").forEach(function (f) {
+    f.addEventListener("submit", function (e) { e.preventDefault(); toast(f.getAttribute("data-preview-form")); });
+  });
+})();
+</script>
+</body>
+</html>

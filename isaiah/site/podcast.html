@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Podcast | The Isaiah Project</title>
+<meta name="description" content="A Conversation on Race and Racism with Deacon Kenneth L. Radcliffe.">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<div class="preview-bar">Preview of a proposed new design for theisaiahproject.name. Buttons and forms are for review only.</div>
+<header class="site-head">
+  <div class="wrap head-row">
+    <a class="brand" href="index.html"><img src="img/p-mark.png" alt="" width="30" height="29"><span>The Isaiah Project</span></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <nav class="nav" id="nav" aria-label="Main">
+        <a href="book.html">The Book</a>
+        <a href="programs.html">Programs</a>
+        <a href="if-your-brother-sins.html">If Your Brother Sins</a>
+        <a href="about.html">About</a>
+        <a href="podcast.html" aria-current="page">Podcast</a>
+        <a href="contact.html">Contact</a>
+        <a class="btn btn-gold" href="book.html#buy">Get the book</a>
+    </nav>
+  </div>
+</header>
+<main>
+
+<div class="page-head"><div class="wrap"><p class="eyebrow">Listen</p><h1>A Conversation on Race &amp; Racism</h1><p class="lede">Deacon Ken Radcliffe on the disease of racism, as a guest on the &ldquo;Alma, Am I Racist?&rdquo; podcast.</p></div></div>
+<section><div class="wrap narrow">
+  <div class="ep"><div class="num">01</div><div><h3>The Disease of Racism, Part 1</h3><p>With Lisa Smith, host of &ldquo;Alma, Am I Racist? An Anti-Racist, Pro-Black Podcast.&rdquo;</p></div><a class="btn btn-dark" href="https://almaamiracist.com/the-disease-of-racism-part-1/" target="_blank" rel="noopener">Listen</a></div>
+  <div class="ep"><div class="num">02</div><div><h3>The Disease of Racism, Part 2</h3><p>The conversation continues on recovery, the 12 Steps and the Black Church.</p></div><a class="btn btn-dark" href="https://almaamiracist.com/the-disease-of-racism-part-2/" target="_blank" rel="noopener">Listen</a></div>
+  <div class="callout"><p><b>Host a podcast?</b> Deacon Ken is available for interviews on faith, recovery, reentry and racial healing. <a href="contact.html#speaking">Invite him on your show</a>.</p></div>
+</div></section>
+<section><div class="wrap"><div class="signup">
+  <div>
+    <p class="eyebrow" style="color:var(--ink)">Free guide</p>
+    <h2>The 12 Steps of Racism Recovery</h2>
+    <p class="lede">A two-page guide from Deacon Ken that walks through each Step as it applies to healing from racism. Free, sent straight to your inbox.</p>
+  </div>
+  <form class="form" data-preview-form="Preview: this will send the free guide once the email service is connected.">
+    <label for="g-name">First name</label><input id="g-name" name="name" autocomplete="given-name">
+    <label for="g-email">Email</label><input id="g-email" name="email" type="email" autocomplete="email" required>
+    <button class="btn btn-dark" type="submit">Send me the free guide</button>
+    <p class="note">One short email a month. Unsubscribe anytime.</p>
+  </form>
+</div></div></section></main>
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand">The Isaiah Project, Inc.</div>
+        <p>Let our healing begin. The Isaiah Project is a 501(c)(3) nonprofit founded by Deacon Kenneth L. Radcliffe in Harlem, New York.</p>
+        <div class="btn-row"><a class="btn btn-gold" href="contact.html#donate">Donate</a></div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <a href="book.html">The Book</a>
+        <a href="programs.html">The Recovery Room</a>
+        <a href="if-your-brother-sins.html">If Your Brother Sins&hellip;</a>
+        <a href="podcast.html">Podcast</a>
+      </div>
+      <div>
+        <h4>Get in touch</h4>
+        <a href="contact.html">Contact Deacon Ken</a>
+        <a href="contact.html#speaking">Invite him to speak</a>
+        <a href="mailto:kenrad1977@gmail.com">kenrad1977@gmail.com</a>
+      </div>
+    </div>
+    <div class="foot-base">&copy; 2026 The Isaiah Project, Inc. &middot; The Recovery Room uses the Twelve Steps and Twelve Traditions with written permission from AA World Services, Inc.</div>
+  </div>
+</footer>
+<script>
+(function () {
+  var b = document.querySelector(".menu-btn"), n = document.getElementById("nav");
+  if (b) b.addEventListener("click", function () { var o = n.classList.toggle("open"); b.setAttribute("aria-expanded", o); });
+  function toast(msg) {
+    var t = document.createElement("div"); t.className = "toast"; t.setAttribute("role", "status"); t.textContent = msg;
+    document.body.appendChild(t); setTimeout(function () { t.remove(); }, 3600);
+  }
+  document.querySelectorAll("[data-preview]").forEach(function (el) {
+    el.addEventListener("click", function (e) { e.preventDefault(); toast(el.getAttribute("data-preview")); });
+  });
+  document.querySelectorAll("form[data-preview-form]").forEach(function (f) {
+    f.addEventListener("submit", function (e) { e.preventDefault(); toast(f.getAttribute("data-preview-form")); });
+  });
+})();
+</script>
+</body>
+</html>
