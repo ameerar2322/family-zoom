@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Our Family Tree · Radcliffe, 3 Sisters &amp; Shelton</title>
+<meta property="og:title" content="Our Family Tree · Radcliffe, 3 Sisters & Shelton">
+<meta property="og:description" content="Find your branch and add your name to the family tree.">
+<meta property="og:image" content="https://ameerar2322.github.io/family-zoom/preview.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,700;1,500&family=Poppins:wght@400;500;700&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --plum: #3a1422; --plum-2: #4d1a2e; --plum-3: #5f2239;
+    --cream: #faf2e6; --card: #f6ecde; --ink: #3a1422; --ink-soft: #7a4a5c;
+    --gold: #deb260; --gold-deep: #c99a44; --rose: #e87084; --muted: #d6bec4;
+    --line: rgba(222,178,96,0.55);
+    --display: "Lora", Georgia, serif;
+    --body: "Poppins", "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { background: var(--plum); }
+  body { margin: 0; background: var(--plum); background-image: radial-gradient(120% 50% at 50% 0%, #6a2540 0%, var(--plum) 70%); color: var(--cream); font-family: var(--body); font-size: 16px; line-height: 1.5; padding-inline: 16px; padding-block: 28px 56px; min-height: 100%; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  header { text-align: center; }
+  .eyebrow { margin: 0; color: var(--gold); font-size: 12px; font-weight: 500; letter-spacing: 0.32em; text-transform: uppercase; }
+  h1 { font-family: var(--display); font-weight: 700; font-size: clamp(32px, 6vw, 50px); line-height: 1.1; margin: 10px 0 0; text-wrap: balance; }
+  .sub { margin: 10px auto 0; max-width: 40em; color: var(--muted); }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 20px; }
+  .btn { font: inherit; font-weight: 700; font-size: 15px; border-radius: 10px; padding: 11px 18px; cursor: pointer; text-decoration: none; border: 1.5px solid transparent; }
+  .btn-gold { background: var(--gold); color: var(--ink); }
+  .btn-gold:hover { background: #ebc272; }
+  .btn-line { background: transparent; color: var(--cream); border-color: var(--line); }
+  .btn-line:hover { background: rgba(222,178,96,0.12); }
+  .btn:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+  /* tree */
+  .roots { display: grid; grid-template-columns: 2.2fr 1fr; gap: 22px; margin-top: 36px; align-items: start; }
+  .branch { border: 1.5px solid var(--line); border-radius: 18px; padding: 22px 18px 20px; background: rgba(0,0,0,0.12); }
+  .ancestor { text-align: center; }
+  .ancestor .role { font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+  .ancestor .name { font-family: var(--display); font-weight: 700; font-size: 26px; margin-top: 4px; }
+  .ancestor .note { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .stem { width: 2px; height: 22px; background: var(--line); margin: 12px auto 0; }
+  .sisters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; position: relative; padding-top: 22px; }
+  .sisters::before { content: ""; position: absolute; top: 0; left: 16.66%; right: 16.66%; height: 2px; background: var(--line); }
+  .sister { position: relative; }
+  .sister::before { content: ""; position: absolute; top: -22px; left: 50%; width: 2px; height: 22px; background: var(--line); }
+  .person { background: var(--card); color: var(--ink); border-radius: 12px; padding: 12px 14px; text-align: center; }
+  .person.lead { background: var(--gold); }
+  .person .n { font-family: var(--display); font-weight: 700; font-size: 20px; line-height: 1.2; }
+  .person .r { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+  .kids { list-style: none; margin: 10px 0 0; padding: 0 0 0 14px; border-left: 2px solid var(--line); display: grid; gap: 7px; }
+  .kids li { position: relative; }
+  .kids li::before { content: ""; position: absolute; left: -14px; top: 50%; width: 12px; height: 2px; background: var(--line); }
+  .kid { background: rgba(250,242,230,0.1); border: 1px solid rgba(250,242,230,0.18); border-radius: 9px; padding: 7px 11px; font-weight: 500; font-size: 15px; }
+  .kid .sp { display: block; font-size: 12px; color: var(--muted); font-weight: 400; }
+  .kid.new { border-color: var(--rose); }
+  .add-here { margin-top: 10px; width: 100%; font: inherit; font-size: 13px; font-weight: 500; color: var(--gold); background: transparent; border: 1.5px dashed var(--line); border-radius: 9px; padding: 7px; cursor: pointer; }
+  .add-here:hover { background: rgba(222,178,96,0.1); }
+  .empty { margin-top: 14px; text-align: center; color: var(--muted); font-size: 14px; border: 1.5px dashed var(--line); border-radius: 12px; padding: 18px 12px; }
+  .sib-tie { text-align: center; font-size: 12px; color: var(--gold); letter-spacing: 0.18em; text-transform: uppercase; margin-top: 8px; }
+  @media (max-width: 900px) {
+    .roots { grid-template-columns: 1fr; }
+    .sisters { grid-template-columns: 1fr; padding-top: 0; gap: 18px; }
+    .sisters::before, .sister::before { display: none; }
+  }
+
+  .legend { margin-top: 18px; text-align: center; font-size: 13px; color: var(--muted); }
+  .legend b { color: var(--cream); }
+
+  /* add form */
+  .panel { max-width: 640px; margin: 40px auto 0; background: var(--card); color: var(--ink); border-radius: 18px; padding: 24px 20px; }
+  .panel h2 { margin: 0; font-family: var(--display); font-size: 28px; text-align: center; }
+  .panel .lede { margin: 6px 0 0; text-align: center; color: var(--ink-soft); font-size: 14px; }
+  form { display: grid; gap: 12px; margin-top: 16px; }
+  .field { display: grid; gap: 4px; }
+  .field label { font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+  .field input, .field select, .field textarea { font: inherit; font-size: 16px; color: var(--ink); background: #fff; border: 1.5px solid rgba(58,20,34,0.25); border-radius: 10px; padding: 11px 12px; width: 100%; }
+  .field textarea { min-height: 80px; resize: vertical; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 520px) { .row2 { grid-template-columns: 1fr; } }
+  .submit { font: inherit; font-weight: 700; font-size: 17px; color: var(--cream); background: var(--ink); border: 0; border-radius: 12px; padding: 14px; cursor: pointer; }
+  .submit:disabled { opacity: 0.6; }
+  .msg { margin: 0; text-align: center; font-size: 14px; }
+  .msg.err { color: #a3243b; }
+  .msg.ok { color: #2f6b3a; font-weight: 700; }
+  footer { margin-top: 36px; text-align: center; color: var(--muted); font-size: 14px; }
+  footer a { color: var(--gold); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Getting to Know You, Cousin</p>
+    <h1>Our Family Tree</h1>
+    <p class="sub">Find your branch below. If you or your family are missing, tap &ldquo;Add to this branch&rdquo; and we&rsquo;ll put you on the tree.</p>
+    <div class="actions">
+      <a class="btn btn-gold" href="#add">Add a family member</a>
+      <a class="btn btn-line" href="../">Back to the reunion invite</a>
+    </div>
+  </header>
+
+  <div class="roots" id="tree"></div>
+  <p class="legend">This is a first draft from Cousin Kenneth&rsquo;s notes. <b>New names</b> show up after they&rsquo;re checked, usually within a day.</p>
+
+  <section class="panel" id="add">
+    <h2>Add to the tree</h2>
+    <p class="lede">Add yourself, your parents, your children, or anyone we missed. You can also send a correction.</p>
+    <form id="addform" novalidate>
+      <div class="field"><label for="who">Name to add</label><input id="who" name="who" required placeholder="Full name"></div>
+      <div class="row2">
+        <div class="field"><label for="rel">They are the</label>
+          <select id="rel" name="rel"><option>child of</option><option>grandchild of</option><option>great-grandchild of</option><option>spouse or partner of</option><option>parent of</option><option>sibling of</option><option>other (explain below)</option></select></div>
+        <div class="field"><label for="of">Of this person</label><select id="of" name="of"></select></div>
+      </div>
+      <div class="field"><label for="note">Anything else (optional)</label><textarea id="note" name="note" placeholder="Other names in this family, a correction, where they live, a story..."></textarea></div>
+      <div class="row2">
+        <div class="field"><label for="from">Your name</label><input id="from" name="from" required autocomplete="name"></div>
+        <div class="field"><label for="email">Your email (optional)</label><input id="email" name="email" type="email" autocomplete="email"></div>
+      </div>
+      <button class="submit" id="send" type="submit">Add to the family tree</button>
+      <p class="msg" id="msg" hidden></p>
+    </form>
+  </section>
+
+  <footer>Questions? Call or text Cousin Ameer at (917) 807-9107.</footer>
+</div>
+
+<script>
+(function () {
+  // The tree. Edit here to add people.
+  var TREE = {
+    radcliffe: {
+      role: "Matriarch", name: "Gertrude Foster Radcliffe", note: "Mother of the 3 Radcliffe Sisters",
+      children: [
+        { name: "Alva", role: "Radcliffe Sister", children: [
+          { name: "Elizabeth" }, { name: "Kenneth Earl", spouse: "Christine" }, { name: "Earl" } ] },
+        { name: "Beatrice", role: "Radcliffe Sister", children: [
+          { name: "Richard" }, { name: "Gene" }, { name: "Ardele" }, { name: "Helen" }, { name: "David" }, { name: "Gertrude" } ] },
+        { name: "Miranda", role: "Radcliffe Sister", children: [
+          { name: "Everett" }, { name: "Gertrude" }, { name: "Leona" }, { name: "Tom" }, { name: "Odessa" } ] }
+      ]
+    },
+    shelton: { role: "Gertrude's sister", name: "Minnie Foster Shelton", note: "The Shelton family", children: [] }
+  };
+
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  var options = [];
+
+  function addBtn(label, who) {
+    var b = el("button", "add-here", "+ Add to this branch");
+    b.type = "button";
+    b.addEventListener("click", function () {
+      var sel = document.getElementById("of"); sel.value = who;
+      document.getElementById("rel").value = "child of";
+      document.getElementById("add").scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(function () { document.getElementById("who").focus(); }, 400);
+    });
+    return b;
+  }
+
+  function kidList(parent, kids, parentLabel) {
+    var ul = el("ul", "kids");
+    kids.forEach(function (k) {
+      var li = el("li"); var d = el("div", "kid", k.name);
+      if (k.spouse) d.appendChild(el("span", "sp", "with " + k.spouse));
+      li.appendChild(d); ul.appendChild(li);
+      options.push(k.name + " (" + parentLabel + "'s child)");
+    });
+    return ul;
+  }
+
+  var root = document.getElementById("tree");
+  // Radcliffe branch
+  var r = TREE.radcliffe, b1 = el("div", "branch");
+  var a1 = el("div", "ancestor"); a1.appendChild(el("div", "role", r.role)); a1.appendChild(el("div", "name", r.name)); a1.appendChild(el("div", "note", r.note));
+  b1.appendChild(a1); b1.appendChild(el("div", "stem"));
+  options.push(r.name);
+  var sis = el("div", "sisters");
+  r.children.forEach(function (s) {
+    var c = el("div", "sister"), p = el("div", "person lead");
+    p.appendChild(el("div", "r", s.role)); p.appendChild(el("div", "n", s.name));
+    c.appendChild(p);
+    options.push(s.name + " (Radcliffe Sister)");
+    c.appendChild(kidList(s, s.children, s.name));
+    c.appendChild(addBtn("", s.name + " (Radcliffe Sister)"));
+    sis.appendChild(c);
+  });
+  b1.appendChild(sis);
+  root.appendChild(b1);
+
+  // Shelton branch
+  var sh = TREE.shelton, b2 = el("div", "branch");
+  var a2 = el("div", "ancestor"); a2.appendChild(el("div", "role", sh.role)); a2.appendChild(el("div", "name", sh.name)); a2.appendChild(el("div", "note", sh.note));
+  b2.appendChild(a2);
+  options.push(sh.name);
+  if (!sh.children.length) {
+    var em = el("div", "empty", "The Shelton branch is waiting for names. Are you a Shelton? Add your family here.");
+    b2.appendChild(em);
+  } else { b2.appendChild(kidList(sh, sh.children, sh.name)); }
+  b2.appendChild(addBtn("", sh.name));
+  b2.appendChild(el("div", "sib-tie", "Sister of Gertrude Foster Radcliffe"));
+  root.appendChild(b2);
+
+  // Fill the "of this person" select
+  var sel = document.getElementById("of");
+  options.concat(["Someone not on the tree yet (explain below)"]).forEach(function (o) { var op = el("option", null, o); op.value = o; sel.appendChild(op); });
+
+  // Submit additions to Cousin Ameer's inbox
+  var ENDPOINT = "https://formsubmit.co/ajax/ameer@simplicityitinc.com";
+  var form = document.getElementById("addform"), msg = document.getElementById("msg"), send = document.getElementById("send");
+  function say(t, cls) { msg.textContent = t; msg.className = "msg " + cls; msg.hidden = false; }
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var who = form.who.value.trim(), from = form.from.value.trim(), email = form.email.value.trim();
+    if (!who) { say("Please add the name of the person to add.", "err"); return; }
+    if (!from) { say("Please add your name so we know who sent it.", "err"); return; }
+    if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { say("Please check your email address.", "err"); return; }
+    send.disabled = true; send.textContent = "Sending…";
+    var data = { "Name to add": who, "Relationship": form.rel.value + " " + form.of.value, "Notes": form.note.value.trim(), "Sent by": from,
+      _subject: "Family tree: add " + who, _template: "table", _captcha: "false" };
+    if (email) { data.email = email; data._replyto = email; }
+    fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function () {
+        form.reset(); send.disabled = false; send.textContent = "Add another person";
+        say("Thank you! " + who + " will be added to the tree soon.", "ok");
+      })
+      .catch(function () { send.disabled = false; send.textContent = "Add to the family tree"; say("That didn't go through. Check your connection and try again, or text Cousin Ameer.", "err"); });
+  });
+})();
+</script>
+</body>
+</html>
