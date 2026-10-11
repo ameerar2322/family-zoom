@@ -71,6 +71,12 @@
     .sisters::before, .sister::before { display: none; }
   }
 
+  .places { margin: 30px auto 0; max-width: 900px; text-align: center; }
+  .places h2 { font-family: var(--display); font-size: 24px; margin: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; }
+  .chip { border: 1.5px solid var(--line); border-radius: 999px; padding: 5px 12px; font-size: 14px; }
+  .chip b { color: var(--gold); margin-left: 4px; }
+  .kid .loc::before { content: "\1F4CD  "; }
   .legend { margin-top: 18px; text-align: center; font-size: 13px; color: var(--muted); }
   .legend b { color: var(--cream); }
 
@@ -111,13 +117,14 @@
     </div>
   </header>
 
-  <p class="zoom-note">Write your name in an empty box under your family. Use Annotate, then the Text tool, at the top of your Zoom window.</p>
+  <p class="zoom-note">Write your name and where you live (state or country) in an empty box under your family. Use Annotate, then the Text tool, at the top of your Zoom window.</p>
   <div class="roots" id="tree"></div>
+  <section class="places" id="places-sec" hidden><h2>Where the family lives</h2><div class="chips" id="chips"></div></section>
   <p class="legend">This is a first draft from Cousin Kenneth&rsquo;s notes. <b>New names</b> show up after they&rsquo;re checked, usually within a day.</p>
 
   <section class="panel" id="add">
     <h2>Add to the tree</h2>
-    <p class="lede">Add yourself, your parents, your children, or anyone we missed. You can also send a correction.</p>
+    <p class="lede">Add yourself, your parents, your children, or anyone we missed, and where they live today. You can also send a correction.</p>
     <form id="addform" novalidate>
       <div class="field"><label for="who">Name to add</label><input id="who" name="who" required placeholder="Full name"></div>
       <div class="row2">
@@ -125,6 +132,11 @@
           <select id="rel" name="rel"><option>child of</option><option>grandchild of</option><option>great-grandchild of</option><option>spouse or partner of</option><option>parent of</option><option>sibling of</option><option>other (explain below)</option></select></div>
         <div class="field"><label for="of">Of this person</label><select id="of" name="of"></select></div>
       </div>
+      <div class="row2">
+        <div class="field"><label for="city">City (optional)</label><input id="city" name="city" placeholder="e.g. Atlanta" autocomplete="address-level2"></div>
+        <div class="field"><label for="place">State or country</label><input id="place" name="place" placeholder="e.g. Georgia, or Jamaica" list="places"></div>
+      </div>
+      <datalist id="places"><option>New York</option><option>New Jersey</option><option>Pennsylvania</option><option>Connecticut</option><option>Maryland</option><option>Virginia</option><option>North Carolina</option><option>South Carolina</option><option>Georgia</option><option>Florida</option><option>Alabama</option><option>Ohio</option><option>Michigan</option><option>Illinois</option><option>Texas</option><option>California</option><option>Canada</option><option>United Kingdom</option></datalist>
       <div class="field"><label for="note">Anything else (optional)</label><textarea id="note" name="note" placeholder="Other names in this family, a correction, where they live, a story..."></textarea></div>
       <div class="row2">
         <div class="field"><label for="from">Your name</label><input id="from" name="from" required autocomplete="name"></div>
@@ -140,7 +152,7 @@
 
 <script>
 (function () {
-  // The tree. Edit here to add people.
+  // The tree. Edit here to add people. Add loc: "City, State" (or "Country") to show where someone lives.
   var TREE = {
     radcliffe: {
       role: "Matriarch", name: "Gertrude Foster Radcliffe", note: "Mother of the 3 Radcliffe Sisters",
@@ -176,6 +188,7 @@
     kids.forEach(function (k) {
       var li = el("li"); var d = el("div", "kid", k.name);
       if (k.spouse) d.appendChild(el("span", "sp", "with " + k.spouse));
+      if (k.loc) d.appendChild(el("span", "sp loc", k.loc));
       li.appendChild(d); ul.appendChild(li);
       options.push(k.name + " (" + parentLabel + "'s child)");
     });
@@ -218,6 +231,16 @@
   b2.appendChild(el("div", "sib-tie", "Sister of Gertrude Foster Radcliffe"));
   root.appendChild(b2);
 
+  // Where the family lives
+  var counts = {};
+  function walk(list) { list.forEach(function (k) { if (k.loc) { var st = k.loc.split(",").pop().trim(); counts[st] = (counts[st] || 0) + 1; } if (k.children) walk(k.children); }); }
+  walk(TREE.radcliffe.children); walk(TREE.shelton.children);
+  var keys = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; });
+  if (keys.length && !ZOOM) {
+    document.getElementById("places-sec").hidden = false;
+    keys.forEach(function (k) { var c = el("span", "chip", k); c.appendChild(el("b", null, String(counts[k]))); document.getElementById("chips").appendChild(c); });
+  }
+
   // Fill the "of this person" select
   var sel = document.getElementById("of");
   options.concat(["Someone not on the tree yet (explain below)"]).forEach(function (o) { var op = el("option", null, o); op.value = o; sel.appendChild(op); });
@@ -233,7 +256,7 @@
     if (!from) { say("Please add your name so we know who sent it.", "err"); return; }
     if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { say("Please check your email address.", "err"); return; }
     send.disabled = true; send.textContent = "Sending…";
-    var data = { "Name to add": who, "Relationship": form.rel.value + " " + form.of.value, "Notes": form.note.value.trim(), "Sent by": from,
+    var data = { "Name to add": who, "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
       _subject: "Family tree: add " + who, _template: "table", _captcha: "false" };
     if (email) { data.email = email; data._replyto = email; }
     fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
