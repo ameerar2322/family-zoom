@@ -126,6 +126,15 @@
   .pluskid:hover { background: rgba(222,178,96,0.12); }
   .kids .kids { margin-top: 7px; margin-left: 10px; }
   body.zoom .pluskid { display: none; }
+  .ancestry { max-width: 780px; margin: 34px auto 0; border: 1.5px solid var(--line); border-radius: 18px; padding: 22px 20px; background: rgba(0,0,0,0.12); }
+  .ancestry h2 { font-family: var(--display); font-size: 26px; margin: 0; text-align: center; }
+  .ancestry .lede2 { text-align: center; color: var(--muted); margin: 6px 0 0; }
+  .ancestry ol { margin: 14px 0 0; padding-left: 22px; display: grid; gap: 8px; }
+  .ancestry li b { color: var(--gold); }
+  .ancestry .mail { margin-top: 14px; text-align: center; font-weight: 500; }
+  .ancestry .mail a { color: var(--gold); }
+  .ancestry .fine { margin-top: 10px; text-align: center; color: var(--muted); font-size: 13px; }
+  body.zoom .ancestry { display: none; }
 </style>
 </head>
 <body>
@@ -152,6 +161,17 @@
   <section class="places" id="places-sec" hidden><h2>Where the family lives</h2><div class="chips" id="chips"></div></section>
   <p class="legend">This is a first draft from Cousin Kenneth&rsquo;s notes. <b>New names</b> show up after they&rsquo;re checked, usually within a day.</p>
 
+  <section class="ancestry" id="ancestry">
+    <h2>Have an Ancestry.com tree?</h2>
+    <p class="lede2">If you or someone in your family has built a tree on Ancestry.com, FamilySearch, or MyHeritage, send it and we&rsquo;ll add those branches here. Any one of these works:</p>
+    <ol>
+      <li><b>Export the tree file (best).</b> On Ancestry, open your tree, go to <i>Tree Settings</i>, and choose <i>Export tree</i>. It downloads a file ending in <i>.ged</i>. Email that file.</li>
+      <li><b>Share the tree.</b> On your tree, tap <i>Share</i> and invite the email below as a guest.</li>
+      <li><b>Send a picture.</b> A screenshot, printout photo, or PDF of a family chart works too, even a handwritten one.</li>
+    </ol>
+    <p class="mail">Send it to Cousin Ameer: <a href="mailto:ameer@simplicityitinc.com?subject=Family%20tree%20from%20Ancestry">ameer@simplicityitinc.com</a></p>
+    <p class="fine">Only names, family connections, and where people live (state or country) will appear on this page. Birthdates and other private details stay private.</p>
+  </section>
   <section class="panel" id="add">
     <h2>Add to the tree</h2>
     <p class="lede">Add yourself, your parents, your children, or anyone we missed, and where they live today. You can also send a correction.</p>
