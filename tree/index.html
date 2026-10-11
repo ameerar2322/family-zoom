@@ -92,6 +92,11 @@
   .msg.ok { color: #2f6b3a; font-weight: 700; }
   footer { margin-top: 36px; text-align: center; color: var(--muted); font-size: 14px; }
   footer a { color: var(--gold); }
+  body.zoom .panel, body.zoom .actions, body.zoom .legend, body.zoom footer, body.zoom .add-here { display: none !important; }
+  body.zoom .sub { display: none; }
+  .blank { border: 1.5px dashed rgba(250,242,230,0.45); border-radius: 9px; height: 34px; }
+  .zoom-note { display: none; }
+  body.zoom .zoom-note { display: block; margin: 12px auto 0; max-width: 46em; text-align: center; color: var(--gold); font-weight: 500; }
 </style>
 </head>
 <body>
@@ -106,6 +111,7 @@
     </div>
   </header>
 
+  <p class="zoom-note">Write your name in an empty box under your family. Use Annotate, then the Text tool, at the top of your Zoom window.</p>
   <div class="roots" id="tree"></div>
   <p class="legend">This is a first draft from Cousin Kenneth&rsquo;s notes. <b>New names</b> show up after they&rsquo;re checked, usually within a day.</p>
 
@@ -176,6 +182,9 @@
     return ul;
   }
 
+  var ZOOM = location.hash === "#zoom";
+  if (ZOOM) document.body.classList.add("zoom");
+  function blanks(n) { var f = document.createDocumentFragment(); for (var i = 0; i < n; i++) { var li = el("li"); li.appendChild(el("div", "blank")); f.appendChild(li); } return f; }
   var root = document.getElementById("tree");
   // Radcliffe branch
   var r = TREE.radcliffe, b1 = el("div", "branch");
@@ -188,7 +197,7 @@
     p.appendChild(el("div", "r", s.role)); p.appendChild(el("div", "n", s.name));
     c.appendChild(p);
     options.push(s.name + " (Radcliffe Sister)");
-    c.appendChild(kidList(s, s.children, s.name));
+    var kl = kidList(s, s.children, s.name); if (ZOOM) kl.appendChild(blanks(4)); c.appendChild(kl);
     c.appendChild(addBtn("", s.name + " (Radcliffe Sister)"));
     sis.appendChild(c);
   });
@@ -200,7 +209,8 @@
   var a2 = el("div", "ancestor"); a2.appendChild(el("div", "role", sh.role)); a2.appendChild(el("div", "name", sh.name)); a2.appendChild(el("div", "note", sh.note));
   b2.appendChild(a2);
   options.push(sh.name);
-  if (!sh.children.length) {
+  if (ZOOM) { var zl = el("ul", "kids"); zl.appendChild(blanks(9)); b2.appendChild(zl); }
+  else if (!sh.children.length) {
     var em = el("div", "empty", "The Shelton branch is waiting for names. Are you a Shelton? Add your family here.");
     b2.appendChild(em);
   } else { b2.appendChild(kidList(sh, sh.children, sh.name)); }
