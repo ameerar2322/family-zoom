@@ -103,6 +103,18 @@
   .blank { border: 1.5px dashed rgba(250,242,230,0.45); border-radius: 9px; height: 34px; }
   .zoom-note { display: none; }
   body.zoom .zoom-note { display: block; margin: 12px auto 0; max-width: 46em; text-align: center; color: var(--gold); font-weight: 500; }
+  .joining { margin: 34px auto 0; max-width: 1000px; border: 1.5px solid var(--line); border-radius: 18px; padding: 22px 18px; background: rgba(0,0,0,0.12); text-align: center; }
+  .joining h2 { font-family: var(--display); font-size: 26px; margin: 0; }
+  .joining .count { color: var(--gold); font-weight: 500; margin-top: 4px; }
+  .joining .help { color: var(--muted); font-size: 14px; margin: 6px auto 0; max-width: 40em; }
+  .jgroups { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 16px; text-align: left; }
+  .jg h3 { margin: 0 0 8px; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+  .jlist { display: flex; flex-wrap: wrap; gap: 7px; }
+  .jchip { font: inherit; font-size: 14px; color: var(--cream); background: rgba(250,242,230,0.1); border: 1px solid rgba(250,242,230,0.22); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+  .jchip:hover { border-color: var(--gold); }
+  .jchip small { color: var(--muted); margin-left: 4px; }
+  body.zoom .joining .help { display: none; }
+  @media (min-width: 760px) { .jgroups { grid-template-columns: 2fr 1fr 1fr 1fr; } }
 </style>
 </head>
 <body>
@@ -119,6 +131,12 @@
 
   <p class="zoom-note">Write your name and where you live (state or country) in an empty box under your family. Use Annotate, then the Text tool, at the top of your Zoom window.</p>
   <div class="roots" id="tree"></div>
+  <section class="joining" id="joining">
+    <h2>Who&rsquo;s joining tonight</h2>
+    <p class="count" id="jcount"></p>
+    <p class="help">See your name? Tap it to tell us which branch you belong to and where you live, and we&rsquo;ll place you on the tree.</p>
+    <div class="jgroups" id="jgroups"></div>
+  </section>
   <section class="places" id="places-sec" hidden><h2>Where the family lives</h2><div class="chips" id="chips"></div></section>
   <p class="legend">This is a first draft from Cousin Kenneth&rsquo;s notes. <b>New names</b> show up after they&rsquo;re checked, usually within a day.</p>
 
@@ -240,6 +258,35 @@
     document.getElementById("places-sec").hidden = false;
     keys.forEach(function (k) { var c = el("span", "chip", k); c.appendChild(el("b", null, String(counts[k]))); document.getElementById("chips").appendChild(c); });
   }
+
+  // Who's joining tonight (from RSVPs). First name and last initial only.
+  var JOINING = [
+    { group: "Radcliffe", people: ["Ameer A.|+2", "Lisa R.|+1", "Abdullatif A.", "Faheem A.", "Kendahl R.", "Elijah D.", "Mahir A.", "Milton M.", "Dana D.", "Sahirah", "Latifah A.", "Hanunah", "Keith J.", "Rikki T.", "Yasmin", "Justin"] },
+    { group: "3 Sisters", people: ["Daia D."] },
+    { group: "Shelton", people: ["Spencer B.|+1"] },
+    { group: "Not sure yet", people: ["Tyesha M."] }
+  ];
+  var total = 0, gwrap = document.getElementById("jgroups");
+  JOINING.forEach(function (g) {
+    var box = el("div", "jg"); box.appendChild(el("h3", null, g.group));
+    var list = el("div", "jlist");
+    g.people.forEach(function (raw) {
+      var parts = raw.split("|"), name = parts[0], extra = parts[1];
+      total += 1 + (extra ? parseInt(extra.replace("+", ""), 10) : 0);
+      var c = el("button", "jchip", name); c.type = "button";
+      if (extra) c.appendChild(el("small", null, extra));
+      c.addEventListener("click", function () {
+        document.getElementById("who").value = name.replace(/ [A-Z]\.$/, "");
+        document.getElementById("rel").value = "child of";
+        document.getElementById("add").scrollIntoView({ behavior: "smooth", block: "start" });
+        setTimeout(function () { document.getElementById("of").focus(); }, 400);
+      });
+      list.appendChild(c);
+    });
+    box.appendChild(list); gwrap.appendChild(box);
+  });
+  var rsvps = JOINING.reduce(function (n, g) { return n + g.people.length; }, 0);
+  document.getElementById("jcount").textContent = total + " family members from " + rsvps + " households have RSVP\u2019d";
 
   // Fill the "of this person" select
   var sel = document.getElementById("of");
