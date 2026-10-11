@@ -50,6 +50,9 @@
   .sisters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; position: relative; padding-top: 22px; }
   .sisters::before { content: ""; position: absolute; top: 0; left: 16.66%; right: 16.66%; height: 2px; background: var(--line); }
   .sister { position: relative; }
+  .unplaced { margin: 26px auto 0; max-width: 420px; border: 2px dashed var(--line); border-radius: 16px; padding: 14px; }
+  .unplaced .unote { font-size: 14px; opacity: .8; margin: 10px 4px; text-align: center; }
+  .unplaced .kids { margin-top: 6px; }
   .sister::before { content: ""; position: absolute; top: -22px; left: 50%; width: 2px; height: 22px; background: var(--line); }
   .person { background: var(--card); color: var(--ink); border-radius: 12px; padding: 12px 14px; text-align: center; }
   .person.lead { background: var(--gold); }
@@ -226,7 +229,16 @@
         { name: "Beatrice", role: "Radcliffe Sister", children: [
           { name: "Richard" }, { name: "Gene" }, { name: "Ardele" }, { name: "Helen" }, { name: "David" }, { name: "Gertrude" } ] },
         { name: "Miranda", role: "Radcliffe Sister", children: [
-          { name: "Everett" }, { name: "Gertrude" }, { name: "Leona" }, { name: "Tom" }, { name: "Odessa" } ] }
+          { name: "Everett" }, { name: "Gertrude" }, { name: "Leona" }, { name: "Tom" },
+          { name: "Odessa Talley", loc: "Philadelphia, Pennsylvania", children: [
+            { name: "Charles Talley", loc: "Newark, Delaware", children: [
+              { name: "Daia Dawkins" } ] } ] } ] }
+      ],
+      // Radcliffe relatives whose connection to the sisters isn't confirmed yet
+      unplaced: [
+        { name: "Judith C. Dorsey", children: [
+          { name: "Dana Renee Dorsey", loc: "Mountain View, California", children: [
+            { name: "Alissa Fujisaki" }, { name: "Jasmine Fujisaki" }, { name: "Isaiah Brooks" } ] } ] }
       ]
     },
     shelton: { role: "Gertrude's sister", name: "Minnie Foster Shelton", note: "The Shelton family", children: [
@@ -310,6 +322,14 @@
     sis.appendChild(c);
   });
   b1.appendChild(sis);
+  if (r.unplaced && r.unplaced.length) {
+    var uc = el("div", "unplaced"), up = el("div", "person lead");
+    up.appendChild(el("div", "r", "Radcliffe family")); up.appendChild(el("div", "n", "Which sister? Help us connect"));
+    uc.appendChild(up);
+    uc.appendChild(el("p", "unote", "These cousins are Radcliffe family, but we don't know yet which sister they come from. If you know, tap a name and tell us."));
+    uc.appendChild(kidList(r, r.unplaced, "Radcliffe family"));
+    b1.appendChild(uc);
+  }
   root.appendChild(b1);
 
   // Shelton branch
@@ -329,7 +349,7 @@
   // Where the family lives
   var counts = {};
   function walk(list) { list.forEach(function (k) { if (k.loc) { var st = k.loc.split(",").pop().trim(); counts[st] = (counts[st] || 0) + 1; } if (k.children) walk(k.children); }); }
-  walk(TREE.radcliffe.children); walk(TREE.shelton.children);
+  walk(TREE.radcliffe.children); walk(TREE.radcliffe.unplaced || []); walk(TREE.shelton.children);
   var keys = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; });
   if (keys.length && !ZOOM) {
     document.getElementById("places-sec").hidden = false;
@@ -338,9 +358,9 @@
 
   // Who's joining tonight (from RSVPs). First name and last initial only.
   var JOINING = [
-    { group: "Radcliffe", people: ["Ameer A.|+2", "Lisa R.|+1", "Abdullatif A.", "Faheem A.", "Kendahl R.", "Elijah D.", "Mahir A.", "Milton M.", "Dana D.", "Sahirah", "Latifah A.", "Hanunah", "Keith J.", "Rikki T.", "Yasmin", "Justin", "Sah-u-Ra B.|+1", "Judi", "Beverly S."] },
+    { group: "Radcliffe", people: ["Ameer A.|+2", "Lisa R.|+1", "Abdullatif A.", "Faheem A.", "Kendahl R.", "Elijah D.", "Mahir A.", "Milton M.", "Dana D.", "Sahirah", "Latifah A.", "Hanunah", "Keith J.", "Rikki T.", "Yasmin", "Justin", "Sah-u-Ra B.|+1", "Judi", "Beverly S.", "Charles T.", "Chuck", "Erica T."] },
     { group: "3 Sisters", people: ["Daia D."] },
-    { group: "Shelton", people: ["Spencer B.|+1", "Cheryl G."] },
+    { group: "Shelton", people: ["Spencer B.|+1", "Cheryl G.", "Desmone G."] },
     { group: "Not sure yet", people: ["Tyesha M.", "Charlisse T.", "Petia A.", "Rahiem M.|+1"] }
   ];
   var total = 0, gwrap = document.getElementById("jgroups");
