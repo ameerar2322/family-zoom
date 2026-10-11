@@ -57,7 +57,7 @@
   .person .r { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
   .kids { list-style: none; margin: 10px 0 0; padding: 0 0 0 14px; border-left: 2px solid var(--line); display: grid; gap: 7px; }
   .kids li { position: relative; }
-  .kids li::before { content: ""; position: absolute; left: -14px; top: 50%; width: 12px; height: 2px; background: var(--line); }
+  .kids li::before { content: ""; position: absolute; left: -14px; top: 18px; width: 12px; height: 2px; background: var(--line); }
   .kid { background: rgba(250,242,230,0.1); border: 1px solid rgba(250,242,230,0.18); border-radius: 9px; padding: 7px 11px; font-weight: 500; font-size: 15px; }
   .kid .sp { display: block; font-size: 12px; color: var(--muted); font-weight: 400; }
   .kid.new { border-color: var(--rose); }
@@ -120,6 +120,12 @@
   .person.lead:hover { outline: 2px solid var(--cream); }
   .fixhint { margin: 14px auto 0; text-align: center; color: var(--gold); font-size: 14px; }
   body.zoom .fixhint { display: none; }
+  .kidrow { display: flex; gap: 6px; align-items: stretch; }
+  .kidrow .kid { flex: 1; }
+  .pluskid { font: inherit; font-weight: 700; font-size: 16px; width: 34px; flex: none; color: var(--gold); background: transparent; border: 1.5px dashed var(--line); border-radius: 9px; cursor: pointer; }
+  .pluskid:hover { background: rgba(222,178,96,0.12); }
+  .kids .kids { margin-top: 7px; margin-left: 10px; }
+  body.zoom .pluskid { display: none; }
 </style>
 </head>
 <body>
@@ -135,7 +141,7 @@
   </header>
 
   <p class="zoom-note">Write your name and where you live (state or country) in an empty box under your family. Use Annotate, then the Text tool, at the top of your Zoom window.</p>
-  <p class="fixhint">Know someone&rsquo;s last name, married name, or a correction? Tap their name on the tree.</p>
+  <p class="fixhint">Tap a name to add a last name or correction. Tap <b>+</b> next to a name to add their children, and their children&rsquo;s children.</p>
   <div class="roots" id="tree"></div>
   <section class="joining" id="joining">
     <h2>Who&rsquo;s joining tonight</h2>
@@ -220,17 +226,30 @@
     document.getElementById("add").scrollIntoView({ behavior: "smooth", block: "start" });
     setTimeout(function () { document.getElementById("last").focus(); }, 400);
   }
+  function addChildOf(name, label) {
+    var f = document.getElementById("addform");
+    f.who.value = ""; f.last.value = "";
+    document.getElementById("rel").value = "child of";
+    document.getElementById("of").value = label;
+    document.getElementById("note").placeholder = "Other children of " + name + ", where they live, a story...";
+    document.getElementById("add").scrollIntoView({ behavior: "smooth", block: "start" });
+    setTimeout(function () { document.getElementById("who").focus(); }, 400);
+  }
   function kidList(parent, kids, parentLabel) {
     var ul = el("ul", "kids");
     kids.forEach(function (k) {
-      var li = el("li"); var d = el("div", "kid", k.name);
+      var li = el("li"); var row = el("div", "kidrow"); var d = el("div", "kid", k.name);
       if (k.spouse) d.appendChild(el("span", "sp", "with " + k.spouse));
       if (k.loc) d.appendChild(el("span", "sp loc", k.loc));
       var lab = k.name + " (" + parentLabel + "'s child)";
       d.setAttribute("role", "button"); d.tabIndex = 0; d.title = "Add a last name or correction for " + k.name;
       (function (nm, lb) { d.addEventListener("click", function () { fixName(nm, lb); }); d.addEventListener("keydown", function (e) { if (e.key === "Enter") fixName(nm, lb); }); })(k.name, lab);
-      li.appendChild(d); ul.appendChild(li);
+      var plus = el("button", "pluskid", "+"); plus.type = "button"; plus.title = "Add a child of " + k.name; plus.setAttribute("aria-label", "Add a child of " + k.name);
+      (function (nm, lb) { plus.addEventListener("click", function () { addChildOf(nm, lb); }); })(k.name, lab);
+      row.appendChild(d); row.appendChild(plus);
+      li.appendChild(row); ul.appendChild(li);
       options.push(lab);
+      if (k.children && k.children.length) li.appendChild(kidList(k, k.children, k.name));
     });
     return ul;
   }
