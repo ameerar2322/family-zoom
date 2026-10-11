@@ -115,6 +115,11 @@
   .jchip small { color: var(--muted); margin-left: 4px; }
   body.zoom .joining .help { display: none; }
   @media (min-width: 760px) { .jgroups { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+  .kid, .person.lead { cursor: pointer; }
+  .kid:hover { border-color: var(--gold); }
+  .person.lead:hover { outline: 2px solid var(--cream); }
+  .fixhint { margin: 14px auto 0; text-align: center; color: var(--gold); font-size: 14px; }
+  body.zoom .fixhint { display: none; }
 </style>
 </head>
 <body>
@@ -130,6 +135,7 @@
   </header>
 
   <p class="zoom-note">Write your name and where you live (state or country) in an empty box under your family. Use Annotate, then the Text tool, at the top of your Zoom window.</p>
+  <p class="fixhint">Know someone&rsquo;s last name, married name, or a correction? Tap their name on the tree.</p>
   <div class="roots" id="tree"></div>
   <section class="joining" id="joining">
     <h2>Who&rsquo;s joining tonight</h2>
@@ -151,7 +157,7 @@
       <div class="field"><label for="parents">Parents&rsquo; names</label><input id="parents" name="parents" placeholder="e.g. Mother: Helen Smith, Father: James Smith"></div>
       <div class="row2">
         <div class="field"><label for="rel">This person is the</label>
-          <select id="rel" name="rel"><option>child of</option><option>grandchild of</option><option>great-grandchild of</option><option>spouse or partner of</option><option>parent of</option><option>sibling of</option><option>other (explain below)</option></select></div>
+          <select id="rel" name="rel"><option>child of</option><option value="the full name of">the full name of (filling in a last name or correction)</option><option>grandchild of</option><option>great-grandchild of</option><option>spouse or partner of</option><option>parent of</option><option>sibling of</option><option>other (explain below)</option></select></div>
         <div class="field"><label for="of">Closest relative on the tree</label><select id="of" name="of"></select></div>
       </div>
       <div class="row2">
@@ -205,14 +211,26 @@
     return b;
   }
 
+  function fixName(first, optionLabel) {
+    var f = document.getElementById("addform");
+    f.who.value = first; f.last.value = "";
+    document.getElementById("rel").value = "the full name of";
+    document.getElementById("of").value = optionLabel;
+    document.getElementById("note").placeholder = "Married name, maiden name, nickname, or anything we got wrong about " + first;
+    document.getElementById("add").scrollIntoView({ behavior: "smooth", block: "start" });
+    setTimeout(function () { document.getElementById("last").focus(); }, 400);
+  }
   function kidList(parent, kids, parentLabel) {
     var ul = el("ul", "kids");
     kids.forEach(function (k) {
       var li = el("li"); var d = el("div", "kid", k.name);
       if (k.spouse) d.appendChild(el("span", "sp", "with " + k.spouse));
       if (k.loc) d.appendChild(el("span", "sp loc", k.loc));
+      var lab = k.name + " (" + parentLabel + "'s child)";
+      d.setAttribute("role", "button"); d.tabIndex = 0; d.title = "Add a last name or correction for " + k.name;
+      (function (nm, lb) { d.addEventListener("click", function () { fixName(nm, lb); }); d.addEventListener("keydown", function (e) { if (e.key === "Enter") fixName(nm, lb); }); })(k.name, lab);
       li.appendChild(d); ul.appendChild(li);
-      options.push(k.name + " (" + parentLabel + "'s child)");
+      options.push(lab);
     });
     return ul;
   }
@@ -231,6 +249,8 @@
     var c = el("div", "sister"), p = el("div", "person lead");
     p.appendChild(el("div", "r", s.role)); p.appendChild(el("div", "n", s.name));
     c.appendChild(p);
+    p.setAttribute("role", "button"); p.tabIndex = 0; p.title = "Add a last name or correction for " + s.name;
+    (function (nm) { p.addEventListener("click", function () { fixName(nm, nm + " (Radcliffe Sister)"); }); })(s.name);
     options.push(s.name + " (Radcliffe Sister)");
     var kl = kidList(s, s.children, s.name); if (ZOOM) kl.appendChild(blanks(4)); c.appendChild(kl);
     c.appendChild(addBtn("", s.name + " (Radcliffe Sister)"));
@@ -311,7 +331,7 @@
     var last = form.last.value.trim(), parents = form.parents.value.trim(); var full = (who + " " + last).trim();
     if (!from) from = full;
     var data = { "Name to add": full, "Parents": parents || "(not given)", "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
-      _subject: "Family tree: add " + full, _template: "table", _captcha: "false" };
+      _subject: (form.rel.value === "the full name of" ? "Family tree: name for " : "Family tree: add ") + full, _template: "table", _captcha: "false" };
     if (email) { data.email = email; data._replyto = email; }
     fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
       .then(function (r) { if (!r.ok) throw 0; return r.json(); })
