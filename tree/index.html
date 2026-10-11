@@ -223,7 +223,9 @@
           { name: "Everett" }, { name: "Gertrude" }, { name: "Leona" }, { name: "Tom" }, { name: "Odessa" } ] }
       ]
     },
-    shelton: { role: "Gertrude's sister", name: "Minnie Foster Shelton", note: "The Shelton family", children: [] }
+    shelton: { role: "Gertrude's sister", name: "Minnie Foster Shelton", note: "The Shelton family", children: [
+      { name: "Mary Elizabeth Shelton Gambrell", children: [
+        { name: "Cheryl Elizabeth Gambrell-Claxton", loc: "New Haven, Connecticut" } ] } ] }
   };
 
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -308,7 +310,7 @@
   var a2 = el("div", "ancestor"); a2.appendChild(el("div", "role", sh.role)); a2.appendChild(el("div", "name", sh.name)); a2.appendChild(el("div", "note", sh.note));
   b2.appendChild(a2);
   options.push(sh.name);
-  if (ZOOM) { var zl = el("ul", "kids"); zl.appendChild(blanks(9)); b2.appendChild(zl); }
+  if (ZOOM) { var zl = sh.children.length ? kidList(sh, sh.children, sh.name) : el("ul", "kids"); zl.appendChild(blanks(7)); b2.appendChild(zl); }
   else if (!sh.children.length) {
     var em = el("div", "empty", "The Shelton branch is waiting for names. Are you a Shelton? Add your family here.");
     b2.appendChild(em);
