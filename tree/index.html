@@ -141,12 +141,12 @@
   </header>
 
   <p class="zoom-note">Write your name and where you live (state or country) in an empty box under your family. Use Annotate, then the Text tool, at the top of your Zoom window.</p>
-  <p class="fixhint">Tap a name to add a last name or correction. Tap <b>+</b> next to a name to add their children, and their children&rsquo;s children.</p>
+  <p class="fixhint">Tap a name to add a full real name, last name, or correction. Tap <b>+</b> next to a name to add their children, and their children&rsquo;s children.</p>
   <div class="roots" id="tree"></div>
   <section class="joining" id="joining">
     <h2>Who&rsquo;s joining tonight</h2>
     <p class="count" id="jcount"></p>
-    <p class="help">See your name? Tap it, add your last name and your parents&rsquo; names, pick your closest relative on the tree, and we&rsquo;ll place you on the right branch.</p>
+    <p class="help">Names are shown the way people RSVP&rsquo;d, so some are nicknames. Tap yours to give your full real name, your parents&rsquo; names, and your closest relative on the tree, and we&rsquo;ll place you on the right branch.</p>
     <div class="jgroups" id="jgroups"></div>
   </section>
   <section class="places" id="places-sec" hidden><h2>Where the family lives</h2><div class="chips" id="chips"></div></section>
@@ -157,8 +157,12 @@
     <p class="lede">Add yourself, your parents, your children, or anyone we missed, and where they live today. You can also send a correction.</p>
     <form id="addform" novalidate>
       <div class="row2">
-        <div class="field"><label for="who">First name</label><input id="who" name="who" required autocomplete="given-name"></div>
+        <div class="field"><label for="who">Full first name (not a nickname)</label><input id="who" name="who" required autocomplete="given-name"></div>
         <div class="field"><label for="last">Last name</label><input id="last" name="last" autocomplete="family-name"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="middle">Middle name (optional)</label><input id="middle" name="middle" autocomplete="additional-name"></div>
+        <div class="field"><label for="nick">Nickname the family uses (optional)</label><input id="nick" name="nick" placeholder="e.g. Junior, Peaches"></div>
       </div>
       <div class="field"><label for="parents">Parents&rsquo; names</label><input id="parents" name="parents" placeholder="e.g. Mother: Helen Smith, Father: James Smith"></div>
       <div class="row2">
@@ -219,7 +223,7 @@
 
   function fixName(first, optionLabel) {
     var f = document.getElementById("addform");
-    f.who.value = first; f.last.value = "";
+    f.who.value = first; f.last.value = ""; f.middle.value = ""; f.nick.value = "";
     document.getElementById("rel").value = "the full name of";
     document.getElementById("of").value = optionLabel;
     document.getElementById("note").placeholder = "Married name, maiden name, nickname, or anything we got wrong about " + first;
@@ -228,7 +232,7 @@
   }
   function addChildOf(name, label) {
     var f = document.getElementById("addform");
-    f.who.value = ""; f.last.value = "";
+    f.who.value = ""; f.last.value = ""; f.middle.value = ""; f.nick.value = "";
     document.getElementById("rel").value = "child of";
     document.getElementById("of").value = label;
     document.getElementById("note").placeholder = "Other children of " + name + ", where they live, a story...";
@@ -239,6 +243,7 @@
     var ul = el("ul", "kids");
     kids.forEach(function (k) {
       var li = el("li"); var row = el("div", "kidrow"); var d = el("div", "kid", k.name);
+      if (k.nick) d.appendChild(el("span", "sp", "\u201c" + k.nick + "\u201d"));
       if (k.spouse) d.appendChild(el("span", "sp", "with " + k.spouse));
       if (k.loc) d.appendChild(el("span", "sp loc", k.loc));
       var lab = k.name + " (" + parentLabel + "'s child)";
@@ -319,6 +324,7 @@
       var c = el("button", "jchip", name); c.type = "button";
       if (extra) c.appendChild(el("small", null, extra));
       c.addEventListener("click", function () {
+        var f2 = document.getElementById("addform"); f2.middle.value = ""; f2.nick.value = "";
         document.getElementById("who").value = name.replace(/ [A-Z]\.$/, "");
         document.getElementById("rel").value = "child of";
         document.getElementById("add").scrollIntoView({ behavior: "smooth", block: "start" });
@@ -347,9 +353,9 @@
     if (!form.of.value) { say("Please choose your closest relative on the tree.", "err"); return; }
     if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { say("Please check your email address.", "err"); return; }
     send.disabled = true; send.textContent = "Sending…";
-    var last = form.last.value.trim(), parents = form.parents.value.trim(); var full = (who + " " + last).trim();
+    var last = form.last.value.trim(), middle = form.middle.value.trim(), nick = form.nick.value.trim(), parents = form.parents.value.trim(); var full = [who, middle, last].filter(Boolean).join(" ");
     if (!from) from = full;
-    var data = { "Name to add": full, "Parents": parents || "(not given)", "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
+    var data = { "Name to add": full, "Nickname": nick || "(none)", "Parents": parents || "(not given)", "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
       _subject: (form.rel.value === "the full name of" ? "Family tree: name for " : "Family tree: add ") + full, _template: "table", _captcha: "false" };
     if (email) { data.email = email; data._replyto = email; }
     fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
