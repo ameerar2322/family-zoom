@@ -134,7 +134,7 @@
   <section class="joining" id="joining">
     <h2>Who&rsquo;s joining tonight</h2>
     <p class="count" id="jcount"></p>
-    <p class="help">See your name? Tap it to tell us which branch you belong to and where you live, and we&rsquo;ll place you on the tree.</p>
+    <p class="help">See your name? Tap it, add your last name and your parents&rsquo; names, pick your closest relative on the tree, and we&rsquo;ll place you on the right branch.</p>
     <div class="jgroups" id="jgroups"></div>
   </section>
   <section class="places" id="places-sec" hidden><h2>Where the family lives</h2><div class="chips" id="chips"></div></section>
@@ -144,11 +144,15 @@
     <h2>Add to the tree</h2>
     <p class="lede">Add yourself, your parents, your children, or anyone we missed, and where they live today. You can also send a correction.</p>
     <form id="addform" novalidate>
-      <div class="field"><label for="who">Name to add</label><input id="who" name="who" required placeholder="Full name"></div>
       <div class="row2">
-        <div class="field"><label for="rel">They are the</label>
+        <div class="field"><label for="who">First name</label><input id="who" name="who" required autocomplete="given-name"></div>
+        <div class="field"><label for="last">Last name</label><input id="last" name="last" autocomplete="family-name"></div>
+      </div>
+      <div class="field"><label for="parents">Parents&rsquo; names</label><input id="parents" name="parents" placeholder="e.g. Mother: Helen Smith, Father: James Smith"></div>
+      <div class="row2">
+        <div class="field"><label for="rel">This person is the</label>
           <select id="rel" name="rel"><option>child of</option><option>grandchild of</option><option>great-grandchild of</option><option>spouse or partner of</option><option>parent of</option><option>sibling of</option><option>other (explain below)</option></select></div>
-        <div class="field"><label for="of">Of this person</label><select id="of" name="of"></select></div>
+        <div class="field"><label for="of">Closest relative on the tree</label><select id="of" name="of"></select></div>
       </div>
       <div class="row2">
         <div class="field"><label for="city">City (optional)</label><input id="city" name="city" placeholder="e.g. Atlanta" autocomplete="address-level2"></div>
@@ -157,7 +161,7 @@
       <datalist id="places"><option>New York</option><option>New Jersey</option><option>Pennsylvania</option><option>Connecticut</option><option>Maryland</option><option>Virginia</option><option>North Carolina</option><option>South Carolina</option><option>Georgia</option><option>Florida</option><option>Alabama</option><option>Ohio</option><option>Michigan</option><option>Illinois</option><option>Texas</option><option>California</option><option>Canada</option><option>United Kingdom</option></datalist>
       <div class="field"><label for="note">Anything else (optional)</label><textarea id="note" name="note" placeholder="Other names in this family, a correction, where they live, a story..."></textarea></div>
       <div class="row2">
-        <div class="field"><label for="from">Your name</label><input id="from" name="from" required autocomplete="name"></div>
+        <div class="field"><label for="from">Your name, if adding someone else</label><input id="from" name="from" autocomplete="name"></div>
         <div class="field"><label for="email">Your email (optional)</label><input id="email" name="email" type="email" autocomplete="email"></div>
       </div>
       <button class="submit" id="send" type="submit">Add to the family tree</button>
@@ -279,7 +283,7 @@
         document.getElementById("who").value = name.replace(/ [A-Z]\.$/, "");
         document.getElementById("rel").value = "child of";
         document.getElementById("add").scrollIntoView({ behavior: "smooth", block: "start" });
-        setTimeout(function () { document.getElementById("of").focus(); }, 400);
+        setTimeout(function () { document.getElementById("last").focus(); }, 400);
       });
       list.appendChild(c);
     });
@@ -290,6 +294,7 @@
 
   // Fill the "of this person" select
   var sel = document.getElementById("of");
+  var ph = el("option", null, "Choose a relative\u2026"); ph.value = ""; sel.appendChild(ph);
   options.concat(["Someone not on the tree yet (explain below)"]).forEach(function (o) { var op = el("option", null, o); op.value = o; sel.appendChild(op); });
 
   // Submit additions to Cousin Ameer's inbox
@@ -299,18 +304,20 @@
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var who = form.who.value.trim(), from = form.from.value.trim(), email = form.email.value.trim();
-    if (!who) { say("Please add the name of the person to add.", "err"); return; }
-    if (!from) { say("Please add your name so we know who sent it.", "err"); return; }
+    if (!who) { say("Please add a first name.", "err"); return; }
+    if (!form.of.value) { say("Please choose your closest relative on the tree.", "err"); return; }
     if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { say("Please check your email address.", "err"); return; }
     send.disabled = true; send.textContent = "Sending…";
-    var data = { "Name to add": who, "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
-      _subject: "Family tree: add " + who, _template: "table", _captcha: "false" };
+    var last = form.last.value.trim(), parents = form.parents.value.trim(); var full = (who + " " + last).trim();
+    if (!from) from = full;
+    var data = { "Name to add": full, "Parents": parents || "(not given)", "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
+      _subject: "Family tree: add " + full, _template: "table", _captcha: "false" };
     if (email) { data.email = email; data._replyto = email; }
     fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
       .then(function (r) { if (!r.ok) throw 0; return r.json(); })
       .then(function () {
         form.reset(); send.disabled = false; send.textContent = "Add another person";
-        say("Thank you! " + who + " will be added to the tree soon.", "ok");
+        say("Thank you! " + full + " will be added to the tree soon.", "ok");
       })
       .catch(function () { send.disabled = false; send.textContent = "Add to the family tree"; say("That didn't go through. Check your connection and try again, or text Cousin Ameer.", "err"); });
   });
