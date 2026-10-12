@@ -6,7 +6,7 @@
 <meta name="robots" content="noindex">
 <title>How to Use Our Family Site · Radcliffe, 3 Sisters &amp; Shelton</title>
 <meta property="og:title" content="How to use our family site, a quick walkthrough from Cousin Ameer">
-<meta property="og:description" content="Two minutes: the family tree, adding yourself, where everyone lives, voting on dates and our family history.">
+<meta property="og:description" content="A short tour of the family tree: opening branches, finding phone numbers, where everyone lives and voting on dates.">
 <meta property="og:image" content="https://ameerar2322.github.io/family-zoom/preview.png">
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,6 +37,7 @@
   .step h2 { font-family: var(--display); font-size: 24px; margin: 0 0 8px; display: flex; gap: 12px; align-items: center; }
   .step h2::before { content: counter(s); flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--gold); color: var(--ink); font-family: var(--body); font-size: 16px; display: grid; place-items: center; }
   .step p { margin: 0 0 12px; }
+  .step.noimg { grid-template-columns: 1fr; }
   .step img { width: 100%; border-radius: 14px; border: 1.5px solid var(--line); display: block; }
   .step a.go { color: var(--gold); font-weight: 700; }
   .private { background: rgba(232,112,132,0.14); border-left: 4px solid var(--rose); padding: 8px 12px; border-radius: 6px; }
@@ -50,7 +51,7 @@
   <header>
     <p class="eyebrow">Radcliffe · 3 Sisters · Shelton</p>
     <h1>How to use our family site</h1>
-    <p class="sub">A quick walkthrough from Cousin Ameer. Press play and follow along, or just scroll.</p>
+    <p class="sub">A quick tour from Cousin Ameer on finding your way around. Press play and follow along, or just scroll.</p>
     <div class="player" id="player" hidden>
       <p>Listen to Cousin Ameer walk you through it</p>
       <audio id="audio" controls preload="metadata" src="walkthrough.mp3"></audio>
@@ -60,56 +61,69 @@
   <ol class="steps">
     <li class="step">
       <div>
-        <h2>Open the family tree</h2>
-        <p>The chart starts with Gertrude Foster Radcliffe, the mother of the three Radcliffe sisters: Alva, Beatrice and Miranda. Every branch grows down from them.</p>
+        <h2>Find your way around the tree</h2>
+        <p>Open the family tree. At the top are two buttons: <b>Family chart</b> shows the tree branching down like a real family tree, and <b>List</b> shows everyone in one long scroll.</p>
+        <p>The chart starts with Gertrude Foster Radcliffe and her three daughters, Alva, Beatrice and Miranda. Keep scrolling down the page and you'll find who came to the reunion and where the family lives.</p>
         <p><a class="go" href="../tree/">Open the family tree</a></p>
       </div>
-      <img src="img/1-chart.jpg" alt="The family tree page on a phone, showing the family chart" loading="lazy">
+      <img src="img/1-chart.jpg" alt="Top of the family tree page with the Family chart and List buttons" loading="lazy">
     </li>
     <li class="step">
       <div>
-        <h2>Tap a name to open a family</h2>
-        <p>A name with a small gold number has children under it. Tap it to open that family, and tap again to close it.</p>
-        <p>Tap <b>Open all</b> to see everyone at once. Use <b>+</b> and <b>−</b> to zoom, <b>Fit</b> to see the whole tree, and drag with your finger to move around.</p>
+        <h2>Open up a family</h2>
+        <p>A name with a small gold number under it has children. The number is how many people are in that branch. Tap the name to open it, and tap again to close it.</p>
+        <p>Tap <b>Open all</b> to open every branch at once. Use <b>+</b> and <b>&minus;</b> to zoom, <b>Fit</b> to see the whole tree on your screen, and drag with your finger to move around.</p>
       </div>
-      <img src="img/2-openall.jpg" alt="Family chart zoomed in, showing Kenneth Lee Radcliffe and his daughters" loading="lazy">
+      <img src="img/2-openall.jpg" alt="Family chart zoomed in, with gold numbers under names that have children" loading="lazy">
     </li>
     <li class="step">
       <div>
-        <h2>Add someone or fix a name</h2>
-        <p>Tap <b>List</b> at the top. To add a son or daughter, tap the <b>+</b> next to their parent's name. The form opens with the parent already picked.</p>
-        <p>To fix a name or add a last name, tap the name itself.</p>
+        <h2>See everyone in a list</h2>
+        <p>Tap <b>List</b> to see every person in order, family by family, with where they live. On a phone this is the easiest way to read through everyone.</p>
       </div>
-      <img src="img/3-list.jpg" alt="List view with plus buttons next to each name" loading="lazy">
+      <img src="img/3-list.jpg" alt="List view showing names, families and cities" loading="lazy">
+    </li>
+    <li class="step">
+      <div>
+        <h2>Find someone's phone number</h2>
+        <p>If a relative chose to share their number, it shows right under their name with a phone symbol, in the chart, in the list, and in Where the family lives. On a phone, tap the number to call.</p>
+        <p>No number under someone's name means they kept it private. Ask Cousin Ameer and he can help you get in touch.</p>
+      </div>
+      <img src="img/3-phone.jpg" alt="List view with a phone number under a name" loading="lazy">
     </li>
     <li class="step">
       <div>
         <h2>See where the family lives</h2>
-        <p>Scroll down to <b>Where the family lives</b> and tap any state. You'll see everyone who lives there and which line they come from.</p>
+        <p>Scroll down to <b>Where the family lives</b>. Each bubble is a state with the number of relatives there. Tap one to see who lives there and which line they come from. Tap it again to close it.</p>
       </div>
-      <img src="img/4-places.jpg" alt="Where the family lives, with Pennsylvania open showing names and cities" loading="lazy">
+      <img src="img/4-places.jpg" alt="Where the family lives, with Pennsylvania open" loading="lazy">
     </li>
-    <li class="step">
+    <li class="step noimg">
       <div>
-        <h2>Fill in the form</h2>
-        <p>Put your full first name, your last name, your parents' names, and the person you're closest to on the tree. You can add your husband, wife or partner too.</p>
-        <p class="private">Your email is always private. Your phone number is private too, unless you check <b>Show my phone number on the tree</b> so family can tap to call you.</p>
-        <p>After you press send, your name shows up on your own phone right away, and for everyone else within the hour.</p>
+        <h2>Fix or add something</h2>
+        <p>Go to <b>List</b>. To fix a name, add a last name, or share your phone number, tap your name. To add a son or daughter, tap the <b>+</b> next to the parent's name. Either one takes you to a short form with the person already filled in.</p>
       </div>
-      <img src="img/5-add.jpg" alt="The Add to the tree form" loading="lazy">
+    </li>
+    <li class="step noimg">
+      <div>
+        <h2>When you get a "tree updated" email</h2>
+        <p>Tap the tree link in the email. New people are added right into their own family's branch, under their parents.</p>
+        <p>To spot them, tap <b>Open all</b> in the chart, or switch to <b>List</b>. Looking for one name? In the List, use your phone's search: on an iPhone tap the share button and choose <b>Find on Page</b>; on Android tap the three dots in Chrome and choose <b>Find in page</b>. Then type the name.</p>
+      </div>
     </li>
     <li class="step">
       <div>
         <h2>Vote on our next get-together</h2>
-        <p>We're keeping this going: a Zoom check-in every season and an in-person reunion next summer. Check every date that works for you.</p>
+        <p>On the tree page, tap <b>Vote on our next get-together</b> near the top. Check every date that works for you and press send.</p>
+        <p>Scroll to the bottom of that page to see <b>Votes so far</b>. The date in the lead gets a star.</p>
         <p><a class="go" href="../next/">Vote on dates</a></p>
       </div>
-      <img src="img/6-next.jpg" alt="Our Next Get-Together page with the year of dates" loading="lazy">
+      <img src="img/6-vote.jpg" alt="The date voting page with checkboxes for each date" loading="lazy">
     </li>
     <li class="step">
       <div>
-        <h2>Our family history</h2>
-        <p>The stories you shared on the call, from Piney Grove in North Carolina to our roots in Sierra Leone, Angola and Cameroon. Have a story, an old photo or an Ancestry.com tree? There's a spot right on the page to send it.</p>
+        <h2>Read our family history</h2>
+        <p>The stories we shared on the call, from Piney Grove in North Carolina to our roots in Sierra Leone, Angola and Cameroon. There's a spot at the bottom to send your own story or an old photo.</p>
         <p><a class="go" href="../history/">Read our family history</a></p>
       </div>
       <img src="img/7-history.jpg" alt="Our Family History page" loading="lazy">
