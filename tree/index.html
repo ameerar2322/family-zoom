@@ -182,6 +182,10 @@
   .ancestry .fine { margin-top: 10px; text-align: center; color: var(--muted); font-size: 13px; }
   body.zoom .ancestry { display: none; }
   .privnote { margin: -4px 0 0; font-size: 13px; color: var(--ink-soft); }
+  .showph { display: flex; gap: 10px; align-items: flex-start; margin: 4px 0 10px; font-size: 14px; cursor: pointer; }
+  .showph input { width: 20px; height: 20px; margin-top: 2px; accent-color: #7a2340; flex: none; }
+  a.tel { color: var(--gold); font-weight: 600; text-decoration: none; }
+  a.tel:hover, a.tel:focus-visible { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -255,7 +259,8 @@
         <div class="field"><label for="pphone">Their phone (optional)</label><input id="pphone" name="pphone" type="tel" autocomplete="tel" placeholder="(555) 555-5555"></div>
         <div class="field"><label for="pemail">Their email (optional)</label><input id="pemail" name="pemail" type="email" autocomplete="email" placeholder="name@example.com"></div>
       </div>
-      <p class="privnote">Phone numbers and emails are <b>never shown on this page</b>. They go only to Cousin Ameer for a private family contact list.</p>
+      <label class="showph"><input type="checkbox" id="showphone" name="showphone"> <span><b>Show my phone number on the tree</b> so family can call me. Only check this for your own number.</span></label>
+      <p class="privnote">Emails are never shown on this page. Phone numbers show only if you check the box, and then anyone with the tree link can see them. Otherwise they go only to Cousin Ameer for the family contact list.</p>
       <datalist id="places"><option>New York</option><option>New Jersey</option><option>Pennsylvania</option><option>Connecticut</option><option>Maryland</option><option>Virginia</option><option>North Carolina</option><option>South Carolina</option><option>Georgia</option><option>Florida</option><option>Alabama</option><option>Ohio</option><option>Michigan</option><option>Illinois</option><option>Texas</option><option>California</option><option>Canada</option><option>United Kingdom</option></datalist>
       <div class="field"><label for="note">Anything else (optional)</label><textarea id="note" name="note" placeholder="Other names in this family, a correction, where they live, a story..."></textarea></div>
       <div class="row2">
@@ -354,7 +359,7 @@
       if (hit && p.rel === "child of") target = hit.node;
       else if (hit && p.rel === "sibling of" && hit.parent) target = hit.parent;
       if (hit && p.rel === "spouse or partner of") { hit.node.spouse = p.name + " (sent \u2714)"; return; }
-      var item = { name: p.name, loc: p.loc, nick: p.nick, spouse: p.spouse, pending: true };
+      var item = { name: p.name, loc: p.loc, nick: p.nick, spouse: p.spouse, phone: p.phone, pending: true };
       if (target) { (target.children = target.children || []).push(item); }
       else { (TREE.radcliffe.unplaced = TREE.radcliffe.unplaced || []).push(item); }
     });
@@ -376,7 +381,7 @@
 
   function fixName(first, optionLabel) {
     var f = document.getElementById("addform");
-    f.who.value = first; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = ""; f.spouse.value = "";
+    f.who.value = first; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = ""; f.showphone.checked = false; f.spouse.value = "";
     document.getElementById("rel").value = "the full name of";
     document.getElementById("of").value = optionLabel;
     document.getElementById("note").placeholder = "Married name, maiden name, nickname, or anything we got wrong about " + first;
@@ -385,13 +390,15 @@
   }
   function addChildOf(name, label) {
     var f = document.getElementById("addform");
-    f.who.value = ""; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = ""; f.spouse.value = "";
+    f.who.value = ""; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = ""; f.showphone.checked = false; f.spouse.value = "";
     document.getElementById("rel").value = "child of";
     document.getElementById("of").value = label;
     document.getElementById("note").placeholder = "Other children of " + name + ", where they live, a story...";
     document.getElementById("add").scrollIntoView({ behavior: "smooth", block: "start" });
     setTimeout(function () { document.getElementById("who").focus(); }, 400);
   }
+  function fmtPhone(p) { var d = String(p).replace(/\D/g, ""); if (d.length === 11 && d[0] === "1") d = d.slice(1); return d.length === 10 ? "(" + d.slice(0, 3) + ") " + d.slice(3, 6) + "-" + d.slice(6) : String(p); }
+  function telLink(p, tag) { var d = String(p).replace(/\D/g, ""); if (d.length === 10) d = "1" + d; var a = el("a", (tag || "sp") + " tel", "\u260E " + fmtPhone(p)); a.href = "tel:+" + d; a.addEventListener("click", function (e) { e.stopPropagation(); }); a.addEventListener("keydown", function (e) { e.stopPropagation(); }); return a; }
   function kidList(parent, kids, parentLabel) {
     var ul = el("ul", "kids");
     kids.forEach(function (k) {
@@ -399,6 +406,7 @@
       if (k.nick) d.appendChild(el("span", "sp", "\u201c" + k.nick + "\u201d"));
       if (k.spouse) d.appendChild(el("span", "sp", "with " + k.spouse));
       if (k.loc) d.appendChild(el("span", "sp loc", k.loc));
+      if (k.phone && !k.memory) d.appendChild(telLink(k.phone));
       if (k.memory) d.appendChild(el("span", "sp", "In loving memory"));
       if (k.pending) { d.classList.add("new"); d.id = "pending-" + norm(k.name); d.appendChild(el("span", "sp sent", "Sent \u2714 Showing for everyone within the hour")); }
       var lab = k.name + " (" + parentLabel + "'s child)";
@@ -475,6 +483,7 @@
       if (p.memory) bits.push("In loving memory");
       if (p.pending) { bits.push("Sent \u2714 being added"); cls = (cls ? cls + " " : "") + "pend"; }
       bits.forEach(function (b) { d.appendChild(el("small", null, b)); });
+      if (p.phone && !p.memory) { var sm = el("small"); sm.appendChild(telLink(p.phone, "ph")); d.appendChild(sm); }
       li.appendChild(d);
       var kids = p.children || [];
       if (kids.length) {
@@ -531,7 +540,7 @@
   function walk(list, line) {
     list.forEach(function (k) {
       if (k.loc) { var parts = k.loc.split(","), st = parts.pop().trim(), city = parts.join(",").trim();
-        (byPlace[st] = byPlace[st] || []).push({ name: k.name, city: city, line: line }); }
+        (byPlace[st] = byPlace[st] || []).push({ name: k.name, city: city, line: line, phone: k.memory ? "" : k.phone }); }
       if (k.children) walk(k.children, line);
     });
   }
@@ -554,6 +563,7 @@
         byPlace[k].slice().sort(function (a, b) { return a.line.localeCompare(b.line) || a.name.localeCompare(b.name); }).forEach(function (p) {
           var li = el("li"); li.appendChild(el("b", null, p.name));
           li.appendChild(el("span", null, [p.city, p.line].filter(Boolean).join(" \u00b7 ")));
+          if (p.phone) { var ps = el("span"); ps.appendChild(telLink(p.phone, "ph")); li.appendChild(ps); }
           ul.appendChild(li);
         });
         who.appendChild(ul); who.hidden = false;
@@ -610,9 +620,11 @@
     send.disabled = true; send.textContent = "Sending…";
     var last = form.last.value.trim(), middle = form.middle.value.trim(), nick = form.nick.value.trim(), parents = form.parents.value.trim(); var full = [who, middle, last].filter(Boolean).join(" ");
     if (!from) from = full;
-    var pphone = form.pphone.value.trim(), pemail = form.pemail.value.trim();
+    var pphone = form.pphone.value.trim(), pemail = form.pemail.value.trim(), showPh = form.showphone.checked;
+    if (showPh && !pphone) { send.disabled = false; send.textContent = "Add to the family tree"; say("Add your phone number, or uncheck \u201cShow my phone number.\u201d", "err"); return; }
+    if (showPh && norm(from) !== norm(full)) { send.disabled = false; send.textContent = "Add to the family tree"; say("You can only choose to show your own phone number. Uncheck the box when adding someone else.", "err"); return; }
     if (pemail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(pemail)) { send.disabled = false; send.textContent = "Add to the family tree"; say("Please check their email address.", "err"); return; }
-    var data = { "Name to add": full, "Nickname": nick || "(none)", "Phone": pphone || "(not given)", "Contact email": pemail || "(not given)", "Parents": parents || "(not given)", "Spouse or partner": (form.spouse.value.trim() || "(not given)"), "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
+    var data = { "Name to add": full, "Nickname": nick || "(none)", "Phone": pphone || "(not given)", "Show phone on tree": showPh ? "Yes" : "No", "Contact email": pemail || "(not given)", "Parents": parents || "(not given)", "Spouse or partner": (form.spouse.value.trim() || "(not given)"), "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
       _subject: (form.rel.value === "the full name of" ? "Family tree: name for " : "Family tree: add ") + full, _template: "table", _captcha: "false", _cc: "ameerar@gmail.com" };
     if (email) { data.email = email; data._replyto = email; }
     fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
@@ -620,7 +632,7 @@
       .then(function (j) {
         if (j && (j.success === false || j.success === "false")) throw 0;
         var pl = readPending();
-        pl.push({ name: full, nick: nick, spouse: form.spouse.value.trim(), of: data["Relationship"].slice(form.rel.value.length + 1), rel: form.rel.value, loc: data["Lives in"] === "(not given)" ? "" : data["Lives in"], t: Date.now() });
+        pl.push({ name: full, nick: nick, spouse: form.spouse.value.trim(), of: data["Relationship"].slice(form.rel.value.length + 1), rel: form.rel.value, loc: data["Lives in"] === "(not given)" ? "" : data["Lives in"], phone: showPh ? pphone : "", t: Date.now() });
         writePending(pl);
         try { sessionStorage.setItem("fz-just", full); } catch (e) {}
         form.reset(); send.disabled = false; send.textContent = "Add another person";
