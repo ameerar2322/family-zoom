@@ -68,6 +68,39 @@
   .add-here:hover { background: rgba(222,178,96,0.1); }
   .empty { margin-top: 14px; text-align: center; color: var(--muted); font-size: 14px; border: 1.5px dashed var(--line); border-radius: 12px; padding: 18px 12px; }
   .sib-tie { text-align: center; font-size: 12px; color: var(--gold); letter-spacing: 0.18em; text-transform: uppercase; margin-top: 8px; }
+
+  /* Chart view: traditional top-down family tree */
+  .viewtabs { display: flex; justify-content: center; gap: 6px; margin: 18px auto 0; }
+  .viewtabs button { font: inherit; font-size: 14px; font-weight: 600; padding: 8px 16px; border-radius: 999px; border: 1.5px solid var(--line); background: transparent; color: var(--cream); cursor: pointer; }
+  .viewtabs button[aria-pressed="true"] { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+  body.zoom .viewtabs { display: none; }
+  .chartbar { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 12px 0 6px; font-size: 13px; color: var(--muted); flex-wrap: wrap; }
+  .chartbar button { font: inherit; font-size: 13px; font-weight: 600; min-width: 36px; padding: 6px 10px; border-radius: 8px; border: 1.5px solid var(--line); background: transparent; color: var(--cream); cursor: pointer; }
+  .chartwrap { overflow: auto; border: 1.5px solid var(--line); border-radius: 18px; background: rgba(0,0,0,0.12); max-height: 78vh; -webkit-overflow-scrolling: touch; }
+  .chartinner { transform-origin: 0 0; padding: 24px; width: max-content; }
+  .fchart, .fchart ul { list-style: none; margin: 0; padding: 0; }
+  .fchart { display: flex; gap: 40px; align-items: flex-start; }
+  .fchart ul { display: flex; justify-content: center; padding-top: 22px; position: relative; }
+  .fchart li { position: relative; padding: 22px 5px 0; text-align: center; display: flex; flex-direction: column; align-items: center; }
+  .fchart > li { padding-top: 0; }
+  .fchart ul > li::before, .fchart ul > li::after { content: ""; position: absolute; top: 0; right: 50%; width: 50%; height: 22px; border-top: 2px solid var(--line); }
+  .fchart ul > li::after { right: auto; left: 50%; border-left: 2px solid var(--line); }
+  .fchart ul > li:only-child::before { display: none; }
+  .fchart ul > li:only-child::after { border-top: 0; }
+  .fchart ul > li:first-child::before, .fchart ul > li:last-child::after { border-top: 0; }
+  .fchart ul > li:last-child::before { border-right: 2px solid var(--line); border-radius: 0 8px 0 0; }
+  .fchart ul > li:first-child::after { border-radius: 8px 0 0 0; }
+  .fchart ul::before { content: ""; position: absolute; top: 0; left: 50%; height: 22px; border-left: 2px solid var(--line); }
+  .fnode { display: inline-block; min-width: 96px; max-width: 150px; background: rgba(250,242,230,0.1); border: 1px solid rgba(250,242,230,0.22); border-radius: 10px; padding: 7px 9px; font-size: 13.5px; font-weight: 600; line-height: 1.25; color: var(--cream); position: relative; }
+  .fnode.root { background: var(--gold); color: var(--ink); border-color: var(--gold); max-width: 190px; font-family: var(--display); font-size: 16px; }
+  .fnode.sis { background: var(--card); color: var(--ink); border-color: var(--card); font-family: var(--display); font-size: 15px; }
+  .fnode small { display: block; font-size: 11px; font-weight: 400; opacity: .78; margin-top: 2px; }
+  .fnode.root small, .fnode.sis small { color: var(--ink-soft); opacity: 1; }
+  .fnode.has { cursor: pointer; }
+  .fnode .tog { position: absolute; left: 50%; bottom: -10px; transform: translateX(-50%); background: var(--gold); color: var(--ink); font-size: 10px; font-weight: 700; border-radius: 999px; padding: 0 6px; line-height: 16px; }
+  .fchart li.closed > ul { display: none; }
+  .fchart .sibtie { align-self: center; color: var(--gold); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; writing-mode: vertical-rl; transform: rotate(180deg); }
+  .chartnote { text-align: center; color: var(--muted); font-size: 13px; margin-top: 8px; }
   @media (max-width: 900px) {
     .roots { grid-template-columns: 1fr; }
     .sisters { grid-template-columns: 1fr; padding-top: 0; gap: 18px; }
@@ -154,6 +187,12 @@
   </header>
 
   <p class="zoom-note">Write your name and where you live (state or country) in an empty box under your family. Use Annotate, then the Text tool, at the top of your Zoom window.</p>
+  <div class="viewtabs" role="group" aria-label="Choose a view"><button type="button" id="v-chart" aria-pressed="true">Family chart</button><button type="button" id="v-list" aria-pressed="false">List (add names here)</button></div>
+  <div id="chartsec">
+    <div class="chartbar"><button type="button" id="z-out" aria-label="Zoom out">&minus;</button><button type="button" id="z-fit">Fit</button><button type="button" id="z-in" aria-label="Zoom in">+</button><button type="button" id="z-all">Open all</button><span>Tap a name with a number to open or close that family. Drag or scroll to move around.</span></div>
+    <div class="chartwrap" id="chartwrap"><div class="chartinner" id="chartinner"></div></div>
+    <p class="chartnote">To add someone or fix a name, switch to <b>List</b> and use the <b>+</b> buttons.</p>
+  </div>
   <p class="fixhint">Tap a name to add a full real name, last name, or correction. Tap <b>+</b> next to a name to add their children, and their children&rsquo;s children. <b>Adding a brother or sister?</b> Tap <b>+</b> next to your parent, or pick &ldquo;sibling of&rdquo; in the form.</p>
   <div class="roots" id="tree"></div>
   <section class="joining" id="joining">
@@ -362,6 +401,63 @@
   b2.appendChild(el("div", "sib-tie", "Sister of Gertrude Foster Radcliffe"));
   root.appendChild(b2);
 
+
+  // ---- Family chart (top-down tree) ----
+  (function () {
+    var inner = document.getElementById("chartinner"), wrap = document.getElementById("chartwrap");
+    function count(p) { var n = 0; (p.children || []).forEach(function (c) { n += 1 + count(c); }); return n; }
+    function node(p, cls) {
+      var li = el("li"), d = el("div", "fnode" + (cls ? " " + cls : ""), p.name);
+      var bits = [];
+      if (p.role) bits.push(p.role);
+      if (p.nick) bits.push("\u201c" + p.nick + "\u201d");
+      if (p.spouse) bits.push("with " + p.spouse);
+      if (p.loc) bits.push(p.loc);
+      if (p.memory) bits.push("In loving memory");
+      bits.forEach(function (b) { d.appendChild(el("small", null, b)); });
+      li.appendChild(d);
+      var kids = p.children || [];
+      if (kids.length) {
+        d.classList.add("has");
+        var t = el("span", "tog", String(count(p))); d.appendChild(t);
+        d.setAttribute("role", "button"); d.tabIndex = 0;
+        var tg = function () { li.classList.toggle("closed"); };
+        d.addEventListener("click", tg); d.addEventListener("keydown", function (e) { if (e.key === "Enter") tg(); });
+        var ul = el("ul"); kids.forEach(function (k) { ul.appendChild(node(k, cls === "root" ? "sis" : "")); }); li.appendChild(ul);
+      }
+      return li;
+    }
+    var top = el("ul", "fchart");
+    top.appendChild(node({ name: TREE.radcliffe.name, role: TREE.radcliffe.role, children: TREE.radcliffe.children }, "root"));
+    var tie = el("li", "sibtie", "Sisters"); top.appendChild(tie);
+    top.appendChild(node({ name: TREE.shelton.name, role: TREE.shelton.role, children: TREE.shelton.children }, "root"));
+    inner.appendChild(top);
+    var scale = 1;
+    function apply() { inner.style.transform = "scale(" + scale + ")"; inner.style.marginBottom = (inner.offsetHeight * (scale - 1)) + "px"; inner.style.marginRight = (inner.offsetWidth * (scale - 1)) + "px"; }
+    function fitScale() { return Math.max(0.3, Math.min(1, (wrap.clientWidth - 4) / inner.offsetWidth)); }
+    function fit() { scale = fitScale(); apply(); }
+    function start() {
+      scale = Math.max(0.65, fitScale()); apply();
+      var r = inner.querySelector(".fnode.root"); if (!r) return;
+      var rr = r.getBoundingClientRect(), wr = wrap.getBoundingClientRect();
+      wrap.scrollLeft = Math.max(0, rr.left - wr.left + wrap.scrollLeft - wrap.clientWidth / 2 + rr.width / 2);
+    }
+    document.getElementById("z-in").onclick = function () { scale = Math.min(1.6, scale + 0.15); apply(); };
+    document.getElementById("z-out").onclick = function () { scale = Math.max(0.3, scale - 0.15); apply(); };
+    document.getElementById("z-fit").onclick = fit;
+    document.getElementById("z-all").onclick = function () { inner.querySelectorAll("li.closed").forEach(function (x) { x.classList.remove("closed"); }); fit(); };
+    var vc = document.getElementById("v-chart"), vl = document.getElementById("v-list");
+    var cs = document.getElementById("chartsec"), listEls = [document.getElementById("tree"), document.querySelector(".fixhint")];
+    function show(chart) {
+      vc.setAttribute("aria-pressed", chart); vl.setAttribute("aria-pressed", !chart);
+      cs.hidden = !chart; listEls.forEach(function (e) { if (e) e.hidden = chart; });
+      if (chart) start();
+    }
+    vc.onclick = function () { show(true); }; vl.onclick = function () { show(false); };
+    // links that jump to the add form should switch to the list view
+    document.querySelectorAll('a[href="#add"]').forEach(function (a) { a.addEventListener("click", function () { show(false); }); });
+    if (ZOOM) { cs.hidden = true; } else { show(location.hash !== "#list");  }
+  })();
   // Where the family lives
   var counts = {};
   function walk(list) { list.forEach(function (k) { if (k.loc) { var st = k.loc.split(",").pop().trim(); counts[st] = (counts[st] || 0) + 1; } if (k.children) walk(k.children); }); }
