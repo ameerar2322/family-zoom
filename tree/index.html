@@ -112,7 +112,15 @@
   .places { margin: 30px auto 0; max-width: 900px; text-align: center; }
   .places h2 { font-family: var(--display); font-size: 24px; margin: 0; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; }
-  .chip { border: 1.5px solid var(--line); border-radius: 999px; padding: 5px 12px; font-size: 14px; }
+  .chip { font: inherit; color: var(--cream); background: transparent; cursor: pointer; border: 1.5px solid var(--line); border-radius: 999px; padding: 6px 13px; font-size: 14px; }
+  .chip:hover { background: rgba(222,178,96,0.12); }
+  .chip[aria-expanded="true"] { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+  .chip[aria-expanded="true"] b { color: var(--ink); }
+  .placewho { max-width: 560px; margin: 14px auto 0; border: 1.5px solid var(--line); border-radius: 14px; padding: 14px 16px; background: rgba(0,0,0,0.14); }
+  .placewho h3 { margin: 0 0 8px; font-family: var(--display); font-size: 18px; text-align: center; }
+  .placewho ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .placewho li { display: flex; flex-direction: column; gap: 1px; border-bottom: 1px solid rgba(250,242,230,0.1); padding-bottom: 6px; }
+  .placewho li span { color: var(--muted); font-size: 13px; }
   .chip b { color: var(--gold); margin-left: 4px; }
   .kid .loc::before { content: "\1F4CD  "; }
   .legend { margin-top: 18px; text-align: center; font-size: 13px; color: var(--muted); }
@@ -204,7 +212,7 @@
     <p class="help">Names are shown the way people RSVP&rsquo;d, so some are nicknames. Tap yours to give your full real name, your parents&rsquo; names, and your closest relative on the tree, and we&rsquo;ll place you on the right branch.</p>
     <div class="jgroups" id="jgroups"></div>
   </section>
-  <section class="places" id="places-sec" hidden><h2>Where the family lives</h2><div class="chips" id="chips"></div></section>
+  <section class="places" id="places-sec" hidden><h2>Where the family lives</h2><p class="help" style="text-align:center;margin:4px 0 0">Tap a state to see who lives there.</p><div class="chips" id="chips"></div><div class="placewho" id="placewho" hidden></div></section>
   <p class="legend">This is a first draft from Cousin Kenneth&rsquo;s notes. <b>New names</b> show up for everyone within the hour.</p>
 
   <section class="ancestry" id="ancestry">
@@ -514,14 +522,40 @@
       }
     } catch (e) {}
   })();
-  // Where the family lives
-  var counts = {};
-  function walk(list) { list.forEach(function (k) { if (k.loc) { var st = k.loc.split(",").pop().trim(); counts[st] = (counts[st] || 0) + 1; } if (k.children) walk(k.children); }); }
-  walk(TREE.radcliffe.children); walk(TREE.radcliffe.unplaced || []); walk(TREE.shelton.children);
-  var keys = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; });
+  // Where the family lives: tap a state to see who lives there
+  var byPlace = {};
+  function walk(list, line) {
+    list.forEach(function (k) {
+      if (k.loc) { var parts = k.loc.split(","), st = parts.pop().trim(), city = parts.join(",").trim();
+        (byPlace[st] = byPlace[st] || []).push({ name: k.name, city: city, line: line }); }
+      if (k.children) walk(k.children, line);
+    });
+  }
+  TREE.radcliffe.children.forEach(function (s) { walk(s.children || [], s.name + "\u2019s line"); });
+  walk(TREE.radcliffe.unplaced || [], "Radcliffe family");
+  walk(TREE.shelton.children, "Shelton family");
+  var keys = Object.keys(byPlace).sort(function (a, b) { return byPlace[b].length - byPlace[a].length || a.localeCompare(b); });
   if (keys.length && !ZOOM) {
     document.getElementById("places-sec").hidden = false;
-    keys.forEach(function (k) { var c = el("span", "chip", k); c.appendChild(el("b", null, String(counts[k]))); document.getElementById("chips").appendChild(c); });
+    var chipsBox = document.getElementById("chips"), who = document.getElementById("placewho"), openKey = null;
+    keys.forEach(function (k) {
+      var c = el("button", "chip", k); c.type = "button"; c.setAttribute("aria-expanded", "false");
+      c.appendChild(el("b", null, String(byPlace[k].length)));
+      c.addEventListener("click", function () {
+        chipsBox.querySelectorAll(".chip").forEach(function (x) { x.setAttribute("aria-expanded", "false"); });
+        if (openKey === k) { openKey = null; who.hidden = true; return; }
+        openKey = k; c.setAttribute("aria-expanded", "true");
+        who.innerHTML = ""; who.appendChild(el("h3", null, "Family in " + k));
+        var ul = el("ul");
+        byPlace[k].slice().sort(function (a, b) { return a.line.localeCompare(b.line) || a.name.localeCompare(b.name); }).forEach(function (p) {
+          var li = el("li"); li.appendChild(el("b", null, p.name));
+          li.appendChild(el("span", null, [p.city, p.line].filter(Boolean).join(" \u00b7 ")));
+          ul.appendChild(li);
+        });
+        who.appendChild(ul); who.hidden = false;
+      });
+      chipsBox.appendChild(c);
+    });
   }
 
   // Who's joining tonight (from RSVPs). First name and last initial only.
