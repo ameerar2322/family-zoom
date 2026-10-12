@@ -225,17 +225,29 @@
       role: "Matriarch", name: "Gertrude Foster Radcliffe", note: "Mother of the 3 Radcliffe Sisters",
       children: [
         { name: "Alva", role: "Radcliffe Sister", children: [
-          { name: "Elizabeth" }, { name: "Kenneth Earl", spouse: "Christine" }, { name: "Earl" } ] },
+          { name: "Elizabeth", children: [
+            { name: "Kenneth Lee Radcliffe", spouse: "Shirley Jones Radcliffe", children: [
+              { name: "Lisa Annette Radcliffe", loc: "Bronx, New York" },
+              { name: "Kendahl Lee Elise Radcliffe", loc: "Los Angeles, California" } ] } ] }, { name: "Kenneth Earl", spouse: "Christine" }, { name: "Earl" } ] },
         { name: "Beatrice", role: "Radcliffe Sister", children: [
           { name: "Richard" }, { name: "Gene" }, { name: "Ardele" }, { name: "Helen" }, { name: "David" }, { name: "Gertrude" } ] },
         { name: "Miranda", role: "Radcliffe Sister", children: [
-          { name: "Everett" }, { name: "Gertrude" }, { name: "Leona" }, { name: "Tom" },
-          { name: "Odessa Talley", loc: "Philadelphia, Pennsylvania", children: [
-            { name: "Charles Talley", loc: "Newark, Delaware", children: [
-              { name: "Daia Dawkins" } ] } ] } ] }
+          { name: "Everett" },
+          { name: "Gertrude", children: [
+            { name: "Sandra L. Murphy", children: [
+              { name: "Troy Brian Sterling", loc: "Philadelphia, Pennsylvania" } ] } ] }, { name: "Leona" }, { name: "Tom" },
+          { name: "Odessa Talley", spouse: "Charles Talley", loc: "Philadelphia, Pennsylvania", children: [
+            { name: "Charles Talley", loc: "New Castle, Delaware", children: [
+              { name: "Yasmin Talley", nick: "Yat", loc: "Philadelphia, Pennsylvania" },
+              { name: "Daia Dawkins" } ] },
+            { name: "Tyrone N. Talley Sr.", spouse: "Cynthia (Walker) Talley", loc: "Illinois", children: [
+              { name: "Erica Inez Talley", loc: "Upper Darby, Pennsylvania" },
+              { name: "Tyrone Talley Jr.", memory: true } ] } ] } ] }
       ],
       // Radcliffe relatives whose connection to the sisters isn't confirmed yet
       unplaced: [
+        { name: "Hanunah Abdur-Razzaaq", children: [
+          { name: "Abdullatif Abdur-Razzaaq", loc: "Ithaca, New York" } ] },
         { name: "Judith C. Dorsey", children: [
           { name: "Dana Renee Dorsey", loc: "Mountain View, California", children: [
             { name: "Alissa Fujisaki" }, { name: "Jasmine Fujisaki" }, { name: "Isaiah Brooks" } ] } ] }
@@ -287,6 +299,7 @@
       if (k.nick) d.appendChild(el("span", "sp", "\u201c" + k.nick + "\u201d"));
       if (k.spouse) d.appendChild(el("span", "sp", "with " + k.spouse));
       if (k.loc) d.appendChild(el("span", "sp loc", k.loc));
+      if (k.memory) d.appendChild(el("span", "sp", "In loving memory"));
       var lab = k.name + " (" + parentLabel + "'s child)";
       d.setAttribute("role", "button"); d.tabIndex = 0; d.title = "Add a last name or correction for " + k.name;
       (function (nm, lb) { d.addEventListener("click", function () { fixName(nm, lb); }); d.addEventListener("keydown", function (e) { if (e.key === "Enter") fixName(nm, lb); }); })(k.name, lab);
@@ -358,8 +371,8 @@
 
   // Who's joining tonight (from RSVPs). First name and last initial only.
   var JOINING = [
-    { group: "Radcliffe", people: ["Ameer A.|+2", "Lisa R.|+1", "Abdullatif A.", "Faheem A.", "Kendahl R.", "Elijah D.", "Mahir A.", "Milton M.", "Dana D.", "Sahirah", "Latifah A.", "Hanunah", "Keith J.", "Rikki T.", "Yasmin", "Justin", "Sah-u-Ra B.|+1", "Judi", "Beverly S.", "Charles T.", "Chuck", "Erica T."] },
-    { group: "3 Sisters", people: ["Daia D."] },
+    { group: "Radcliffe", people: ["Ameer A.|+2", "Lisa R.|+1", "Abdullatif A.", "Faheem A.", "Kendahl R.", "Elijah D.", "Mahir A.", "Milton M.", "Dana D.", "Sahirah", "Latifah A.", "Hanunah", "Keith J.", "Rikki T.", "Yasmin", "Justin", "Sah-u-Ra B.|+1", "Judi", "Beverly S.", "Charles T.", "Chuck", "Erica T.", "Hanif A."] },
+    { group: "3 Sisters", people: ["Daia D.", "Troy S."] },
     { group: "Shelton", people: ["Spencer B.|+1", "Cheryl G.", "Desmone G."] },
     { group: "Not sure yet", people: ["Tyesha M.", "Charlisse T.", "Petia A.", "Rahiem M.|+1"] }
   ];
