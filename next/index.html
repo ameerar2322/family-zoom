@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Our Next Get-Together · Radcliffe, 3 Sisters &amp; Shelton</title>
+<meta property="og:title" content="Our Next Get-Together · Radcliffe, 3 Sisters & Shelton">
+<meta property="og:description" content="Pick the dates that work for you: quarterly Zoom check-ins and our annual family reunion.">
+<meta property="og:image" content="https://ameerar2322.github.io/family-zoom/preview.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,700;1,500&family=Poppins:wght@400;500;700&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --plum: #3a1422; --plum-2: #4d1a2e; --cream: #faf2e6; --card: #f6ecde; --ink: #3a1422; --ink-soft: #7a4a5c;
+    --gold: #deb260; --rose: #e87084; --muted: #d6bec4; --line: rgba(222,178,96,0.55);
+    --display: "Lora", Georgia, serif; --body: "Poppins", "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { background: var(--plum); }
+  body { margin: 0; background: var(--plum); background-image: radial-gradient(120% 50% at 50% 0%, #6a2540 0%, var(--plum) 70%); color: var(--cream); font-family: var(--body); font-size: 16px; line-height: 1.5; padding: 28px 16px 56px; }
+  .wrap { max-width: 920px; margin: 0 auto; }
+  header { text-align: center; }
+  .eyebrow { margin: 0; color: var(--gold); font-size: 12px; font-weight: 500; letter-spacing: 0.32em; text-transform: uppercase; }
+  h1 { font-family: var(--display); font-weight: 700; font-size: clamp(30px, 6vw, 46px); line-height: 1.1; margin: 10px 0 0; text-wrap: balance; }
+  h2 { font-family: var(--display); font-weight: 700; font-size: 26px; margin: 0 0 6px; text-align: center; }
+  .sub { margin: 10px auto 0; max-width: 36em; color: var(--muted); }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 18px; }
+  .btn { font: inherit; font-weight: 700; font-size: 15px; border-radius: 10px; padding: 11px 18px; cursor: pointer; text-decoration: none; border: 1.5px solid transparent; display: inline-block; }
+  .btn-gold { background: var(--gold); color: var(--ink); }
+  .btn-line { background: transparent; color: var(--cream); border-color: var(--line); }
+  .btn:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  section { margin-top: 36px; }
+  .year { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+  .season { border: 1.5px solid var(--line); border-radius: 14px; padding: 14px; background: rgba(0,0,0,0.14); text-align: center; }
+  .season.big { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+  .season .k { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
+  .season.big .k { color: var(--ink-soft); }
+  .season .t { font-family: var(--display); font-weight: 700; font-size: 19px; margin: 4px 0 2px; }
+  .season .d { font-size: 13px; color: var(--muted); }
+  .season.big .d { color: var(--ink-soft); }
+  .panel { color-scheme: light; background: var(--card); color: var(--ink); border-radius: 18px; padding: 24px 20px; }
+  .panel h2 { color: var(--ink); }
+  .panel .lede { text-align: center; color: var(--ink-soft); margin: 0 0 16px; }
+  fieldset { border: 1.5px solid rgba(58,20,34,0.18); border-radius: 12px; margin: 14px 0 0; padding: 12px 14px 14px; }
+  legend { font-weight: 700; padding: 0 6px; }
+  .hint { font-size: 13px; color: var(--ink-soft); margin: 0 0 8px; }
+  .opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+  .opt { display: flex; gap: 10px; align-items: center; border: 1.5px solid rgba(58,20,34,0.2); border-radius: 10px; padding: 10px 12px; cursor: pointer; background: #fff8ee; }
+  .opt input { width: 20px; height: 20px; accent-color: #7a2340; flex: none; }
+  .opt:has(input:checked) { border-color: #7a2340; background: #fbe6ea; }
+  .opt b { display: block; font-size: 15px; }
+  .opt small { color: var(--ink-soft); font-size: 12px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .field { margin-top: 12px; }
+  .field label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+  input[type=text], input[type=email], select, textarea { width: 100%; font: inherit; padding: 10px 12px; border-radius: 10px; border: 1.5px solid rgba(58,20,34,0.25); background: #fff; color: var(--ink); }
+  textarea { min-height: 70px; resize: vertical; }
+  .send { margin-top: 18px; width: 100%; font: inherit; font-weight: 700; font-size: 17px; padding: 14px; border-radius: 12px; border: 0; background: #7a2340; color: #fff; cursor: pointer; }
+  .send:disabled { opacity: .6; }
+  .msg { margin: 12px 0 0; padding: 12px 14px; border-radius: 10px; font-weight: 500; }
+  .msg.ok { background: #e3f3e6; color: #1d5a2c; }
+  .msg.err { background: #fde7ea; color: #8a1c33; }
+  .msg a { color: inherit; }
+  .tally { display: grid; gap: 18px; margin-top: 16px; }
+  .tgroup { border: 1.5px solid var(--line); border-radius: 14px; padding: 14px 16px; background: rgba(0,0,0,0.14); }
+  .tgroup h3 { margin: 0 0 10px; font-size: 15px; letter-spacing: .04em; color: var(--gold); }
+  .bar { display: grid; grid-template-columns: 150px 1fr 34px; gap: 10px; align-items: center; margin: 6px 0; font-size: 14px; }
+  .track { height: 12px; border-radius: 999px; background: rgba(250,242,230,0.12); overflow: hidden; }
+  .fill { height: 100%; background: var(--gold); border-radius: 999px; transition: width .4s; }
+  .lead .fill { background: var(--rose); }
+  .lead .lbl::after { content: " \2605"; color: var(--rose); }
+  .n { text-align: right; font-weight: 700; }
+  .places { font-size: 14px; color: var(--muted); margin-top: 8px; }
+  .updated { text-align: center; font-size: 13px; color: var(--muted); margin-top: 10px; }
+  footer { text-align: center; color: var(--muted); font-size: 13px; margin-top: 40px; }
+  footer a { color: var(--gold); }
+  @media (max-width: 720px) {
+    .year { grid-template-columns: 1fr 1fr; }
+    .row2 { grid-template-columns: 1fr; }
+    .bar { grid-template-columns: 110px 1fr 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Getting to know you, cousin</p>
+    <h1>Our Next Get-Together</h1>
+    <p class="sub">We&rsquo;re keeping this going. A Zoom check-in every season, and one big reunion in person each year. Pick every date that works for you and we&rsquo;ll go with the favorite.</p>
+    <div class="actions">
+      <a class="btn btn-gold" href="#vote">Vote for dates</a>
+      <a class="btn btn-line" href="../tree/">See the family tree</a>
+    </div>
+  </header>
+
+  <section aria-label="Our year">
+    <h2>Our family year</h2>
+    <div class="year">
+      <div class="season"><div class="k">Winter</div><div class="t">Zoom check-in</div><div class="d">January 2027 &middot; pick a Sunday below</div></div>
+      <div class="season"><div class="k">Spring</div><div class="t">Zoom check-in</div><div class="d">April 2027 &middot; pick a Sunday below</div></div>
+      <div class="season big"><div class="k">Summer</div><div class="t">Annual Family Reunion</div><div class="d">In person &middot; July or August 2027</div></div>
+      <div class="season"><div class="k">Fall</div><div class="t">Zoom check-in</div><div class="d">Sunday, October 10, 2027 &middot; one year since our first</div></div>
+    </div>
+  </section>
+
+  <section id="vote">
+    <form class="panel" id="voteform" novalidate>
+      <h2>Which dates work for you?</h2>
+      <p class="lede">Check every date you could make. It takes a minute.</p>
+
+      <div class="row2">
+        <div class="field"><label for="name">Your name</label><input type="text" id="name" name="name" autocomplete="name" required></div>
+        <div class="field"><label for="family">Your family</label>
+          <select id="family" name="family"><option>Radcliffe</option><option>3 Sisters</option><option>Shelton</option><option>Not sure</option></select></div>
+      </div>
+
+      <fieldset>
+        <legend>Winter Zoom check-in</legend>
+        <p class="hint">Sundays in January 2027</p>
+        <div class="opts" data-group="winter">
+          <label class="opt"><input type="checkbox" value="2027-01-10"><span><b>Sunday, Jan 10</b><small>2027</small></span></label>
+          <label class="opt"><input type="checkbox" value="2027-01-17"><span><b>Sunday, Jan 17</b><small>MLK Day weekend</small></span></label>
+          <label class="opt"><input type="checkbox" value="2027-01-24"><span><b>Sunday, Jan 24</b><small>2027</small></span></label>
+        </div>
+        <p class="hint" style="margin-top:10px">What time is best?</p>
+        <div class="opts" data-group="time">
+          <label class="opt"><input type="checkbox" value="7 PM Eastern"><span><b>7 PM Eastern</b><small>4 PM Pacific, like last time</small></span></label>
+          <label class="opt"><input type="checkbox" value="4 PM Eastern"><span><b>4 PM Eastern</b><small>1 PM Pacific</small></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Spring Zoom check-in</legend>
+        <p class="hint">Sundays in April 2027 (Easter is March 28)</p>
+        <div class="opts" data-group="spring">
+          <label class="opt"><input type="checkbox" value="2027-04-11"><span><b>Sunday, Apr 11</b><small>2027</small></span></label>
+          <label class="opt"><input type="checkbox" value="2027-04-18"><span><b>Sunday, Apr 18</b><small>2027</small></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Annual Family Reunion, in person</legend>
+        <p class="hint">Summer 2027 weekends (Saturday shown)</p>
+        <div class="opts" data-group="annual">
+          <label class="opt"><input type="checkbox" value="2027-07-10"><span><b>Sat, July 10</b><small>weekend of July 10 to 11</small></span></label>
+          <label class="opt"><input type="checkbox" value="2027-07-17"><span><b>Sat, July 17</b><small>weekend of July 17 to 18</small></span></label>
+          <label class="opt"><input type="checkbox" value="2027-07-24"><span><b>Sat, July 24</b><small>weekend of July 24 to 25</small></span></label>
+          <label class="opt"><input type="checkbox" value="2027-07-31"><span><b>Sat, July 31</b><small>weekend of July 31 to Aug 1</small></span></label>
+          <label class="opt"><input type="checkbox" value="2027-08-07"><span><b>Sat, Aug 7</b><small>weekend of Aug 7 to 8</small></span></label>
+        </div>
+        <div class="field"><label for="place">Where should we meet?</label><input type="text" id="place" name="place" placeholder="City and state, for example Philadelphia, PA"></div>
+        <label class="opt" style="margin-top:10px"><input type="checkbox" id="help"><span><b>I&rsquo;d like to help plan the reunion</b><small>Cousin Ameer will reach out</small></span></label>
+      </fieldset>
+
+      <div class="field"><label for="email">Email (optional, so we can send you the final dates)</label><input type="email" id="email" name="email" autocomplete="email"></div>
+      <div class="field"><label for="note">Anything else? (optional)</label><textarea id="note" name="note" placeholder="Ideas for the reunion, dates that never work for you, a story..."></textarea></div>
+
+      <button class="send" id="send" type="submit">Send my dates</button>
+      <p class="msg" id="msg" hidden></p>
+    </form>
+  </section>
+
+  <section aria-label="Votes so far">
+    <h2>Votes so far</h2>
+    <div class="tally" id="tally"></div>
+    <p class="updated" id="updated"></p>
+  </section>
+
+  <footer>
+    <p>Questions? Reach Cousin Ameer at <a href="mailto:ameerar@gmail.com">ameerar@gmail.com</a> or (917) 807-9107.</p>
+    <p><a href="../tree/">Family tree</a> &middot; <a href="../">Our first reunion</a></p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var LABELS = {
+    winter: { "2027-01-10": "Sun, Jan 10", "2027-01-17": "Sun, Jan 17", "2027-01-24": "Sun, Jan 24" },
+    time: { "7 PM Eastern": "7 PM Eastern", "4 PM Eastern": "4 PM Eastern" },
+    spring: { "2027-04-11": "Sun, Apr 11", "2027-04-18": "Sun, Apr 18" },
+    annual: { "2027-07-10": "Sat, July 10", "2027-07-17": "Sat, July 17", "2027-07-24": "Sat, July 24", "2027-07-31": "Sat, July 31", "2027-08-07": "Sat, Aug 7" }
+  };
+  var TITLES = { winter: "Winter Zoom check-in", time: "Best time for Zoom", spring: "Spring Zoom check-in", annual: "Annual reunion weekend" };
+  function el(t, c, x) { var e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; }
+
+  // My own vote is shown right away (saved in this browser); everyone's votes come from data/votes.json, updated hourly.
+  function myVote() { try { return JSON.parse(localStorage.getItem("fz-vote") || "null"); } catch (e) { return null; } }
+
+  function render(v) {
+    var mine = myVote(), counted = v && mine && v.updated && mine.t < Date.parse(v.updated);
+    var box = document.getElementById("tally"); box.innerHTML = "";
+    Object.keys(LABELS).forEach(function (g) {
+      var counts = {}, max = 0;
+      Object.keys(LABELS[g]).forEach(function (k) {
+        var n = (v && v[g] && v[g][k]) || 0;
+        if (mine && !counted && mine[g] && mine[g].indexOf(k) > -1) n += 1;
+        counts[k] = n; if (n > max) max = n;
+      });
+      var grp = el("div", "tgroup"); grp.appendChild(el("h3", null, TITLES[g]));
+      Object.keys(LABELS[g]).forEach(function (k) {
+        var row = el("div", "bar" + (max > 0 && counts[k] === max ? " lead" : ""));
+        row.appendChild(el("span", "lbl", LABELS[g][k]));
+        var tr = el("div", "track"), f = el("div", "fill"); f.style.width = (max ? Math.round(counts[k] / max * 100) : 0) + "%"; tr.appendChild(f); row.appendChild(tr);
+        row.appendChild(el("span", "n", String(counts[k])));
+        grp.appendChild(row);
+      });
+      if (g === "annual" && v && v.places && Object.keys(v.places).length) {
+        var p = Object.keys(v.places).sort(function (a, b) { return v.places[b] - v.places[a]; }).map(function (k) { return k + " (" + v.places[k] + ")"; });
+        grp.appendChild(el("p", "places", "Places suggested: " + p.join(", ")));
+      }
+      box.appendChild(grp);
+    });
+    var voters = (v && v.voters) || 0; if (mine && !counted) voters += 1;
+    document.getElementById("updated").textContent = voters
+      ? voters + (voters === 1 ? " cousin has" : " cousins have") + " voted. The leading date in each group is marked ★. Totals update every hour."
+      : "No votes yet. Be the first!";
+  }
+
+  fetch("../data/votes.json?v=" + Date.now()).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(render);
+
+  var ENDPOINT = "https://formsubmit.co/ajax/ameer@simplicityitinc.com";
+  var form = document.getElementById("voteform"), msg = document.getElementById("msg"), send = document.getElementById("send");
+  function picked(g) { return Array.prototype.map.call(form.querySelectorAll('[data-group="' + g + '"] input:checked'), function (i) { return i.value; }); }
+  function say(t, cls) { msg.textContent = t; msg.className = "msg " + cls; msg.hidden = false; }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = form.name.value.trim(), email = form.email.value.trim();
+    if (!name) { say("Please add your name.", "err"); form.name.focus(); return; }
+    if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { say("Please check your email address.", "err"); return; }
+    var vote = { winter: picked("winter"), time: picked("time"), spring: picked("spring"), annual: picked("annual") };
+    if (!vote.winter.length && !vote.spring.length && !vote.annual.length) { say("Please check at least one date.", "err"); return; }
+    function names(g) { return vote[g].map(function (k) { return LABELS[g][k]; }).join(", ") || "(none)"; }
+    var data = {
+      "Name": name, "Family": form.family.value,
+      "Winter check-in": names("winter"), "Best time": names("time"),
+      "Spring check-in": names("spring"), "Annual reunion": names("annual"),
+      "Where to meet": form.place.value.trim() || "(no suggestion)",
+      "Wants to help plan": document.getElementById("help").checked ? "Yes" : "No",
+      "Notes": form.note.value.trim(),
+      "Codes": JSON.stringify(vote),
+      _subject: "Date vote: " + name, _template: "table", _captcha: "false", _cc: "ameerar@gmail.com"
+    };
+    if (email) { data.email = email; data._replyto = email; }
+    send.disabled = true; send.textContent = "Sending…";
+    function done() {
+      vote.t = Date.now();
+      try { localStorage.setItem("fz-vote", JSON.stringify(vote)); } catch (x) {}
+      send.disabled = false; send.textContent = "Change my dates";
+      say("Thank you, " + name.split(" ")[0] + "! Your dates are in. You can see them in the totals below.", "ok");
+      fetch("../data/votes.json?v=" + Date.now()).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(render);
+    }
+    fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
+      .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+      .then(function (j) { if (j && (j.success === false || j.success === "false")) throw 0; done(); })
+      .catch(function () {
+        send.disabled = false; send.textContent = "Send my dates";
+        var lines = Object.keys(data).filter(function (k) { return k.charAt(0) !== "_"; }).map(function (k) { return k + ": " + data[k]; });
+        var href = "mailto:ameerar@gmail.com,ameer@simplicityitinc.com?subject=" + encodeURIComponent(data._subject) + "&body=" + encodeURIComponent(lines.join("\n"));
+        msg.className = "msg err"; msg.hidden = false; msg.textContent = "Our form is busy right now. ";
+        var a = el("a", null, "Tap here to send your dates by email instead"); a.href = href; msg.appendChild(a);
+        msg.appendChild(document.createTextNode(", nothing to retype."));
+      });
+  });
+})();
+</script>
+</body>
+</html>
