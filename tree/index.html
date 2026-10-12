@@ -63,7 +63,9 @@
   .kids li::before { content: ""; position: absolute; left: -14px; top: 18px; width: 12px; height: 2px; background: var(--line); }
   .kid { background: rgba(250,242,230,0.1); border: 1px solid rgba(250,242,230,0.18); border-radius: 9px; padding: 7px 11px; font-weight: 500; font-size: 15px; }
   .kid .sp { display: block; font-size: 12px; color: var(--muted); font-weight: 400; }
-  .kid.new { border-color: var(--rose); }
+  .kid.new { border-color: var(--rose); border-width: 2px; }
+  .kid .sent { color: var(--rose); font-weight: 600; }
+  .fnode.pend { border: 2px dashed var(--rose); }
   .add-here { margin-top: 10px; width: 100%; font: inherit; font-size: 13px; font-weight: 500; color: var(--gold); background: transparent; border: 1.5px dashed var(--line); border-radius: 9px; padding: 7px; cursor: pointer; }
   .add-here:hover { background: rgba(222,178,96,0.1); }
   .empty { margin-top: 14px; text-align: center; color: var(--muted); font-size: 14px; border: 1.5px dashed var(--line); border-radius: 12px; padding: 18px 12px; }
@@ -196,13 +198,14 @@
   <p class="fixhint">Tap a name to add a full real name, last name, or correction. Tap <b>+</b> next to a name to add their children, and their children&rsquo;s children. <b>Adding a brother or sister?</b> Tap <b>+</b> next to your parent, or pick &ldquo;sibling of&rdquo; in the form.</p>
   <div class="roots" id="tree"></div>
   <section class="joining" id="joining">
-    <h2>Who&rsquo;s joining tonight</h2>
+    <h2>Who came to our first reunion</h2>
+    <p class="help" style="margin-top:-4px">Sunday, October 11, 2026, on Zoom</p>
     <p class="count" id="jcount"></p>
     <p class="help">Names are shown the way people RSVP&rsquo;d, so some are nicknames. Tap yours to give your full real name, your parents&rsquo; names, and your closest relative on the tree, and we&rsquo;ll place you on the right branch.</p>
     <div class="jgroups" id="jgroups"></div>
   </section>
   <section class="places" id="places-sec" hidden><h2>Where the family lives</h2><div class="chips" id="chips"></div></section>
-  <p class="legend">This is a first draft from Cousin Kenneth&rsquo;s notes. <b>New names</b> show up after they&rsquo;re checked, usually within a day.</p>
+  <p class="legend">This is a first draft from Cousin Kenneth&rsquo;s notes. <b>New names</b> show up for everyone within the hour.</p>
 
   <section class="ancestry" id="ancestry">
     <h2>Have an Ancestry.com tree?</h2>
@@ -212,7 +215,7 @@
       <li><b>Share the tree.</b> On your tree, tap <i>Share</i> and invite the email below as a guest.</li>
       <li><b>Send a picture.</b> A screenshot, printout photo, or PDF of a family chart works too, even a handwritten one.</li>
     </ol>
-    <p class="mail">Send it to Cousin Ameer: <a href="mailto:ameer@simplicityitinc.com?subject=Family%20tree%20from%20Ancestry">ameer@simplicityitinc.com</a></p>
+    <p class="mail">Send it to Cousin Ameer: <a href="mailto:meerrar@gmail.com?subject=Family%20tree%20from%20Ancestry">meerrar@gmail.com</a></p>
     <p class="fine">Only names, family connections, and where people live (state or country) will appear on this page. Phone numbers and emails are never posted. Birthdates and other private details stay private.</p>
   </section>
   <section class="panel" id="add">
@@ -310,6 +313,40 @@
         { name: "Joyce Ann Gambrell-Jones", loc: "New Haven, Connecticut" } ] } ] }
   };
 
+
+  // ---- Instant preview: names this browser just sent show right away, marked "Sent" ----
+  var PKEY = "fz-pending";
+  function norm(x) { return String(x || "").toLowerCase().replace(/[^a-z]/g, ""); }
+  function readPending() { try { return JSON.parse(localStorage.getItem(PKEY) || "[]"); } catch (e) { return []; } }
+  function writePending(a) { try { localStorage.setItem(PKEY, JSON.stringify(a)); } catch (e) {} }
+  (function mergePending() {
+    var onTree = {};
+    (function walk(list) { list.forEach(function (k) { onTree[norm(k.name)] = 1; if (k.children) walk(k.children); }); })
+      ([TREE.radcliffe].concat(TREE.radcliffe.children, TREE.radcliffe.unplaced || [], [TREE.shelton]));
+    // label -> {node, parent}
+    var byLabel = {};
+    byLabel[TREE.radcliffe.name] = { node: TREE.radcliffe, parent: null };
+    byLabel[TREE.shelton.name] = { node: TREE.shelton, parent: null };
+    function index(list, parentLabel, parent) { list.forEach(function (k) { byLabel[k.name + " (" + parentLabel + "'s child)"] = { node: k, parent: parent }; if (k.children) index(k.children, k.name, k); }); }
+    TREE.radcliffe.children.forEach(function (s) { byLabel[s.name + " (Radcliffe Sister)"] = { node: s, parent: TREE.radcliffe }; index(s.children || [], s.name, s); });
+    index(TREE.radcliffe.unplaced || [], "Radcliffe family", null);
+    index(TREE.shelton.children, TREE.shelton.name, TREE.shelton);
+    var keep = readPending().filter(function (p) {
+      if (onTree[norm(p.name)]) return false;           // already placed for everyone
+      if (Date.now() - p.t > 14 * 864e5) return false;   // forget after two weeks
+      return true;
+    });
+    writePending(keep);
+    keep.forEach(function (p) {
+      if (p.rel === "the full name of") return;
+      var hit = byLabel[p.of], target = null;
+      if (hit && p.rel === "child of") target = hit.node;
+      else if (hit && p.rel === "sibling of" && hit.parent) target = hit.parent;
+      var item = { name: p.name, loc: p.loc, nick: p.nick, pending: true };
+      if (target) { (target.children = target.children || []).push(item); }
+      else { (TREE.radcliffe.unplaced = TREE.radcliffe.unplaced || []).push(item); }
+    });
+  })();
   function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   var options = [];
 
@@ -351,6 +388,7 @@
       if (k.spouse) d.appendChild(el("span", "sp", "with " + k.spouse));
       if (k.loc) d.appendChild(el("span", "sp loc", k.loc));
       if (k.memory) d.appendChild(el("span", "sp", "In loving memory"));
+      if (k.pending) { d.classList.add("new"); d.id = "pending-" + norm(k.name); d.appendChild(el("span", "sp sent", "Sent \u2714 Showing for everyone within the hour")); }
       var lab = k.name + " (" + parentLabel + "'s child)";
       d.setAttribute("role", "button"); d.tabIndex = 0; d.title = "Add a last name or correction for " + k.name;
       (function (nm, lb) { d.addEventListener("click", function () { fixName(nm, lb); }); d.addEventListener("keydown", function (e) { if (e.key === "Enter") fixName(nm, lb); }); })(k.name, lab);
@@ -423,6 +461,7 @@
       if (p.spouse) bits.push("with " + p.spouse);
       if (p.loc) bits.push(p.loc);
       if (p.memory) bits.push("In loving memory");
+      if (p.pending) { bits.push("Sent \u2714 being added"); cls = (cls ? cls + " " : "") + "pend"; }
       bits.forEach(function (b) { d.appendChild(el("small", null, b)); });
       li.appendChild(d);
       var kids = p.children || [];
@@ -466,6 +505,14 @@
     // links that jump to the add form should switch to the list view
     document.querySelectorAll('a[href="#add"]').forEach(function (a) { a.addEventListener("click", function () { show(false); }); });
     if (ZOOM) { cs.hidden = true; } else { show(location.hash !== "#list");  }
+    try {
+      var just = sessionStorage.getItem("fz-just");
+      if (just) {
+        sessionStorage.removeItem("fz-just");
+        var pn = document.getElementById("pending-" + norm(just));
+        if (pn) setTimeout(function () { pn.scrollIntoView({ behavior: "smooth", block: "center" }); }, 300);
+      }
+    } catch (e) {}
   })();
   // Where the family lives
   var counts = {};
@@ -505,7 +552,7 @@
     box.appendChild(list); gwrap.appendChild(box);
   });
   var rsvps = JOINING.reduce(function (n, g) { return n + g.people.length; }, 0);
-  document.getElementById("jcount").textContent = total + " family members from " + rsvps + " households have RSVP\u2019d";
+  document.getElementById("jcount").textContent = total + " family members from " + rsvps + " households signed up";
 
   // Fill the "of this person" select
   var sel = document.getElementById("of");
@@ -528,19 +575,24 @@
     var pphone = form.pphone.value.trim(), pemail = form.pemail.value.trim();
     if (pemail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(pemail)) { send.disabled = false; send.textContent = "Add to the family tree"; say("Please check their email address.", "err"); return; }
     var data = { "Name to add": full, "Nickname": nick || "(none)", "Phone": pphone || "(not given)", "Contact email": pemail || "(not given)", "Parents": parents || "(not given)", "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
-      _subject: (form.rel.value === "the full name of" ? "Family tree: name for " : "Family tree: add ") + full, _template: "table", _captcha: "false" };
+      _subject: (form.rel.value === "the full name of" ? "Family tree: name for " : "Family tree: add ") + full, _template: "table", _captcha: "false", _cc: "meerrar@gmail.com" };
     if (email) { data.email = email; data._replyto = email; }
     fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
       .then(function (r) { if (!r.ok) throw 0; return r.json(); })
       .then(function (j) {
         if (j && (j.success === false || j.success === "false")) throw 0;
+        var pl = readPending();
+        pl.push({ name: full, nick: nick, of: data["Relationship"].slice(form.rel.value.length + 1), rel: form.rel.value, loc: data["Lives in"] === "(not given)" ? "" : data["Lives in"], t: Date.now() });
+        writePending(pl);
+        try { sessionStorage.setItem("fz-just", full); } catch (e) {}
         form.reset(); send.disabled = false; send.textContent = "Add another person";
-        say("Thank you! " + full + " will be added to the tree soon.", "ok");
+        say("Thank you! " + full + " is on your tree now, marked \u201cSent.\u201d Everyone else will see it within the hour.", "ok");
+        setTimeout(function () { location.hash = "#list"; location.reload(); }, 2200);
       })
       .catch(function () {
         send.disabled = false; send.textContent = "Add to the family tree";
         var lines = Object.keys(data).filter(function (k) { return k.charAt(0) !== "_"; }).map(function (k) { return k + ": " + data[k]; });
-        var href = "mailto:ameer@simplicityitinc.com?subject=" + encodeURIComponent(data._subject) + "&body=" + encodeURIComponent(lines.join("\n"));
+        var href = "mailto:meerrar@gmail.com,ameer@simplicityitinc.com?subject=" + encodeURIComponent(data._subject) + "&body=" + encodeURIComponent(lines.join("\n"));
         msg.className = "msg err"; msg.hidden = false; msg.textContent = "Our form is busy right now. Tap the button to send this by email instead, nothing to retype. ";
         var a = document.createElement("a"); a.href = href; a.className = "btn btn-gold"; a.textContent = "Send by email"; a.style.marginTop = "10px"; a.style.display = "inline-block";
         msg.appendChild(a);
