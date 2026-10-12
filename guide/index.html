@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>How to Use Our Family Site · Radcliffe, 3 Sisters &amp; Shelton</title>
+<meta property="og:title" content="How to use our family site, a quick walkthrough from Cousin Ameer">
+<meta property="og:description" content="Two minutes: the family tree, adding yourself, where everyone lives, voting on dates and our family history.">
+<meta property="og:image" content="https://ameerar2322.github.io/family-zoom/preview.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,700;1,500&family=Poppins:wght@400;500;700&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --plum: #3a1422; --cream: #faf2e6; --ink: #3a1422; --gold: #deb260; --rose: #e87084; --muted: #d6bec4; --line: rgba(222,178,96,0.55);
+    --display: "Lora", Georgia, serif; --body: "Poppins", "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { background: var(--plum); }
+  body { margin: 0; background: var(--plum); background-image: radial-gradient(120% 50% at 50% 0%, #6a2540 0%, var(--plum) 70%); color: var(--cream); font-family: var(--body); font-size: 17px; line-height: 1.6; padding: 28px 16px 56px; }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  header { text-align: center; }
+  .eyebrow { margin: 0; color: var(--gold); font-size: 12px; font-weight: 500; letter-spacing: 0.32em; text-transform: uppercase; }
+  h1 { font-family: var(--display); font-weight: 700; font-size: clamp(30px, 6vw, 44px); line-height: 1.1; margin: 10px 0 0; text-wrap: balance; }
+  .sub { margin: 10px auto 0; max-width: 32em; color: var(--muted); }
+  .player { margin: 22px auto 0; max-width: 520px; border: 1.5px solid var(--gold); border-radius: 16px; padding: 16px; background: rgba(0,0,0,0.18); text-align: center; }
+  .player p { margin: 0 0 10px; font-weight: 600; }
+  .player audio { width: 100%; }
+  .btn { font: inherit; font-weight: 700; font-size: 15px; border-radius: 10px; padding: 10px 16px; text-decoration: none; display: inline-block; background: var(--gold); color: var(--ink); }
+  .btn:focus-visible { outline: 3px solid var(--cream); outline-offset: 2px; }
+  ol.steps { list-style: none; padding: 0; margin: 34px 0 0; counter-reset: s; }
+  .step { counter-increment: s; display: grid; grid-template-columns: 1fr 260px; gap: 22px; align-items: start; padding: 26px 0; border-top: 1px solid rgba(222,178,96,0.3); }
+  .step h2 { font-family: var(--display); font-size: 24px; margin: 0 0 8px; display: flex; gap: 12px; align-items: center; }
+  .step h2::before { content: counter(s); flex: none; width: 34px; height: 34px; border-radius: 50%; background: var(--gold); color: var(--ink); font-family: var(--body); font-size: 16px; display: grid; place-items: center; }
+  .step p { margin: 0 0 12px; }
+  .step img { width: 100%; border-radius: 14px; border: 1.5px solid var(--line); display: block; }
+  .step a.go { color: var(--gold); font-weight: 700; }
+  .private { background: rgba(232,112,132,0.14); border-left: 4px solid var(--rose); padding: 8px 12px; border-radius: 6px; }
+  footer { text-align: center; color: var(--muted); font-size: 14px; margin-top: 30px; }
+  footer a { color: var(--gold); }
+  @media (max-width: 640px) { .step { grid-template-columns: 1fr; } .step img { max-width: 320px; margin: 0 auto; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Radcliffe · 3 Sisters · Shelton</p>
+    <h1>How to use our family site</h1>
+    <p class="sub">A quick walkthrough from Cousin Ameer. Press play and follow along, or just scroll.</p>
+    <div class="player" id="player" hidden>
+      <p>Listen to Cousin Ameer walk you through it</p>
+      <audio id="audio" controls preload="metadata" src="walkthrough.mp3"></audio>
+    </div>
+  </header>
+
+  <ol class="steps">
+    <li class="step">
+      <div>
+        <h2>Open the family tree</h2>
+        <p>The chart starts with Gertrude Foster Radcliffe, the mother of the three Radcliffe sisters: Alva, Beatrice and Miranda. Every branch grows down from them.</p>
+        <p><a class="go" href="../tree/">Open the family tree</a></p>
+      </div>
+      <img src="img/1-chart.jpg" alt="The family tree page on a phone, showing the family chart" loading="lazy">
+    </li>
+    <li class="step">
+      <div>
+        <h2>Tap a name to open a family</h2>
+        <p>A name with a small gold number has children under it. Tap it to open that family, and tap again to close it.</p>
+        <p>Tap <b>Open all</b> to see everyone at once. Use <b>+</b> and <b>−</b> to zoom, <b>Fit</b> to see the whole tree, and drag with your finger to move around.</p>
+      </div>
+      <img src="img/2-openall.jpg" alt="Family chart zoomed in, showing Kenneth Lee Radcliffe and his daughters" loading="lazy">
+    </li>
+    <li class="step">
+      <div>
+        <h2>Add someone or fix a name</h2>
+        <p>Tap <b>List</b> at the top. To add a son or daughter, tap the <b>+</b> next to their parent's name. The form opens with the parent already picked.</p>
+        <p>To fix a name or add a last name, tap the name itself.</p>
+      </div>
+      <img src="img/3-list.jpg" alt="List view with plus buttons next to each name" loading="lazy">
+    </li>
+    <li class="step">
+      <div>
+        <h2>See where the family lives</h2>
+        <p>Scroll down to <b>Where the family lives</b> and tap any state. You'll see everyone who lives there and which line they come from.</p>
+      </div>
+      <img src="img/4-places.jpg" alt="Where the family lives, with Pennsylvania open showing names and cities" loading="lazy">
+    </li>
+    <li class="step">
+      <div>
+        <h2>Fill in the form</h2>
+        <p>Put your full first name, your last name, your parents' names, and the person you're closest to on the tree. You can add your husband, wife or partner too.</p>
+        <p class="private">Your phone number and email are private. They never show on the website. They go only to Cousin Ameer for a family contact list.</p>
+        <p>After you press send, your name shows up on your own phone right away, and for everyone else within the hour.</p>
+      </div>
+      <img src="img/5-add.jpg" alt="The Add to the tree form" loading="lazy">
+    </li>
+    <li class="step">
+      <div>
+        <h2>Vote on our next get-together</h2>
+        <p>We're keeping this going: a Zoom check-in every season and an in-person reunion next summer. Check every date that works for you.</p>
+        <p><a class="go" href="../next/">Vote on dates</a></p>
+      </div>
+      <img src="img/6-next.jpg" alt="Our Next Get-Together page with the year of dates" loading="lazy">
+    </li>
+    <li class="step">
+      <div>
+        <h2>Our family history</h2>
+        <p>The stories you shared on the call, from Piney Grove in North Carolina to our roots in Sierra Leone, Angola and Cameroon. Have a story, an old photo or an Ancestry.com tree? There's a spot right on the page to send it.</p>
+        <p><a class="go" href="../history/">Read our family history</a></p>
+      </div>
+      <img src="img/7-history.jpg" alt="Our Family History page" loading="lazy">
+    </li>
+  </ol>
+
+  <footer>
+    <p>Stuck? Email Cousin Ameer at <a href="mailto:ameerar@gmail.com">ameerar@gmail.com</a>.</p>
+  </footer>
+</div>
+<script>
+  var a = document.getElementById("audio");
+  a.addEventListener("loadedmetadata", function () { document.getElementById("player").hidden = false; });
+</script>
+</body>
+</html>
