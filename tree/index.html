@@ -238,10 +238,13 @@
         <div class="field"><label for="middle">Middle name (optional)</label><input id="middle" name="middle" autocomplete="additional-name"></div>
         <div class="field"><label for="nick">Nickname the family uses (optional)</label><input id="nick" name="nick" placeholder="e.g. Junior, Peaches"></div>
       </div>
-      <div class="field"><label for="parents">Parents&rsquo; names</label><input id="parents" name="parents" placeholder="e.g. Mother: Helen Smith, Father: James Smith"></div>
+      <div class="row2">
+        <div class="field"><label for="parents">Parents&rsquo; names</label><input id="parents" name="parents" placeholder="e.g. Mother: Helen Smith, Father: James Smith"></div>
+        <div class="field"><label for="spouse">Their husband, wife or partner (optional)</label><input id="spouse" name="spouse" placeholder="e.g. Nasir Rorie"></div>
+      </div>
       <div class="row2">
         <div class="field"><label for="rel">This person is the</label>
-          <select id="rel" name="rel"><option>child of</option><option value="sibling of">sibling of (brother or sister)</option><option value="the full name of">the full name of (filling in a last name or correction)</option><option>grandchild of</option><option>great-grandchild of</option><option>spouse or partner of</option><option>parent of</option><option>other (explain below)</option></select></div>
+          <select id="rel" name="rel"><option>child of</option><option value="sibling of">sibling of (brother or sister)</option><option value="spouse or partner of">spouse or partner of (husband or wife)</option><option value="the full name of">the full name of (filling in a last name or correction)</option><option>grandchild of</option><option>great-grandchild of</option><option>parent of</option><option>other (explain below)</option></select></div>
         <div class="field"><label for="of">Closest relative on the tree</label><select id="of" name="of"></select></div>
       </div>
       <div class="row2">
@@ -350,7 +353,8 @@
       var hit = byLabel[p.of], target = null;
       if (hit && p.rel === "child of") target = hit.node;
       else if (hit && p.rel === "sibling of" && hit.parent) target = hit.parent;
-      var item = { name: p.name, loc: p.loc, nick: p.nick, pending: true };
+      if (hit && p.rel === "spouse or partner of") { hit.node.spouse = p.name + " (sent \u2714)"; return; }
+      var item = { name: p.name, loc: p.loc, nick: p.nick, spouse: p.spouse, pending: true };
       if (target) { (target.children = target.children || []).push(item); }
       else { (TREE.radcliffe.unplaced = TREE.radcliffe.unplaced || []).push(item); }
     });
@@ -372,7 +376,7 @@
 
   function fixName(first, optionLabel) {
     var f = document.getElementById("addform");
-    f.who.value = first; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = "";
+    f.who.value = first; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = ""; f.spouse.value = "";
     document.getElementById("rel").value = "the full name of";
     document.getElementById("of").value = optionLabel;
     document.getElementById("note").placeholder = "Married name, maiden name, nickname, or anything we got wrong about " + first;
@@ -381,7 +385,7 @@
   }
   function addChildOf(name, label) {
     var f = document.getElementById("addform");
-    f.who.value = ""; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = "";
+    f.who.value = ""; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = ""; f.spouse.value = "";
     document.getElementById("rel").value = "child of";
     document.getElementById("of").value = label;
     document.getElementById("note").placeholder = "Other children of " + name + ", where they live, a story...";
@@ -608,7 +612,7 @@
     if (!from) from = full;
     var pphone = form.pphone.value.trim(), pemail = form.pemail.value.trim();
     if (pemail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(pemail)) { send.disabled = false; send.textContent = "Add to the family tree"; say("Please check their email address.", "err"); return; }
-    var data = { "Name to add": full, "Nickname": nick || "(none)", "Phone": pphone || "(not given)", "Contact email": pemail || "(not given)", "Parents": parents || "(not given)", "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
+    var data = { "Name to add": full, "Nickname": nick || "(none)", "Phone": pphone || "(not given)", "Contact email": pemail || "(not given)", "Parents": parents || "(not given)", "Spouse or partner": (form.spouse.value.trim() || "(not given)"), "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
       _subject: (form.rel.value === "the full name of" ? "Family tree: name for " : "Family tree: add ") + full, _template: "table", _captcha: "false", _cc: "ameerar@gmail.com" };
     if (email) { data.email = email; data._replyto = email; }
     fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
@@ -616,7 +620,7 @@
       .then(function (j) {
         if (j && (j.success === false || j.success === "false")) throw 0;
         var pl = readPending();
-        pl.push({ name: full, nick: nick, of: data["Relationship"].slice(form.rel.value.length + 1), rel: form.rel.value, loc: data["Lives in"] === "(not given)" ? "" : data["Lives in"], t: Date.now() });
+        pl.push({ name: full, nick: nick, spouse: form.spouse.value.trim(), of: data["Relationship"].slice(form.rel.value.length + 1), rel: form.rel.value, loc: data["Lives in"] === "(not given)" ? "" : data["Lives in"], t: Date.now() });
         writePending(pl);
         try { sessionStorage.setItem("fz-just", full); } catch (e) {}
         form.reset(); send.disabled = false; send.textContent = "Add another person";
