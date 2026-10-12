@@ -411,11 +411,21 @@
     if (email) { data.email = email; data._replyto = email; }
     fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
       .then(function (r) { if (!r.ok) throw 0; return r.json(); })
-      .then(function () {
+      .then(function (j) {
+        if (j && (j.success === false || j.success === "false")) throw 0;
         form.reset(); send.disabled = false; send.textContent = "Add another person";
         say("Thank you! " + full + " will be added to the tree soon.", "ok");
       })
-      .catch(function () { send.disabled = false; send.textContent = "Add to the family tree"; say("That didn't go through. Check your connection and try again, or text Cousin Ameer.", "err"); });
+      .catch(function () {
+        send.disabled = false; send.textContent = "Add to the family tree";
+        var lines = Object.keys(data).filter(function (k) { return k.charAt(0) !== "_"; }).map(function (k) { return k + ": " + data[k]; });
+        var href = "mailto:ameer@simplicityitinc.com?subject=" + encodeURIComponent(data._subject) + "&body=" + encodeURIComponent(lines.join("\n"));
+        msg.className = "msg err"; msg.hidden = false; msg.textContent = "Our form is busy right now. Tap the button to send this by email instead, nothing to retype. ";
+        var a = document.createElement("a"); a.href = href; a.className = "btn btn-gold"; a.textContent = "Send by email"; a.style.marginTop = "10px"; a.style.display = "inline-block";
+        msg.appendChild(a);
+        msg.appendChild(document.createTextNode(" Or text it to Cousin Ameer at (917) 807-9107."));
+        location.href = href;
+      });
   });
 })();
 </script>
