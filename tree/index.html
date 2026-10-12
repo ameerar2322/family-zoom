@@ -215,7 +215,7 @@
       <li><b>Share the tree.</b> On your tree, tap <i>Share</i> and invite the email below as a guest.</li>
       <li><b>Send a picture.</b> A screenshot, printout photo, or PDF of a family chart works too, even a handwritten one.</li>
     </ol>
-    <p class="mail">Send it to Cousin Ameer: <a href="mailto:meerrar@gmail.com?subject=Family%20tree%20from%20Ancestry">meerrar@gmail.com</a></p>
+    <p class="mail">Send it to Cousin Ameer: <a href="mailto:ameerar@gmail.com?subject=Family%20tree%20from%20Ancestry">ameerar@gmail.com</a></p>
     <p class="fine">Only names, family connections, and where people live (state or country) will appear on this page. Phone numbers and emails are never posted. Birthdates and other private details stay private.</p>
   </section>
   <section class="panel" id="add">
@@ -575,7 +575,7 @@
     var pphone = form.pphone.value.trim(), pemail = form.pemail.value.trim();
     if (pemail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(pemail)) { send.disabled = false; send.textContent = "Add to the family tree"; say("Please check their email address.", "err"); return; }
     var data = { "Name to add": full, "Nickname": nick || "(none)", "Phone": pphone || "(not given)", "Contact email": pemail || "(not given)", "Parents": parents || "(not given)", "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
-      _subject: (form.rel.value === "the full name of" ? "Family tree: name for " : "Family tree: add ") + full, _template: "table", _captcha: "false", _cc: "meerrar@gmail.com" };
+      _subject: (form.rel.value === "the full name of" ? "Family tree: name for " : "Family tree: add ") + full, _template: "table", _captcha: "false", _cc: "ameerar@gmail.com" };
     if (email) { data.email = email; data._replyto = email; }
     fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
       .then(function (r) { if (!r.ok) throw 0; return r.json(); })
@@ -592,7 +592,7 @@
       .catch(function () {
         send.disabled = false; send.textContent = "Add to the family tree";
         var lines = Object.keys(data).filter(function (k) { return k.charAt(0) !== "_"; }).map(function (k) { return k + ": " + data[k]; });
-        var href = "mailto:meerrar@gmail.com,ameer@simplicityitinc.com?subject=" + encodeURIComponent(data._subject) + "&body=" + encodeURIComponent(lines.join("\n"));
+        var href = "mailto:ameerar@gmail.com,ameer@simplicityitinc.com?subject=" + encodeURIComponent(data._subject) + "&body=" + encodeURIComponent(lines.join("\n"));
         msg.className = "msg err"; msg.hidden = false; msg.textContent = "Our form is busy right now. Tap the button to send this by email instead, nothing to retype. ";
         var a = document.createElement("a"); a.href = href; a.className = "btn btn-gold"; a.textContent = "Send by email"; a.style.marginTop = "10px"; a.style.display = "inline-block";
         msg.appendChild(a);
