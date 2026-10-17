@@ -182,6 +182,31 @@
   .ancestry .fine { margin-top: 10px; text-align: center; color: var(--muted); font-size: 13px; }
   body.zoom .ancestry { display: none; }
   .privnote { margin: -4px 0 0; font-size: 13px; color: var(--ink-soft); }
+  .pic { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; float: right; margin: 0 0 4px 8px; border: 2px solid var(--gold); }
+  .fnode .pic { float: none; display: block; width: 36px; height: 36px; margin: 0 auto 4px; }
+  .fnode .info { position: absolute; top: -9px; right: -9px; width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--gold); background: var(--plum); color: var(--gold); font: 700 13px/20px Georgia, serif; font-style: italic; cursor: pointer; padding: 0; }
+  .fnode.leaf { cursor: pointer; }
+  .bdays { max-width: 620px; margin: 28px auto 0; text-align: center; }
+  .bdays ul { list-style: none; padding: 0; margin: 12px 0 0; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  .bdays button { font: inherit; font-size: 14px; color: var(--cream); background: rgba(0,0,0,0.16); border: 1.5px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+  .bdays button b { color: var(--gold); margin-right: 6px; }
+  .bdays button.today { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+  .bdays button.today b { color: var(--ink); }
+  dialog#profile { color-scheme: light; width: min(440px, calc(100vw - 32px)); max-height: calc(100vh - 48px); border: 0; border-radius: 18px; padding: 0; background: var(--card); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+  dialog#profile::backdrop { background: rgba(20,6,12,0.7); }
+  .prof-in { padding: 22px 20px 18px; text-align: center; overflow-y: auto; }
+  .prof-in .bigpic, .prof-in .initials { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold); display: block; margin: 0 auto 10px; }
+  .prof-in .initials { background: #7a2340; color: #fff; font: 700 40px/114px var(--display); }
+  .prof-in h3 { font-family: var(--display); font-size: 24px; margin: 0; line-height: 1.2; }
+  .prof-in .meta { color: var(--ink-soft); font-size: 14px; margin: 4px 0 0; }
+  .prof-in .meta a { color: #7a2340; font-weight: 700; text-decoration: none; }
+  .prof-in .bio { text-align: left; margin: 14px 0 0; padding: 12px 14px; background: #fff8ee; border-radius: 12px; font-size: 15px; white-space: pre-line; }
+  .prof-in .empty2 { margin: 14px 0 0; font-size: 14px; color: var(--ink-soft); }
+  .prof-acts { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
+  .prof-acts button { font: inherit; font-weight: 700; font-size: 14px; border-radius: 10px; padding: 9px 14px; cursor: pointer; border: 1.5px solid #7a2340; background: #7a2340; color: #fff; }
+  .prof-acts button.ghost { background: transparent; color: #7a2340; }
+  fieldset.prof { border: 1.5px solid rgba(58,20,34,0.18); border-radius: 12px; margin: 14px 0 6px; padding: 10px 14px 12px; }
+  fieldset.prof legend { font-weight: 700; padding: 0 6px; }
   .showph { display: flex; gap: 10px; align-items: flex-start; margin: 4px 0 10px; font-size: 14px; cursor: pointer; }
   .showph input { width: 20px; height: 20px; margin-top: 2px; accent-color: #7a2340; flex: none; }
   a.tel { color: var(--gold); font-weight: 600; text-decoration: none; }
@@ -203,12 +228,14 @@
   <p class="zoom-note">Write your name and where you live (state or country) in an empty box under your family. Use Annotate, then the Text tool, at the top of your Zoom window.</p>
   <div class="viewtabs" role="group" aria-label="Choose a view"><button type="button" id="v-chart" aria-pressed="true">Family chart</button><button type="button" id="v-list" aria-pressed="false">List (add names here)</button></div>
   <div id="chartsec">
-    <div class="chartbar"><button type="button" id="z-out" aria-label="Zoom out">&minus;</button><button type="button" id="z-fit">Fit</button><button type="button" id="z-in" aria-label="Zoom in">+</button><button type="button" id="z-all">Open all</button><span>Tap a name with a number to open or close that family. Drag or scroll to move around.</span></div>
+    <div class="chartbar"><button type="button" id="z-out" aria-label="Zoom out">&minus;</button><button type="button" id="z-fit">Fit</button><button type="button" id="z-in" aria-label="Zoom in">+</button><button type="button" id="z-all">Open all</button><span>Tap a name with a number to open or close that family. Tap a name without a number, or the small <b>i</b>, to see a profile. Drag or scroll to move around.</span></div>
     <div class="chartwrap" id="chartwrap"><div class="chartinner" id="chartinner"></div></div>
-    <p class="chartnote">To add someone or fix a name, switch to <b>List</b> and use the <b>+</b> buttons.</p>
+    <p class="chartnote">To add someone or fix a name, switch to <b>List</b>, tap a name, then <b>Edit my info</b>. Or use the <b>+</b> buttons.</p>
   </div>
-  <p class="fixhint">Tap a name to add a full real name, last name, or correction. Tap <b>+</b> next to a name to add their children, and their children&rsquo;s children. <b>Adding a brother or sister?</b> Tap <b>+</b> next to your parent, or pick &ldquo;sibling of&rdquo; in the form.</p>
+  <p class="fixhint">Tap a name to see their profile card. From there, tap <b>Edit my info</b> to fix a name or add a birthday, bio or photo. Tap <b>+</b> next to a name to add their children, and their children&rsquo;s children. <b>Adding a brother or sister?</b> Tap <b>+</b> next to your parent, or pick &ldquo;sibling of&rdquo; in the form.</p>
   <div class="roots" id="tree"></div>
+  <section class="bdays" id="bdays" hidden><h2 id="bdtitle">Birthdays this month</h2><ul id="bdlist"></ul></section>
+  <dialog id="profile" aria-labelledby="pname"><div class="prof-in" id="profin"></div></dialog>
   <section class="joining" id="joining">
     <h2>Who came to our first reunion</h2>
     <p class="help" style="margin-top:-4px">Sunday, October 11, 2026, on Zoom</p>
@@ -228,7 +255,7 @@
       <li><b>Send a picture.</b> A screenshot, printout photo, or PDF of a family chart works too, even a handwritten one.</li>
     </ol>
     <p class="mail">Send it to Cousin Ameer: <a href="mailto:ameerar@gmail.com?subject=Family%20tree%20from%20Ancestry">ameerar@gmail.com</a></p>
-    <p class="fine">Only names, family connections, and where people live (state or country) will appear on this page. Phone numbers and emails are never posted. Birthdates and other private details stay private.</p>
+    <p class="fine">Only names, family connections, and where people live (state or country) will appear on this page. Phone numbers and emails are never posted. Full birthdates stay private; a birthday shows only as month and day, and only if that person chooses.</p>
   </section>
   <section class="panel" id="add">
     <h2>Add to the tree</h2>
@@ -260,6 +287,16 @@
         <div class="field"><label for="pemail">Their email (optional)</label><input id="pemail" name="pemail" type="email" autocomplete="email" placeholder="name@example.com"></div>
       </div>
       <label class="showph"><input type="checkbox" id="showphone" name="showphone"> <span><b>Show my phone number on the tree</b> so family can call me. Only check this for your own number.</span></label>
+      <fieldset class="prof"><legend>Profile card (optional)</legend>
+        <div class="row2">
+          <div class="field"><label for="bmonth">Birthday month</label><select id="bmonth" name="bmonth"><option value="">Month</option></select></div>
+          <div class="field"><label for="bdayd">Birthday day</label><select id="bdayd" name="bdayd"><option value="">Day</option></select></div>
+        </div>
+        <div class="field"><label for="bio">A few words about them</label><textarea id="bio" name="bio" maxlength="500" placeholder="Where they grew up, what they do, their kids, what they love..."></textarea></div>
+        <label class="showph"><input type="checkbox" id="showprofile" name="showprofile"> <span><b>Show the birthday and bio on the profile card.</b> Only the month and day show, never the year.</span></label>
+        <label class="showph"><input type="checkbox" id="showphoto" name="showphoto"> <span><b>Add a photo to the profile card.</b> After you press send, you&rsquo;ll get a button to email the photo to Cousin Ameer.</span></label>
+        <p class="privnote">Check these for yourself, your own child, or a loved one who has passed whose memory you&rsquo;re sharing.</p>
+      </fieldset>
       <p class="privnote">Emails are never shown on this page. Phone numbers show only if you check the box, and then anyone with the tree link can see them. Otherwise they go only to Cousin Ameer for the family contact list.</p>
       <datalist id="places"><option>New York</option><option>New Jersey</option><option>Pennsylvania</option><option>Connecticut</option><option>Maryland</option><option>Virginia</option><option>North Carolina</option><option>South Carolina</option><option>Georgia</option><option>Florida</option><option>Alabama</option><option>Ohio</option><option>Michigan</option><option>Illinois</option><option>Texas</option><option>California</option><option>Canada</option><option>United Kingdom</option></datalist>
       <div class="field"><label for="note">Anything else (optional)</label><textarea id="note" name="note" placeholder="Other names in this family, a correction, where they live, a story..."></textarea></div>
@@ -362,7 +399,7 @@
       if (hit && p.rel === "child of") target = hit.node;
       else if (hit && p.rel === "sibling of" && hit.parent) target = hit.parent;
       if (hit && p.rel === "spouse or partner of") { hit.node.spouse = p.name + " (sent \u2714)"; return; }
-      var item = { name: p.name, loc: p.loc, nick: p.nick, spouse: p.spouse, phone: p.phone, pending: true };
+      var item = { name: p.name, loc: p.loc, nick: p.nick, spouse: p.spouse, phone: p.phone, bday: p.bday, bio: p.bio, pending: true };
       if (target) { (target.children = target.children || []).push(item); }
       else { (TREE.radcliffe.unplaced = TREE.radcliffe.unplaced || []).push(item); }
     });
@@ -384,7 +421,7 @@
 
   function fixName(first, optionLabel) {
     var f = document.getElementById("addform");
-    f.who.value = first; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = ""; f.showphone.checked = false; f.spouse.value = "";
+    f.who.value = first; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = ""; f.showphone.checked = false; f.spouse.value = ""; f.bmonth.value = ""; f.bdayd.value = ""; f.bio.value = ""; f.showprofile.checked = false; f.showphoto.checked = false;
     document.getElementById("rel").value = "the full name of";
     document.getElementById("of").value = optionLabel;
     document.getElementById("note").placeholder = "Married name, maiden name, nickname, or anything we got wrong about " + first;
@@ -393,28 +430,58 @@
   }
   function addChildOf(name, label) {
     var f = document.getElementById("addform");
-    f.who.value = ""; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = ""; f.showphone.checked = false; f.spouse.value = "";
+    f.who.value = ""; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = ""; f.showphone.checked = false; f.spouse.value = ""; f.bmonth.value = ""; f.bdayd.value = ""; f.bio.value = ""; f.showprofile.checked = false; f.showphoto.checked = false;
     document.getElementById("rel").value = "child of";
     document.getElementById("of").value = label;
     document.getElementById("note").placeholder = "Other children of " + name + ", where they live, a story...";
     document.getElementById("add").scrollIntoView({ behavior: "smooth", block: "start" });
     setTimeout(function () { document.getElementById("who").focus(); }, 400);
   }
+  var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  var LABEL = {};
+  function fmtBday(b) { var m = parseInt(String(b).slice(0, 2), 10), d = parseInt(String(b).slice(3, 5), 10); return (m >= 1 && m <= 12 && d) ? MONTHS[m - 1] + " " + d : ""; }
+  function photoImg(src, cls) { var i = el("img", cls); i.src = src; i.alt = ""; i.loading = "lazy"; return i; }
+  function openProfile(k, lab) {
+    lab = lab || LABEL[norm(k.name)];
+    var dlg = document.getElementById("profile"), box = document.getElementById("profin"); box.innerHTML = "";
+    if (k.photo) { var im = photoImg(k.photo, "bigpic"); im.alt = k.name; box.appendChild(im); }
+    else { box.appendChild(el("div", "initials", k.name.split(/\s+/).map(function (w) { return w.charAt(0); }).slice(0, 2).join("").toUpperCase())); }
+    var h = el("h3", null, k.name); h.id = "pname"; box.appendChild(h);
+    if (k.nick) box.appendChild(el("p", "meta", "\u201c" + k.nick + "\u201d"));
+    if (k.memory) box.appendChild(el("p", "meta", "In loving memory"));
+    if (k.spouse) box.appendChild(el("p", "meta", "with " + k.spouse));
+    if (k.loc) box.appendChild(el("p", "meta", "\uD83D\uDCCD " + k.loc));
+    if (k.bday && fmtBday(k.bday)) box.appendChild(el("p", "meta", "\uD83C\uDF82 Birthday: " + fmtBday(k.bday)));
+    if (k.phone && !k.memory) { var pm = el("p", "meta"); pm.appendChild(telLink(k.phone, "ph")); box.appendChild(pm); }
+    if (k.bio) box.appendChild(el("p", "bio", k.bio));
+    if (!k.bio && !k.bday && !k.photo) box.appendChild(el("p", "empty2", "No profile yet. Is this you? Tap \u201cEdit my info\u201d to add a birthday, a few words about yourself, or a photo."));
+    var acts = el("div", "prof-acts");
+    function act(t, cls, fn) { var b = el("button", cls, t); b.type = "button"; b.addEventListener("click", function () { dlg.close(); if (fn) fn(); }); acts.appendChild(b); }
+    if (lab) { act("Edit my info", "", function () { showListView(); fixName(k.name, lab); }); act("+ Add a son or daughter", "ghost", function () { showListView(); addChildOf(k.name, lab); }); }
+    act("Close", "ghost");
+    box.appendChild(acts);
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+  }
+  var showListView = function () {};
+  document.getElementById("profile").addEventListener("click", function (e) { if (e.target === this) this.close(); });
   function fmtPhone(p) { var d = String(p).replace(/\D/g, ""); if (d.length === 11 && d[0] === "1") d = d.slice(1); return d.length === 10 ? "(" + d.slice(0, 3) + ") " + d.slice(3, 6) + "-" + d.slice(6) : String(p); }
   function telLink(p, tag) { var d = String(p).replace(/\D/g, ""); if (d.length === 10) d = "1" + d; var a = el("a", (tag || "sp") + " tel", "\u260E " + fmtPhone(p)); a.href = "tel:+" + d; a.addEventListener("click", function (e) { e.stopPropagation(); }); a.addEventListener("keydown", function (e) { e.stopPropagation(); }); return a; }
   function kidList(parent, kids, parentLabel) {
     var ul = el("ul", "kids");
     kids.forEach(function (k) {
-      var li = el("li"); var row = el("div", "kidrow"); var d = el("div", "kid", k.name);
+      var li = el("li"); var row = el("div", "kidrow"); var d = el("div", "kid");
+      if (k.photo) d.appendChild(photoImg(k.photo, "pic"));
+      d.appendChild(document.createTextNode(k.name));
       if (k.nick) d.appendChild(el("span", "sp", "\u201c" + k.nick + "\u201d"));
       if (k.spouse) d.appendChild(el("span", "sp", "with " + k.spouse));
       if (k.loc) d.appendChild(el("span", "sp loc", k.loc));
       if (k.phone && !k.memory) d.appendChild(telLink(k.phone));
+      if (k.bday && fmtBday(k.bday)) d.appendChild(el("span", "sp", "\uD83C\uDF82 " + fmtBday(k.bday)));
       if (k.memory) d.appendChild(el("span", "sp", "In loving memory"));
       if (k.pending) { d.classList.add("new"); d.id = "pending-" + norm(k.name); d.appendChild(el("span", "sp sent", "Sent \u2714 Showing for everyone within the hour")); }
-      var lab = k.name + " (" + parentLabel + "'s child)";
-      d.setAttribute("role", "button"); d.tabIndex = 0; d.title = "Add a last name or correction for " + k.name;
-      (function (nm, lb) { d.addEventListener("click", function () { fixName(nm, lb); }); d.addEventListener("keydown", function (e) { if (e.key === "Enter") fixName(nm, lb); }); })(k.name, lab);
+      var lab = k.name + " (" + parentLabel + "'s child)"; if (!k.pending) LABEL[norm(k.name)] = lab;
+      d.setAttribute("role", "button"); d.tabIndex = 0; d.title = "See " + k.name + "\u2019s profile";
+      (function (kk, lb) { d.addEventListener("click", function () { openProfile(kk, lb); }); d.addEventListener("keydown", function (e) { if (e.key === "Enter") openProfile(kk, lb); }); })(k, lab);
       var plus = el("button", "pluskid", "+"); plus.type = "button"; plus.title = "Add a child of " + k.name; plus.setAttribute("aria-label", "Add a child of " + k.name);
       (function (nm, lb) { plus.addEventListener("click", function () { addChildOf(nm, lb); }); })(k.name, lab);
       row.appendChild(d); row.appendChild(plus);
@@ -477,7 +544,9 @@
     var inner = document.getElementById("chartinner"), wrap = document.getElementById("chartwrap");
     function count(p) { var n = 0; (p.children || []).forEach(function (c) { n += 1 + count(c); }); return n; }
     function node(p, cls) {
-      var li = el("li"), d = el("div", "fnode" + (cls ? " " + cls : ""), p.name);
+      var li = el("li"), d = el("div", "fnode" + (cls ? " " + cls : ""));
+      if (p.photo) d.appendChild(photoImg(p.photo, "pic"));
+      d.appendChild(document.createTextNode(p.name));
       var bits = [];
       if (p.role) bits.push(p.role);
       if (p.nick) bits.push("\u201c" + p.nick + "\u201d");
@@ -487,6 +556,16 @@
       if (p.pending) { bits.push("Sent \u2714 being added"); cls = (cls ? cls + " " : "") + "pend"; }
       bits.forEach(function (b) { d.appendChild(el("small", null, b)); });
       if (p.phone && !p.memory) { var sm = el("small"); sm.appendChild(telLink(p.phone, "ph")); d.appendChild(sm); }
+      if (p.bday && fmtBday(p.bday)) d.appendChild(el("small", null, "\uD83C\uDF82 " + fmtBday(p.bday)));
+      var person = cls !== "root" && cls !== "sis" && !p.pending;
+      if (person && (p.children || []).length) {
+        var ib = el("button", "info", "i"); ib.type = "button"; ib.setAttribute("aria-label", "See " + p.name + "\u2019s profile");
+        ib.addEventListener("click", function (e) { e.stopPropagation(); openProfile(p); }); ib.addEventListener("keydown", function (e) { e.stopPropagation(); });
+        d.appendChild(ib);
+      } else if (person) {
+        d.classList.add("leaf"); d.setAttribute("role", "button"); d.tabIndex = 0; d.title = "See " + p.name + "\u2019s profile";
+        d.addEventListener("click", function () { openProfile(p); }); d.addEventListener("keydown", function (e) { if (e.key === "Enter") openProfile(p); });
+      }
       li.appendChild(d);
       var kids = p.children || [];
       if (kids.length) {
@@ -526,6 +605,7 @@
       if (chart) start();
     }
     vc.onclick = function () { show(true); }; vl.onclick = function () { show(false); };
+    showListView = function () { show(false); };
     // links that jump to the add form should switch to the list view
     document.querySelectorAll('a[href="#add"]').forEach(function (a) { a.addEventListener("click", function () { show(false); }); });
     if (ZOOM) { cs.hidden = true; } else { show(location.hash !== "#list");  }
@@ -537,6 +617,25 @@
         if (pn) setTimeout(function () { pn.scrollIntoView({ behavior: "smooth", block: "center" }); }, 300);
       }
     } catch (e) {}
+  })();
+  // Birthdays this month
+  (function () {
+    if (ZOOM) return;
+    var now = new Date(), m = now.getMonth() + 1, today = now.getDate(), list = [];
+    (function walkB(arr) { arr.forEach(function (k) { if (k.bday && parseInt(k.bday.slice(0, 2), 10) === m && fmtBday(k.bday)) list.push(k); if (k.children) walkB(k.children); }); })
+      ([].concat.apply([], TREE.radcliffe.children.map(function (s) { return s.children || []; })).concat(TREE.radcliffe.unplaced || [], TREE.shelton.children));
+    if (!list.length) return;
+    list.sort(function (a, b) { return parseInt(a.bday.slice(3, 5), 10) - parseInt(b.bday.slice(3, 5), 10); });
+    document.getElementById("bdtitle").textContent = "\uD83C\uDF82 " + MONTHS[m - 1] + " birthdays";
+    var ul = document.getElementById("bdlist");
+    list.forEach(function (k) {
+      var d = parseInt(k.bday.slice(3, 5), 10), li = el("li"), b = el("button", d === today ? "today" : null);
+      b.type = "button"; b.appendChild(el("b", null, d === today ? "Today!" : MONTHS[m - 1].slice(0, 3) + " " + d));
+      b.appendChild(document.createTextNode(k.name + (k.memory ? " (remembering)" : "")));
+      b.addEventListener("click", function () { openProfile(k); });
+      li.appendChild(b); ul.appendChild(li);
+    });
+    document.getElementById("bdays").hidden = false;
   })();
   // Where the family lives: tap a state to see who lives there
   var byPlace = {};
@@ -610,6 +709,9 @@
   var ph = el("option", null, "Choose a relative\u2026"); ph.value = ""; sel.appendChild(ph);
   options.concat(["Someone not on the tree yet (explain below)"]).forEach(function (o) { var op = el("option", null, o); op.value = o; sel.appendChild(op); });
 
+  (function () { var bm = document.getElementById("bmonth"), bd = document.getElementById("bdayd");
+    MONTHS.forEach(function (n, i) { var o = el("option", null, n); o.value = String(i + 1); bm.appendChild(o); });
+    for (var i = 1; i <= 31; i++) { var o = el("option", null, String(i)); o.value = String(i); bd.appendChild(o); } })();
   // Submit additions to Cousin Ameer's inbox
   var ENDPOINT = "https://formsubmit.co/ajax/ameer@simplicityitinc.com";
   var form = document.getElementById("addform"), msg = document.getElementById("msg"), send = document.getElementById("send");
@@ -625,9 +727,13 @@
     if (!from) from = full;
     var pphone = form.pphone.value.trim(), pemail = form.pemail.value.trim(), showPh = form.showphone.checked;
     if (showPh && !pphone) { send.disabled = false; send.textContent = "Add to the family tree"; say("Add your phone number, or uncheck \u201cShow my phone number.\u201d", "err"); return; }
+    var bmo = form.bmonth.value, bdy = form.bdayd.value, bio = form.bio.value.trim(), showProf = form.showprofile.checked, showPhoto = form.showphoto.checked;
+    if ((bmo && !bdy) || (!bmo && bdy)) { send.disabled = false; send.textContent = "Add to the family tree"; say("Please pick both the birthday month and day, or leave both blank.", "err"); return; }
+    if (showProf && !bmo && !bio) { send.disabled = false; send.textContent = "Add to the family tree"; say("Add a birthday or a few words for the profile card, or uncheck \u201cShow the birthday and bio.\u201d", "err"); return; }
+    var bdayTxt = bmo ? MONTHS[bmo - 1] + " " + bdy : "", bdayCode = bmo ? ("0" + bmo).slice(-2) + "-" + ("0" + bdy).slice(-2) : "";
     if (showPh && norm(from) !== norm(full)) { send.disabled = false; send.textContent = "Add to the family tree"; say("You can only choose to show your own phone number. Uncheck the box when adding someone else.", "err"); return; }
     if (pemail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(pemail)) { send.disabled = false; send.textContent = "Add to the family tree"; say("Please check their email address.", "err"); return; }
-    var data = { "Name to add": full, "Nickname": nick || "(none)", "Phone": pphone || "(not given)", "Show phone on tree": showPh ? "Yes" : "No", "Contact email": pemail || "(not given)", "Parents": parents || "(not given)", "Spouse or partner": (form.spouse.value.trim() || "(not given)"), "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
+    var data = { "Name to add": full, "Nickname": nick || "(none)", "Phone": pphone || "(not given)", "Show phone on tree": showPh ? "Yes" : "No", "Birthday (month and day)": bdayTxt || "(not given)", "Bio": bio || "(not given)", "Show profile (birthday and bio)": showProf ? "Yes" : "No", "Show photo": showPhoto ? "Yes (photo coming by email)" : "No", "Contact email": pemail || "(not given)", "Parents": parents || "(not given)", "Spouse or partner": (form.spouse.value.trim() || "(not given)"), "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
       _subject: (form.rel.value === "the full name of" ? "Family tree: name for " : "Family tree: add ") + full, _template: "table", _captcha: "false", _cc: "ameerar@gmail.com" };
     if (email) { data.email = email; data._replyto = email; }
     fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
@@ -635,12 +741,19 @@
       .then(function (j) {
         if (j && (j.success === false || j.success === "false")) throw 0;
         var pl = readPending();
-        pl.push({ name: full, nick: nick, spouse: form.spouse.value.trim(), of: data["Relationship"].slice(form.rel.value.length + 1), rel: form.rel.value, loc: data["Lives in"] === "(not given)" ? "" : data["Lives in"], phone: showPh ? pphone : "", t: Date.now() });
+        pl.push({ name: full, nick: nick, spouse: form.spouse.value.trim(), of: data["Relationship"].slice(form.rel.value.length + 1), rel: form.rel.value, loc: data["Lives in"] === "(not given)" ? "" : data["Lives in"], phone: showPh ? pphone : "", bday: showProf ? bdayCode : "", bio: showProf ? bio : "", t: Date.now() });
         writePending(pl);
         try { sessionStorage.setItem("fz-just", full); } catch (e) {}
         form.reset(); send.disabled = false; send.textContent = "Add another person";
         say("Thank you! " + full + " is on your tree now, marked \u201cSent.\u201d Everyone else will see it within the hour.", "ok");
-        setTimeout(function () { location.hash = "#list"; location.reload(); }, 2200);
+        if (showPhoto) {
+          msg.appendChild(document.createTextNode(" Last step: tap below, attach the photo, and send."));
+          var pa = el("a", "btn btn-gold", "Email the photo"); pa.style.display = "inline-block"; pa.style.marginTop = "10px";
+          pa.href = "mailto:ameerar@gmail.com,ameer@simplicityitinc.com?subject=" + encodeURIComponent("Family tree photo: " + full) + "&body=" + encodeURIComponent("Attach one photo of " + full + " to this email.\n\nYes, please show this photo on " + full + "'s family tree profile.");
+          var done = el("a", "btn btn-line", "Back to the tree"); done.href = "#list"; done.style.display = "inline-block"; done.style.margin = "10px 0 0 8px"; done.style.color = "inherit"; done.style.borderColor = "currentColor";
+          done.addEventListener("click", function (e) { e.preventDefault(); location.hash = "#list"; location.reload(); });
+          msg.appendChild(el("br")); msg.appendChild(pa); msg.appendChild(done);
+        } else { setTimeout(function () { location.hash = "#list"; location.reload(); }, 2200); }
       })
       .catch(function () {
         send.disabled = false; send.textContent = "Add to the family tree";
