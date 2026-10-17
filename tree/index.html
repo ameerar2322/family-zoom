@@ -192,6 +192,10 @@
   .bdays button b { color: var(--gold); margin-right: 6px; }
   .bdays button.today { background: var(--gold); color: var(--ink); border-color: var(--gold); }
   .bdays button.today b { color: var(--ink); }
+  .gens { max-width: 620px; margin: 28px auto 0; text-align: center; }
+  .prof-in .peers { margin: 14px 0 0; text-align: left; }
+  .prof-in .peers h4 { margin: 0 0 6px; font-size: 13px; letter-spacing: .04em; color: var(--ink-soft); text-transform: uppercase; }
+  .prof-in .peers button { font: inherit; font-size: 13px; margin: 0 6px 6px 0; padding: 5px 10px; border-radius: 999px; border: 1.5px solid #7a2340; background: #fff8ee; color: #7a2340; cursor: pointer; }
   dialog#profile { color-scheme: light; width: min(440px, calc(100vw - 32px)); max-height: calc(100vh - 48px); border: 0; border-radius: 18px; padding: 0; background: var(--card); color: var(--ink); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
   dialog#profile::backdrop { background: rgba(20,6,12,0.7); }
   .prof-in { padding: 22px 20px 18px; text-align: center; overflow-y: auto; }
@@ -235,6 +239,7 @@
   <p class="fixhint">Tap a name to see their profile card. From there, tap <b>Edit my info</b> to fix a name or add a birthday, bio or photo. Tap <b>+</b> next to a name to add their children, and their children&rsquo;s children. <b>Adding a brother or sister?</b> Tap <b>+</b> next to your parent, or pick &ldquo;sibling of&rdquo; in the form.</p>
   <div class="roots" id="tree"></div>
   <section class="bdays" id="bdays" hidden><h2 id="bdtitle">Birthdays this month</h2><ul id="bdlist"></ul></section>
+  <section class="gens places" id="gens" hidden><h2>Find cousins your age</h2><p class="help" style="text-align:center;margin:4px 0 0">Tap a decade to see who was born then.</p><div class="chips" id="genchips"></div><div class="placewho" id="genwho" hidden></div></section>
   <dialog id="profile" aria-labelledby="pname"><div class="prof-in" id="profin"></div></dialog>
   <section class="joining" id="joining">
     <h2>Who came to our first reunion</h2>
@@ -291,6 +296,10 @@
         <div class="row2">
           <div class="field"><label for="bmonth">Birthday month</label><select id="bmonth" name="bmonth"><option value="">Month</option></select></div>
           <div class="field"><label for="bdayd">Birthday day</label><select id="bdayd" name="bdayd"><option value="">Day</option></select></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="byear">Birth year (optional, kept private)</label><select id="byear" name="byear"><option value="">Year</option></select></div>
+          <div class="field" style="align-self:end"><label class="showph" style="margin:0"><input type="checkbox" id="showdecade" name="showdecade"> <span><b>Show the decade</b> (like &ldquo;Born in the 1980s&rdquo;) so cousins can find others their age. The exact year stays private.</span></label></div>
         </div>
         <div class="field"><label for="bio">A few words about them</label><textarea id="bio" name="bio" maxlength="500" placeholder="Where they grew up, what they do, their kids, what they love..."></textarea></div>
         <label class="showph"><input type="checkbox" id="showprofile" name="showprofile"> <span><b>Show the birthday and bio on the profile card.</b> Only the month and day show, never the year.</span></label>
@@ -399,7 +408,7 @@
       if (hit && p.rel === "child of") target = hit.node;
       else if (hit && p.rel === "sibling of" && hit.parent) target = hit.parent;
       if (hit && p.rel === "spouse or partner of") { hit.node.spouse = p.name + " (sent \u2714)"; return; }
-      var item = { name: p.name, loc: p.loc, nick: p.nick, spouse: p.spouse, phone: p.phone, bday: p.bday, bio: p.bio, pending: true };
+      var item = { name: p.name, loc: p.loc, nick: p.nick, spouse: p.spouse, phone: p.phone, bday: p.bday, bio: p.bio, decade: p.decade, pending: true };
       if (target) { (target.children = target.children || []).push(item); }
       else { (TREE.radcliffe.unplaced = TREE.radcliffe.unplaced || []).push(item); }
     });
@@ -421,7 +430,7 @@
 
   function fixName(first, optionLabel) {
     var f = document.getElementById("addform");
-    f.who.value = first; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = ""; f.showphone.checked = false; f.spouse.value = ""; f.bmonth.value = ""; f.bdayd.value = ""; f.bio.value = ""; f.showprofile.checked = false; f.showphoto.checked = false;
+    f.who.value = first; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = ""; f.showphone.checked = false; f.spouse.value = ""; f.bmonth.value = ""; f.bdayd.value = ""; f.bio.value = ""; f.showprofile.checked = false; f.showphoto.checked = false; f.byear.value = ""; f.showdecade.checked = false;
     document.getElementById("rel").value = "the full name of";
     document.getElementById("of").value = optionLabel;
     document.getElementById("note").placeholder = "Married name, maiden name, nickname, or anything we got wrong about " + first;
@@ -430,7 +439,7 @@
   }
   function addChildOf(name, label) {
     var f = document.getElementById("addform");
-    f.who.value = ""; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = ""; f.showphone.checked = false; f.spouse.value = ""; f.bmonth.value = ""; f.bdayd.value = ""; f.bio.value = ""; f.showprofile.checked = false; f.showphoto.checked = false;
+    f.who.value = ""; f.last.value = ""; f.middle.value = ""; f.nick.value = ""; f.pphone.value = ""; f.pemail.value = ""; f.showphone.checked = false; f.spouse.value = ""; f.bmonth.value = ""; f.bdayd.value = ""; f.bio.value = ""; f.showprofile.checked = false; f.showphoto.checked = false; f.byear.value = ""; f.showdecade.checked = false;
     document.getElementById("rel").value = "child of";
     document.getElementById("of").value = label;
     document.getElementById("note").placeholder = "Other children of " + name + ", where they live, a story...";
@@ -438,7 +447,8 @@
     setTimeout(function () { document.getElementById("who").focus(); }, 400);
   }
   var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-  var LABEL = {};
+  var LABEL = {}, ALLP = [];
+  function everyone() { if (ALLP.length) return ALLP; (function w(a) { a.forEach(function (k) { if (!k.pending) ALLP.push(k); if (k.children) w(k.children); }); })([].concat.apply([], TREE.radcliffe.children.map(function (s) { return s.children || []; })).concat(TREE.radcliffe.unplaced || [], TREE.shelton.children)); return ALLP; }
   function fmtBday(b) { var m = parseInt(String(b).slice(0, 2), 10), d = parseInt(String(b).slice(3, 5), 10); return (m >= 1 && m <= 12 && d) ? MONTHS[m - 1] + " " + d : ""; }
   function photoImg(src, cls) { var i = el("img", cls); i.src = src; i.alt = ""; i.loading = "lazy"; return i; }
   function openProfile(k, lab) {
@@ -453,8 +463,15 @@
     if (k.loc) box.appendChild(el("p", "meta", "\uD83D\uDCCD " + k.loc));
     if (k.bday && fmtBday(k.bday)) box.appendChild(el("p", "meta", "\uD83C\uDF82 Birthday: " + fmtBday(k.bday)));
     if (k.phone && !k.memory) { var pm = el("p", "meta"); pm.appendChild(telLink(k.phone, "ph")); box.appendChild(pm); }
+    if (k.decade) box.appendChild(el("p", "meta", "Born in the " + k.decade + "s"));
     if (k.bio) box.appendChild(el("p", "bio", k.bio));
-    if (!k.bio && !k.bday && !k.photo) box.appendChild(el("p", "empty2", "No profile yet. Is this you? Tap \u201cEdit my info\u201d to add a birthday, a few words about yourself, or a photo."));
+    if (k.decade) {
+      var peers = everyone().filter(function (o) { return o !== k && o.decade === k.decade && !o.memory; });
+      if (peers.length) { var pw = el("div", "peers"); pw.appendChild(el("h4", null, "Cousins also born in the " + k.decade + "s"));
+        peers.forEach(function (o) { var b = el("button", null, o.name); b.type = "button"; b.addEventListener("click", function () { openProfile(o); }); pw.appendChild(b); });
+        box.appendChild(pw); }
+    }
+    if (!k.bio && !k.bday && !k.photo && !k.decade) box.appendChild(el("p", "empty2", "No profile yet. Is this you? Tap \u201cEdit my info\u201d to add a birthday, a few words about yourself, or a photo."));
     var acts = el("div", "prof-acts");
     function act(t, cls, fn) { var b = el("button", cls, t); b.type = "button"; b.addEventListener("click", function () { dlg.close(); if (fn) fn(); }); acts.appendChild(b); }
     if (lab) { act("Edit my info", "", function () { showListView(); fixName(k.name, lab); }); act("+ Add a son or daughter", "ghost", function () { showListView(); addChildOf(k.name, lab); }); }
@@ -637,6 +654,27 @@
     });
     document.getElementById("bdays").hidden = false;
   })();
+  // Find cousins your age: group by birth decade
+  (function () {
+    if (ZOOM) return;
+    var by = {}; everyone().forEach(function (k) { if (k.decade && !k.memory) (by[k.decade] = by[k.decade] || []).push(k); });
+    var ds = Object.keys(by).sort(); if (!ds.length) return;
+    var box = document.getElementById("genchips"), who = document.getElementById("genwho"), open = null;
+    ds.forEach(function (d) {
+      var c = el("button", "chip", d + "s"); c.type = "button"; c.setAttribute("aria-expanded", "false"); c.appendChild(el("b", null, String(by[d].length)));
+      c.addEventListener("click", function () {
+        box.querySelectorAll(".chip").forEach(function (x) { x.setAttribute("aria-expanded", "false"); });
+        if (open === d) { open = null; who.hidden = true; return; }
+        open = d; c.setAttribute("aria-expanded", "true"); who.innerHTML = ""; who.appendChild(el("h3", null, "Born in the " + d + "s"));
+        var ul = el("ul"); by[d].slice().sort(function (a, b) { return a.name.localeCompare(b.name); }).forEach(function (k) {
+          var li = el("li"), b = el("button", null, k.name); b.type = "button"; b.style.cssText = "font:inherit;font-weight:700;background:none;border:0;color:var(--cream);text-align:left;padding:0;cursor:pointer";
+          b.addEventListener("click", function () { openProfile(k); }); li.appendChild(b); if (k.loc) li.appendChild(el("span", null, k.loc)); ul.appendChild(li); });
+        who.appendChild(ul); who.hidden = false;
+      });
+      box.appendChild(c);
+    });
+    document.getElementById("gens").hidden = false;
+  })();
   // Where the family lives: tap a state to see who lives there
   var byPlace = {};
   function walk(list, line) {
@@ -711,7 +749,9 @@
 
   (function () { var bm = document.getElementById("bmonth"), bd = document.getElementById("bdayd");
     MONTHS.forEach(function (n, i) { var o = el("option", null, n); o.value = String(i + 1); bm.appendChild(o); });
-    for (var i = 1; i <= 31; i++) { var o = el("option", null, String(i)); o.value = String(i); bd.appendChild(o); } })();
+    for (var i = 1; i <= 31; i++) { var o = el("option", null, String(i)); o.value = String(i); bd.appendChild(o); }
+    var by = document.getElementById("byear"), yNow = new Date().getFullYear();
+    for (var y = yNow; y >= 1910; y--) { var oy = el("option", null, String(y)); oy.value = String(y); by.appendChild(oy); } })();
   // Submit additions to Cousin Ameer's inbox
   var ENDPOINT = "https://formsubmit.co/ajax/ameer@simplicityitinc.com";
   var form = document.getElementById("addform"), msg = document.getElementById("msg"), send = document.getElementById("send");
@@ -730,10 +770,13 @@
     var bmo = form.bmonth.value, bdy = form.bdayd.value, bio = form.bio.value.trim(), showProf = form.showprofile.checked, showPhoto = form.showphoto.checked;
     if ((bmo && !bdy) || (!bmo && bdy)) { send.disabled = false; send.textContent = "Add to the family tree"; say("Please pick both the birthday month and day, or leave both blank.", "err"); return; }
     if (showProf && !bmo && !bio) { send.disabled = false; send.textContent = "Add to the family tree"; say("Add a birthday or a few words for the profile card, or uncheck \u201cShow the birthday and bio.\u201d", "err"); return; }
+    var byr = form.byear.value, showDec = form.showdecade.checked;
+    if (showDec && !byr) { send.disabled = false; send.textContent = "Add to the family tree"; say("Pick the birth year, or uncheck \u201cShow the decade.\u201d", "err"); return; }
+    if (showDec && +byr > new Date().getFullYear() - 18) { send.disabled = false; send.textContent = "Add to the family tree"; say("The birth decade only shows for adults. Uncheck \u201cShow the decade\u201d for anyone under 18.", "err"); return; }
     var bdayTxt = bmo ? MONTHS[bmo - 1] + " " + bdy : "", bdayCode = bmo ? ("0" + bmo).slice(-2) + "-" + ("0" + bdy).slice(-2) : "";
     if (showPh && norm(from) !== norm(full)) { send.disabled = false; send.textContent = "Add to the family tree"; say("You can only choose to show your own phone number. Uncheck the box when adding someone else.", "err"); return; }
     if (pemail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(pemail)) { send.disabled = false; send.textContent = "Add to the family tree"; say("Please check their email address.", "err"); return; }
-    var data = { "Name to add": full, "Nickname": nick || "(none)", "Phone": pphone || "(not given)", "Show phone on tree": showPh ? "Yes" : "No", "Birthday (month and day)": bdayTxt || "(not given)", "Bio": bio || "(not given)", "Show profile (birthday and bio)": showProf ? "Yes" : "No", "Show photo": showPhoto ? "Yes (photo coming by email)" : "No", "Contact email": pemail || "(not given)", "Parents": parents || "(not given)", "Spouse or partner": (form.spouse.value.trim() || "(not given)"), "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
+    var data = { "Name to add": full, "Nickname": nick || "(none)", "Phone": pphone || "(not given)", "Show phone on tree": showPh ? "Yes" : "No", "Birthday (month and day)": bdayTxt || "(not given)", "Bio": bio || "(not given)", "Show profile (birthday and bio)": showProf ? "Yes" : "No", "Birth year (private)": byr || "(not given)", "Show birth decade": showDec ? "Yes" : "No", "Show photo": showPhoto ? "Yes (photo coming by email)" : "No", "Contact email": pemail || "(not given)", "Parents": parents || "(not given)", "Spouse or partner": (form.spouse.value.trim() || "(not given)"), "Relationship": form.rel.value + " " + form.of.value, "Lives in": [form.city.value.trim(), form.place.value.trim()].filter(Boolean).join(", ") || "(not given)", "Notes": form.note.value.trim(), "Sent by": from,
       _subject: (form.rel.value === "the full name of" ? "Family tree: name for " : "Family tree: add ") + full, _template: "table", _captcha: "false", _cc: "ameerar@gmail.com" };
     if (email) { data.email = email; data._replyto = email; }
     fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(data) })
@@ -741,7 +784,7 @@
       .then(function (j) {
         if (j && (j.success === false || j.success === "false")) throw 0;
         var pl = readPending();
-        pl.push({ name: full, nick: nick, spouse: form.spouse.value.trim(), of: data["Relationship"].slice(form.rel.value.length + 1), rel: form.rel.value, loc: data["Lives in"] === "(not given)" ? "" : data["Lives in"], phone: showPh ? pphone : "", bday: showProf ? bdayCode : "", bio: showProf ? bio : "", t: Date.now() });
+        pl.push({ name: full, nick: nick, spouse: form.spouse.value.trim(), of: data["Relationship"].slice(form.rel.value.length + 1), rel: form.rel.value, loc: data["Lives in"] === "(not given)" ? "" : data["Lives in"], phone: showPh ? pphone : "", bday: showProf ? bdayCode : "", bio: showProf ? bio : "", decade: showDec ? String(Math.floor(byr / 10) * 10) : "", t: Date.now() });
         writePending(pl);
         try { sessionStorage.setItem("fz-just", full); } catch (e) {}
         form.reset(); send.disabled = false; send.textContent = "Add another person";
